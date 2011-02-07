@@ -1,2 +1,4 @@
 glob:tmp/*
 glob:*.*~
+glob:bin/*
+glob:gen/*
