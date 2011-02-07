@@ -3,7 +3,6 @@ package com.lendamage.agilegtd.android.model.impl;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.provider.BaseColumns;
 
 /**
@@ -47,26 +46,26 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + FOLDER_TABLE + " (" +
-                ID_COLUMN + " INTEGER PRIMARY KEY,"+
-                NAME_COLUMN + " TEXT," +
-                FULL_NAME_COLUMN + " TEXT," +
+                ID_COLUMN + " INTEGER PRIMARY KEY, "+
+                NAME_COLUMN + " TEXT, " +
+                FULL_NAME_COLUMN + " TEXT, " +
                 FOLDER_ID_COLUMN + " INTEGER REFERENCES " + 
-                        FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL," +
-                SORT_ORDER_COLUMN + " INTEGER," +
-                TYPE_COLUMN + " TEXT" +
+                        FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL, " +
+                SORT_ORDER_COLUMN + " INTEGER, " +
+                TYPE_COLUMN + " TEXT " +
                 ")");
         db.execSQL("CREATE TABLE " + ACTION_TABLE + " (" +
-                ID_COLUMN + " INTEGER PRIMARY KEY,"+
-                HEAD_COLUMN + " TEXT," +
-                BODY_COLUMN + " TEXT" +
+                ID_COLUMN + " INTEGER PRIMARY KEY, "+
+                HEAD_COLUMN + " TEXT, " +
+                BODY_COLUMN + " TEXT " +
                 ")");
         db.execSQL("CREATE TABLE " + ACTION_IN_FOLDER_TABLE + " (" +
                 FOLDER_ID_COLUMN + " INTEGER REFERENCES " + 
-                        FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL," +
+                        FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL, " +
                 ACTION_ID_COLUMN + " INTEGER REFERENCES " + 
-                        ACTION_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL," +
-                SORT_ORDER_COLUMN + " INTEGER" +
-                "PRIMARY KEY (" + FOLDER_ID_COLUMN + ", "+ ACTION_ID_COLUMN + ")" +
+                        ACTION_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL, " +
+                SORT_ORDER_COLUMN + " INTEGER, " +
+                "PRIMARY KEY (" + FOLDER_ID_COLUMN + ", "+ ACTION_ID_COLUMN + ") " +
                 ")");
     }
 
