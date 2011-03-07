@@ -7,7 +7,7 @@ import java.util.Set;
  *  Each action contains the head and the body.
  *  Each action can belong to any number of folders.
  */
-public interface Action {
+public interface Action extends Entity<Action.Editor> {
     
     /**
      *  Get set of folders to which the action belongs.
@@ -21,18 +21,22 @@ public interface Action {
     String getHead();
     
     /**
-     *  Updates the action head.
-     */
-    void setHead(String head);
-    
-    /**
      *  Get action body.
      */
     String getBody();
     
-    /**
-     *  Updates the action body.
-     */
-    void setBody(String body);
+    public interface Editor extends Entity.Editor {
+
+        /**
+         *  Updates the action head.
+         */
+        Editor setHead(String head);
+
+        /**
+         *  Updates the action body.
+         */
+        Editor setBody(String body);
+
+    }
 
 }

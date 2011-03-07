@@ -14,5 +14,17 @@ public interface Model {
      *  Returns the folder by the full name.
      */
     Folder getFolder(String fullName);
+    
+    /**
+     *  Creates new Action.
+     *  It is the only way to create the Action.
+     */
+    Action newAction(String head);
+    
+    /**
+     *  Creates new Folder.
+     *  It is the only way to create the Folder.
+     */
+    Folder newFolder(String fullName, FolderType type);
 
 }

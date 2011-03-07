@@ -6,7 +6,7 @@ import java.util.List;
  *  Agile GTD folder.
  *  Each folder can contain other folders and actions.
  */
-public interface Folder {
+public interface Folder extends Entity<Folder.Editor> {
     
     /**
      *  Lists subfolders.
@@ -26,11 +26,6 @@ public interface Folder {
     String getName();
     
     /**
-     *  Updates the folder name.
-     */
-    void setName(String name);
-    
-    /**
      *  Returns full name of the folder.
      */
     String getFullName();
@@ -39,5 +34,14 @@ public interface Folder {
      *  Returns the folder type or null.
      */
     FolderType getType();
+    
+    public interface Editor extends Entity.Editor {
+        
+        /**
+         *  Updates the folder name.
+         */
+        void setName(String name);
+        
+    }
 
 }
