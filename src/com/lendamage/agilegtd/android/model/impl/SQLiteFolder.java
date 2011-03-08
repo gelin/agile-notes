@@ -5,14 +5,15 @@ import java.util.List;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
+import com.lendamage.agilegtd.model.Path;
 
 public class SQLiteFolder implements Folder {
 
     /** ID in the database */
     final long id; 
     
-    /** Full name */
-    String fullName;
+    /** Full path */
+    Path path;
     /** Short name */
     String name;
     /** Type */
@@ -23,8 +24,8 @@ public class SQLiteFolder implements Folder {
     }
     
     @Override
-    public String getFullName() {
-        return this.fullName;
+    public Path getPath() {
+        return this.path;
     }
 
     @Override

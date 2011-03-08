@@ -26,9 +26,9 @@ public interface Folder extends Entity<Folder.Editor> {
     String getName();
     
     /**
-     *  Returns full name of the folder.
+     *  Returns full path of the folder.
      */
-    String getFullName();
+    Path getPath();
     
     /**
      *  Returns the folder type or null.

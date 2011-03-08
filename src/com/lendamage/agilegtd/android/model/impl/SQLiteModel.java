@@ -8,6 +8,8 @@ import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
+import com.lendamage.agilegtd.model.Path;
+
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.*;
 
 /**
@@ -46,22 +48,25 @@ public class SQLiteModel implements Model {
     }
 
     @Override
-    public Folder newFolder(String fullName, FolderType type) {
+    public Folder newFolder(Path path, FolderType type) {
+        assert(path != null);
         db.beginTransaction();
         try {
             //TODO: subfolders creation
             //TODO: check for folder existence
             SQLiteStatement st = db.compileStatement(
                     "INSERT into " + FOLDER_TABLE + 
-                    " (" + FULL_NAME_COLUMN + ", " + TYPE_COLUMN +") values (?, ?)");
-            st.bindString(1, fullName);
+                    " (" + FULL_NAME_COLUMN + ", " + NAME_COLUMN + ", " + TYPE_COLUMN +")" +
+                    " values (?, ?, ?)");
+            st.bindString(1, String.valueOf(path));
+            st.bindString(2, path.getLastSegment());
             if (type != null) {
-                st.bindString(2, String.valueOf(type));
+                st.bindString(3, String.valueOf(type));
             }
             long id = st.executeInsert();
             SQLiteFolder result = new SQLiteFolder(id);
-            result.fullName = fullName;
-            result.name = fullName; //TODO
+            result.path = path;
+            result.name = path.getLastSegment();
             result.type = type;
             db.setTransactionSuccessful();
             return result;

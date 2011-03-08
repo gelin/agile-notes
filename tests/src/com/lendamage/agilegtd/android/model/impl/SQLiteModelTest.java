@@ -25,22 +25,22 @@ public class SQLiteModelTest extends AndroidTestCase {
     }
     
     public void testNewFolder() {
-        SQLiteFolder f1 = (SQLiteFolder)model.newFolder("", FolderType.ROOT);
+        SQLiteFolder f1 = (SQLiteFolder)model.newFolder(new SimplePath(""), FolderType.ROOT);
         assertFalse(0 == f1.id);
-        assertEquals("", f1.getFullName());
+        assertEquals("", f1.getPath().toString());
         assertEquals("", f1.getName());
         assertEquals(FolderType.ROOT, f1.getType());
-        SQLiteFolder f2 = (SQLiteFolder)model.newFolder("Projects", FolderType.PROJECTS);
+        SQLiteFolder f2 = (SQLiteFolder)model.newFolder(new SimplePath("Projects"), FolderType.PROJECTS);
         assertFalse(f1.id == f2.id);
-        assertEquals("Projects", f2.getFullName());
+        assertEquals("Projects", f2.getPath().toString());
         assertEquals("Projects", f2.getName());
         assertEquals(FolderType.PROJECTS, f2.getType());
     }
     
     public void testNewFolderNullType() {
-        SQLiteFolder f1 = (SQLiteFolder)model.newFolder("null", null);
+        SQLiteFolder f1 = (SQLiteFolder)model.newFolder(new SimplePath("null"), null);
         assertFalse(0 == f1.id);
-        assertEquals("null", f1.getFullName());
+        assertEquals("null", f1.getPath().toString());
         assertEquals("null", f1.getName());
         assertNull(f1.getType());
     }

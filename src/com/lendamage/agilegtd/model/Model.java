@@ -25,6 +25,6 @@ public interface Model {
      *  Creates new Folder.
      *  It is the only way to create the Folder.
      */
-    Folder newFolder(String fullName, FolderType type);
+    Folder newFolder(Path fullPath, FolderType type);
 
 }
