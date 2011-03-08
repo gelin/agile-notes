@@ -19,7 +19,7 @@ public interface Model {
      *  Creates new Action.
      *  It is the only way to create the Action.
      */
-    Action newAction(String head);
+    Action newAction(String head, String body);
     
     /**
      *  Creates new Folder.

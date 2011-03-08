@@ -26,16 +26,18 @@ public class SQLiteModel implements Model {
     }
     
     @Override
-    public Action newAction(String head) {
+    public Action newAction(String head, String body) {
         db.beginTransaction();
         try {
             SQLiteStatement st = db.compileStatement(
-                    "INSERT into " + ACTION_TABLE + " (" +
-                    HEAD_COLUMN + ") values (?)");
+                    "INSERT into " + ACTION_TABLE + 
+                    " (" + HEAD_COLUMN + ", " + BODY_COLUMN +") values (?, ?)");
             st.bindString(1, head);
+            st.bindString(2, body);
             long id = st.executeInsert();
             SQLiteAction result = new SQLiteAction(id);
             result.head = head;
+            result.body = body;
             db.setTransactionSuccessful();
             return result;
         } finally {
@@ -45,8 +47,27 @@ public class SQLiteModel implements Model {
 
     @Override
     public Folder newFolder(String fullName, FolderType type) {
-        // TODO Auto-generated method stub
-        return null;
+        db.beginTransaction();
+        try {
+            //TODO: subfolders creation
+            //TODO: check for folder existence
+            SQLiteStatement st = db.compileStatement(
+                    "INSERT into " + FOLDER_TABLE + 
+                    " (" + FULL_NAME_COLUMN + ", " + TYPE_COLUMN +") values (?, ?)");
+            st.bindString(1, fullName);
+            if (type != null) {
+                st.bindString(2, String.valueOf(type));
+            }
+            long id = st.executeInsert();
+            SQLiteFolder result = new SQLiteFolder(id);
+            result.fullName = fullName;
+            result.name = fullName; //TODO
+            result.type = type;
+            db.setTransactionSuccessful();
+            return result;
+        } finally {
+            db.endTransaction();
+        }
     }
     
     @Override
