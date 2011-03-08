@@ -36,20 +36,25 @@ public class SimplePath implements Path {
         List<String> result = new ArrayList<String>();
         int index = 0;
         int separatorIndex = string.indexOf(SEPARATOR, index);
+        StringBuilder segment = new StringBuilder();
         while (separatorIndex >= 0) {
             int prevChar = -1;
             if (separatorIndex > 0) {
                 prevChar = string.charAt(separatorIndex - 1); 
             }
             if (prevChar == ESCAPE) {
-                separatorIndex = string.indexOf(SEPARATOR, separatorIndex);
-                continue;
+                segment.append(string.substring(index, separatorIndex - 1));
+                segment.append(SEPARATOR);
+            } else {
+                segment.append(string.substring(index, separatorIndex));
+                result.add(segment.toString());
+                segment.setLength(0);
             }
-            result.add(string.substring(index, separatorIndex));
             index = separatorIndex + 1;
             separatorIndex = string.indexOf(SEPARATOR, index);
-        };
-        result.add(string.substring(index));
+        }
+        segment.append(string.substring(index));
+        result.add(segment.toString());
         return result;
     }
 
@@ -77,8 +82,11 @@ public class SimplePath implements Path {
 
     @Override
     public Path getParent() {
-        // TODO Auto-generated method stub
-        return null;
+        SimplePath result = new SimplePath(this);
+        if (result.segments.size() > 0) {
+            result.segments.remove(result.segments.size() - 1);
+        }
+        return result;
     }
     
     @Override

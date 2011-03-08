@@ -1,33 +1,40 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import com.lendamage.agilegtd.model.Path;
 
-import android.test.AndroidTestCase;
-
-public class SimplePathTest extends AndroidTestCase {
+public class SimplePathTest {
     
+    @Test
     public void testParse() {
         Path path = new SimplePath("abc/def");
         assertEquals("abc/def", path.toString());
     }
     
+    @Test
     public void testParseWithEscape() {
         Path path = new SimplePath("abc/def\\/ght");
         assertEquals("abc/def\\/ght", path.toString());
     }
     
+    @Test
     public void testEscape() {
         Path path1 = new SimplePath("abc/def");
         Path path2 = path1.addSegment("egh/ifk");
         assertEquals("abc/def/egh\\/ifk", path2.toString());
     }
     
+    @Test
     public void testAddSegment() {
         Path path1 = new SimplePath("abc/def");
         Path path2 = path1.addSegment("ghi");
         assertEquals("abc/def/ghi", path2.toString());
     }
     
+    @Test
     public void testReplaceLastSegment() {
         Path path1 = new SimplePath("abc/def");
         Path path2 = path1.replaceLastSegment("ghi");
@@ -35,6 +42,7 @@ public class SimplePathTest extends AndroidTestCase {
         assertEquals("abc/ghi", path2.toString());
     }
     
+    @Test
     public void testGetParent() {
         Path path1 = new SimplePath("abc/def");
         Path path2 = path1.getParent();
@@ -43,6 +51,7 @@ public class SimplePathTest extends AndroidTestCase {
         assertEquals("", path3.toString());
     }
     
+    @Test
     public void testGetLastSegment() {
         Path path1 = new SimplePath("abc/def");
         assertEquals("def", path1.getLastSegment());
