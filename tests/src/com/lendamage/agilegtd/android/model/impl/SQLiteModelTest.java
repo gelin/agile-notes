@@ -1,9 +1,8 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.FolderType;
-
 import android.test.AndroidTestCase;
+
+import com.lendamage.agilegtd.model.FolderType;
 
 public class SQLiteModelTest extends AndroidTestCase {
     
@@ -46,7 +45,34 @@ public class SQLiteModelTest extends AndroidTestCase {
     }
     
     public void testNewSubfolder() {
-        //TODO
+        SQLiteFolder folder = (SQLiteFolder)model.newFolder(new SimplePath("parent/child"), null);
+        assertFalse(0 == folder.id);
+        assertEquals("parent/child", folder.getPath().toString());
+        assertEquals("child", folder.getName());
+        SQLiteFolder parent = (SQLiteFolder)model.getFolder(folder.getPath().getParent().toString());
+        assertFalse(parent.id == folder.id);
+        assertEquals("parent", parent.getPath().toString());
+        assertEquals("parent", parent.getName());
+    }
+    
+    public void testGetRootFolder() {
+        model.newFolder(new SimplePath(""), FolderType.ROOT);
+        SQLiteFolder root = (SQLiteFolder)model.getRootFolder();
+        assertFalse(0 == root.id);
+        assertEquals("", root.getPath().toString());
+        assertEquals("", root.getName());
+        assertEquals(FolderType.ROOT, root.getType());
+    }
+    
+    public void testGetFolder() {
+        SQLiteFolder folder = (SQLiteFolder)model.newFolder(new SimplePath("parent/child"), null);
+        SQLiteFolder child = (SQLiteFolder)model.getFolder("parent/child");
+        assertEquals(child.id, folder.id);
+        assertEquals("parent/child", child.getPath().toString());
+        assertEquals("child", child.getName());
+        SQLiteFolder parent = (SQLiteFolder)model.getFolder(child.getPath().getParent().toString());
+        assertEquals("parent", parent.getPath().toString());
+        assertEquals("parent", parent.getName());
     }
 
 }
