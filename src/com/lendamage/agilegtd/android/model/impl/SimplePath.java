@@ -58,19 +58,19 @@ public class SimplePath implements Path {
         return result;
     }
 
-    @Override
+    //@Override
     public List<String> getSegments() {
         return Collections.unmodifiableList(segments);
     }
     
-    @Override
+    //@Override
     public Path addSegment(String segment) {
         SimplePath result = new SimplePath(this);
         result.segments.add(segment);
         return result;
     }
     
-    @Override
+    //@Override
     public Path replaceLastSegment(String segment) {
         SimplePath result = new SimplePath(this);
         if (result.segments.size() > 0) {
@@ -80,7 +80,7 @@ public class SimplePath implements Path {
         return result;
     }
 
-    @Override
+    //@Override
     public Path getParent() {
         SimplePath result = new SimplePath(this);
         if (result.segments.size() > 0) {
@@ -89,7 +89,7 @@ public class SimplePath implements Path {
         return result;
     }
     
-    @Override
+    //@Override
     public String getLastSegment() {
         if (segments.size() == 0) {
             return "";

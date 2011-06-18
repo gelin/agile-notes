@@ -23,34 +23,34 @@ public class SQLiteFolder implements Folder {
         this.id = id;
     }
     
-    @Override
+    //@Override
     public Path getPath() {
         return this.path;
     }
 
-    @Override
+    //@Override
     public String getName() {
         return this.name;
     }
 
-    @Override
+    //@Override
     public FolderType getType() {
         return this.type;
     }
     
-    @Override
+    //@Override
     public List<Folder> getFolders() {
         // TODO Auto-generated method stub
         return null;
     }
     
-    @Override
+    //@Override
     public List<Action> getActions() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    //@Override
     public Editor edit() {
         // TODO Auto-generated method stub
         return null;

@@ -27,7 +27,7 @@ public class SQLiteModel implements Model {
         db = new SQLiteModelOpenHelper(context, dbName).getWritableDatabase();
     }
     
-    @Override
+    //@Override
     public Action newAction(String head, String body) {
         db.beginTransaction();
         try {
@@ -47,7 +47,7 @@ public class SQLiteModel implements Model {
         }
     }
 
-    @Override
+    //@Override
     public Folder newFolder(Path path, FolderType type) {
         assert(path != null);
         db.beginTransaction();
@@ -75,13 +75,13 @@ public class SQLiteModel implements Model {
         }
     }
     
-    @Override
+    //@Override
     public Folder getFolder(String fullName) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    //@Override
     public Folder getRootFolder() {
         // TODO Auto-generated method stub
         return null;

@@ -19,23 +19,23 @@ public class SQLiteAction implements Action {
         this.id = id;
     }
     
-    @Override
+    //@Override
     public String getHead() {
         return this.head;
     }
     
-    @Override
+    //@Override
     public String getBody() {
         return this.body;
     }
 
-    @Override
+    //@Override
     public Set<Folder> getFolders() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    //@Override
     public Editor edit() {
         // TODO Auto-generated method stub
         return null;
