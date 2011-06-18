@@ -96,6 +96,11 @@ public class SimplePath implements Path {
         }
         return segments.get(segments.size() - 1);
     }
+    
+    //@Override
+    public boolean isRoot() {
+        return segments.size() == 0;
+    }
 
     @Override
     public String toString() {

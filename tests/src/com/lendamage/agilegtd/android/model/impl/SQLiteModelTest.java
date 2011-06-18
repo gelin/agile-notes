@@ -9,6 +9,7 @@ public class SQLiteModelTest extends AndroidTestCase {
     SQLiteModel model;
     
     protected void setUp() {
+        getContext().getDatabasePath("agile-gtd-test.db").delete();
         model = new SQLiteModel(getContext(), "agile-gtd-test.db");
     }
     
@@ -73,6 +74,14 @@ public class SQLiteModelTest extends AndroidTestCase {
         SQLiteFolder parent = (SQLiteFolder)model.getFolder(child.getPath().getParent().toString());
         assertEquals("parent", parent.getPath().toString());
         assertEquals("parent", parent.getName());
+    }
+    
+    public void testTransactionCommit() {
+        model.newFolder(new SimplePath("parent/child"), null);
+        SQLiteModel model2 = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        assertNotNull(model2.getRootFolder());
+        assertNotNull(model2.getFolder("parent"));
+        assertNotNull(model2.getFolder("parent/child"));
     }
 
 }

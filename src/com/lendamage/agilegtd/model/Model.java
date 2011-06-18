@@ -24,6 +24,7 @@ public interface Model {
     /**
      *  Creates new Folder.
      *  It is the only way to create the Folder.
+     *  If the folder with specified name is already exists, the folder from database is returned.
      */
     Folder newFolder(Path fullPath, FolderType type);
 

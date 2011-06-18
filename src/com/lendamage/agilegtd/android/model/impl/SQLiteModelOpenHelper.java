@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
+import com.lendamage.agilegtd.model.FolderType;
+
 /**
  *  Helper to open our SQLite database.
  */
@@ -67,6 +69,7 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
                 SORT_ORDER_COLUMN + " INTEGER, " +
                 "PRIMARY KEY (" + FOLDER_ID_COLUMN + ", "+ ACTION_ID_COLUMN + ") " +
                 ")");
+        SQLiteModel.insertFolder(db, new SimplePath(""), FolderType.ROOT);
     }
 
     @Override

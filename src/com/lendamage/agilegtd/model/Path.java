@@ -38,6 +38,11 @@ public interface Path {
     String getLastSegment();
     
     /**
+     *  Returns true if the path is root.
+     */
+    boolean isRoot();
+    
+    /**
      *  Converts path to string.
      */
     String toString();

@@ -49,5 +49,16 @@ public class SimplePathTest extends AndroidTestCase {
         Path path2 = new SimplePath("abc/def\\/ght");
         assertEquals("def/ght", path2.getLastSegment());
     }
+    
+    public void testIsRoot() {
+        Path path1 = new SimplePath("abc/def");
+        assertFalse(path1.isRoot());
+        Path path2 = path1.getParent();
+        assertFalse(path2.isRoot());
+        Path path3 = path2.getParent();
+        assertTrue(path3.isRoot());
+        Path path4 = path3.getParent();
+        assertTrue(path4.isRoot());
+    }
 
 }
