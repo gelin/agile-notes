@@ -13,7 +13,7 @@ public interface Model {
     /**
      *  Returns the folder by the full name.
      */
-    Folder getFolder(String fullName);
+    Folder getFolder(Path fullPath);
     
     /**
      *  Creates new Action.

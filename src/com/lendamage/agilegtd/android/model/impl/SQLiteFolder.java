@@ -62,7 +62,7 @@ public class SQLiteFolder implements Folder {
         while (cursor.moveToNext()) {
             result.add(SQLiteUtils.getFolder(db, cursor));
         }
-        return result;
+        return new SQLiteFolderList(db, id, result);
     }
     
     //@Override

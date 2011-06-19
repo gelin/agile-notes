@@ -50,7 +50,7 @@ public class SQLiteModelTest extends AndroidTestCase {
         assertFalse(0 == folder.id);
         assertEquals("parent/child", folder.getPath().toString());
         assertEquals("child", folder.getName());
-        SQLiteFolder parent = (SQLiteFolder)model.getFolder(folder.getPath().getParent().toString());
+        SQLiteFolder parent = (SQLiteFolder)model.getFolder(folder.getPath().getParent());
         assertFalse(parent.id == folder.id);
         assertEquals("parent", parent.getPath().toString());
         assertEquals("parent", parent.getName());
@@ -67,11 +67,11 @@ public class SQLiteModelTest extends AndroidTestCase {
     
     public void testGetFolder() {
         SQLiteFolder folder = (SQLiteFolder)model.newFolder(new SimplePath("parent/child"), null);
-        SQLiteFolder child = (SQLiteFolder)model.getFolder("parent/child");
+        SQLiteFolder child = (SQLiteFolder)model.getFolder(new SimplePath("parent/child"));
         assertEquals(child.id, folder.id);
         assertEquals("parent/child", child.getPath().toString());
         assertEquals("child", child.getName());
-        SQLiteFolder parent = (SQLiteFolder)model.getFolder(child.getPath().getParent().toString());
+        SQLiteFolder parent = (SQLiteFolder)model.getFolder(child.getPath().getParent());
         assertEquals("parent", parent.getPath().toString());
         assertEquals("parent", parent.getName());
     }
@@ -80,8 +80,8 @@ public class SQLiteModelTest extends AndroidTestCase {
         model.newFolder(new SimplePath("parent/child"), null);
         SQLiteModel model2 = new SQLiteModel(getContext(), "agile-gtd-test.db");
         assertNotNull(model2.getRootFolder());
-        assertNotNull(model2.getFolder("parent"));
-        assertNotNull(model2.getFolder("parent/child"));
+        assertNotNull(model2.getFolder(new SimplePath("parent")));
+        assertNotNull(model2.getFolder(new SimplePath("parent/child")));
     }
 
 }

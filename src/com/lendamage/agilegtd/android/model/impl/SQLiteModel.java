@@ -53,7 +53,7 @@ public class SQLiteModel implements Model {
     //@Override
     public Folder newFolder(Path path, FolderType type) {
         assert(path != null);
-        SQLiteFolder currentFolder = getFolder(path);
+        SQLiteFolder currentFolder = (SQLiteFolder)getFolder(path);
         if (currentFolder != null) {
             return currentFolder;
         }
@@ -61,12 +61,12 @@ public class SQLiteModel implements Model {
         db.beginTransaction();
         try {
             Path currentPath = new SimplePath("");
-            SQLiteFolder parentFolder = getFolder(currentPath);
+            SQLiteFolder parentFolder = (SQLiteFolder)getFolder(currentPath);
             for (int i = 0; i < segments.size() - 1; i++) {
                 String segment = segments.get(i);
                 currentPath = currentPath.addSegment(segment);
                 //TODO: check the existence in more elegant way
-                currentFolder = getFolder(currentPath);
+                currentFolder = (SQLiteFolder)getFolder(currentPath);
                 if (currentFolder == null) {
                     currentFolder = SQLiteUtils.insertFolder(db, currentPath, null, parentFolder.id);    //transit folders have no type
                 }
@@ -81,12 +81,12 @@ public class SQLiteModel implements Model {
     }
     
     //@Override
-    public Folder getFolder(String fullName) {
-        assert(fullName != null);
+    public Folder getFolder(Path fullPath) {
+        assert(fullPath != null);
         Cursor cursor = db.query(FOLDER_TABLE, 
                 null, 
                 FULL_NAME_COLUMN + " = ?",
-                new String[] {fullName},
+                new String[] {fullPath.toString()},
                 null,
                 null,
                 null);
@@ -98,11 +98,7 @@ public class SQLiteModel implements Model {
     
     //@Override
     public Folder getRootFolder() {
-        return getFolder("");
-    }
-    
-    SQLiteFolder getFolder(Path path) {
-        return (SQLiteFolder)getFolder(path.toString());
+        return getFolder(new SimplePath(""));
     }
 
 }
