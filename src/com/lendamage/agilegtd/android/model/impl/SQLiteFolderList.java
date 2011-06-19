@@ -1,21 +1,13 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
-import com.lendamage.agilegtd.model.FolderType;
-import com.lendamage.agilegtd.model.Path;
 
 /**
  *  Special implementation of list of folders to map changes to database.

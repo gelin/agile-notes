@@ -1,8 +1,14 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.NAME_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.TYPE_COLUMN;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
 
 import com.lendamage.agilegtd.model.FolderType;
@@ -69,7 +75,18 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
                 SORT_ORDER_COLUMN + " INTEGER, " +
                 "PRIMARY KEY (" + FOLDER_ID_COLUMN + ", "+ ACTION_ID_COLUMN + ") " +
                 ")");
-        SQLiteUtils.insertFolder(db, new SimplePath(""), FolderType.ROOT);
+        insertRootFolder(db);
+    }
+    
+    void insertRootFolder(SQLiteDatabase db) {
+        SQLiteStatement st = db.compileStatement(
+                "INSERT into " + FOLDER_TABLE + 
+                " (" + FULL_NAME_COLUMN + ", " + NAME_COLUMN + ", " + TYPE_COLUMN + ")" +
+                " values (?, ?, ?)");
+        st.bindString(1, "");
+        st.bindString(2, "");
+        st.bindString(3, FolderType.ROOT.toString());
+        long id = st.executeInsert();
     }
 
     @Override

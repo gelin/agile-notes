@@ -16,8 +16,9 @@ public class SQLiteFolderTest extends AndroidTestCase {
     }
     
     public void testGetFolders() {
-        Folder child = model.newFolder(new SimplePath("parent/child"), null);
-        Folder parent = model.getFolder(new SimplePath("parent"));
+        SQLiteFolder parent = (SQLiteFolder)model.newFolder("parent", null);
+        SQLiteFolder child = (SQLiteFolder)model.newFolder("child", null);
+        parent.getFolders().add(child);
         List<Folder> children = parent.getFolders();
         assertNotNull(children);
         assertEquals(1, children.size());
@@ -25,9 +26,12 @@ public class SQLiteFolderTest extends AndroidTestCase {
     }
     
     public void testFoldersManupulations() {
-        Folder parent = model.newFolder(new SimplePath("parent"), null);
-        Folder child1 = model.newFolder(new SimplePath("parent/child1"), null);
-        Folder child2 = model.newFolder(new SimplePath("parent/child2"), null);
+        Folder parent = model.newFolder("parent", null);
+        Folder child1 = model.newFolder("child1", null);
+        Folder child2 = model.newFolder("child2", null);
+        parent.getFolders().add(child1);
+        parent.getFolders().add(child2);
+        
         List<Folder> children = parent.getFolders();
         assertEquals(child1, children.get(0));
         assertEquals(child2, children.get(1));

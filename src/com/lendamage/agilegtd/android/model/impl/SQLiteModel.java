@@ -1,7 +1,10 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import java.util.List;
-
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.BODY_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.HEAD_COLUMN;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,8 +15,6 @@ import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
 import com.lendamage.agilegtd.model.Path;
-
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.*;
 
 /**
  *  Model which uses Android's SQLite database.
@@ -51,28 +52,12 @@ public class SQLiteModel implements Model {
     }
 
     //@Override
-    public Folder newFolder(Path path, FolderType type) {
-        assert(path != null);
-        SQLiteFolder currentFolder = (SQLiteFolder)getFolder(path);
-        if (currentFolder != null) {
-            return currentFolder;
-        }
-        List<String> segments = path.getSegments();
+    public Folder newFolder(String name, FolderType type) {
+        assert(name != null);
         db.beginTransaction();
         try {
-            Path currentPath = new SimplePath("");
-            SQLiteFolder parentFolder = (SQLiteFolder)getFolder(currentPath);
-            for (int i = 0; i < segments.size() - 1; i++) {
-                String segment = segments.get(i);
-                currentPath = currentPath.addSegment(segment);
-                //TODO: check the existence in more elegant way
-                currentFolder = (SQLiteFolder)getFolder(currentPath);
-                if (currentFolder == null) {
-                    currentFolder = SQLiteUtils.insertFolder(db, currentPath, null, parentFolder.id);    //transit folders have no type
-                }
-                parentFolder = currentFolder;
-            }
-            Folder result = SQLiteUtils.insertFolder(db, path, type, parentFolder.id);
+            SQLiteFolder parent = (SQLiteFolder)getRootFolder();
+            SQLiteFolder result = SQLiteUtils.insertFolder(db, name, type, parent.id);
             db.setTransactionSuccessful();
             return result;
         } finally {
@@ -98,7 +83,7 @@ public class SQLiteModel implements Model {
     
     //@Override
     public Folder getRootFolder() {
-        return getFolder(new SimplePath(""));
+        return SQLiteUtils.getRootFolder(db);
     }
 
 }

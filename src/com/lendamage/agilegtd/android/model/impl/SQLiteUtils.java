@@ -9,35 +9,33 @@ import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.TY
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
 
-import com.lendamage.agilegtd.android.Tag;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Path;
 
 /**
- *  Statuc utility methods
+ *  Static utility methods
  */
 public class SQLiteUtils {
 
-    static SQLiteFolder insertFolder(SQLiteDatabase db, Path path, FolderType type) {
-        return insertFolder(db, path, type, 0);
-    }
-    
-    static SQLiteFolder insertFolder(SQLiteDatabase db, Path path, FolderType type, long parentId) {
-        Log.d(Tag.TAG, "inserting " + path + " " + type);
+    static SQLiteFolder insertFolder(SQLiteDatabase db, String name, FolderType type, long parentId) {
+        assert(name != null);
+        SQLiteFolder parent = getFolder(db, parentId);
+        if (parent == null) {
+            parent = getRootFolder(db);
+        }
+        assert(parent != null);
+        Path path = parent.getPath().addSegment(name);
         SQLiteStatement st = db.compileStatement(
                 "INSERT into " + FOLDER_TABLE + 
                 " (" + FULL_NAME_COLUMN + ", " + NAME_COLUMN + ", " + TYPE_COLUMN + ", " + FOLDER_ID_COLUMN + ")" +
                 " values (?, ?, ?, ?)");
         st.bindString(1, String.valueOf(path));
-        st.bindString(2, path.getLastSegment());
+        st.bindString(2, name);
         if (type != null) {
             st.bindString(3, String.valueOf(type));
         }
-        if (parentId != 0) {
-            st.bindLong(4, parentId);
-        }
+        st.bindLong(4, parent.id);
         long id = st.executeInsert();
         SQLiteFolder result = new SQLiteFolder(db, id);
         result.path = path;
@@ -45,6 +43,40 @@ public class SQLiteUtils {
         result.type = type;
         //TODO: link to parent?
         return result;
+    }
+    
+    /**
+     *  Returns the folder by ID.
+     */
+    static SQLiteFolder getFolder(SQLiteDatabase db, long id) {
+        Cursor cursor = db.query(FOLDER_TABLE, 
+                null, 
+                ID_COLUMN + " = ?",
+                new String[] {String.valueOf(id)},
+                null,
+                null,
+                null);
+        if (!cursor.moveToFirst()) {
+            return null;
+        }
+        return getFolder(db, cursor);
+    }
+    
+    /**
+     *  Returns root folder by type.
+     */
+    static SQLiteFolder getRootFolder(SQLiteDatabase db) {
+        Cursor cursor = db.query(FOLDER_TABLE, 
+                null, 
+                TYPE_COLUMN + " = ?",
+                new String[] {FolderType.ROOT.toString()},
+                null,
+                null,
+                null);
+        if (!cursor.moveToFirst()) {
+            return null;
+        }
+        return getFolder(db, cursor);
     }
     
     /**
