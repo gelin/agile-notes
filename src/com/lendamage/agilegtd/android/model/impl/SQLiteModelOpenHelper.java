@@ -69,7 +69,7 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
                 SORT_ORDER_COLUMN + " INTEGER, " +
                 "PRIMARY KEY (" + FOLDER_ID_COLUMN + ", "+ ACTION_ID_COLUMN + ") " +
                 ")");
-        SQLiteModel.insertFolder(db, new SimplePath(""), FolderType.ROOT);
+        SQLiteUtils.insertFolder(db, new SimplePath(""), FolderType.ROOT);
     }
 
     @Override

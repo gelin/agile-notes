@@ -33,7 +33,11 @@ public class SimplePath implements Path {
     }
     
     static List<String> parse(String string) {
+        assert(string != null);
         List<String> result = new ArrayList<String>();
+        if (string.length() == 0) {
+            return result;
+        }
         int index = 0;
         int separatorIndex = string.indexOf(SEPARATOR, index);
         StringBuilder segment = new StringBuilder();
@@ -127,6 +131,32 @@ public class SimplePath implements Path {
             separatorIndex = segment.indexOf(SEPARATOR, index);
         };
         result.append(segment.substring(index));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((segments == null) ? 0 : segments.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SimplePath other = (SimplePath) obj;
+        if (segments == null) {
+            if (other.segments != null)
+                return false;
+        } else if (!segments.equals(other.segments))
+            return false;
+        return true;
     }
 
 }
