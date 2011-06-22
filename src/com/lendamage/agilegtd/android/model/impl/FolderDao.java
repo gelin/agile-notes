@@ -9,7 +9,7 @@ import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.TY
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
+import android.database.sqlite.SQLiteException;
 
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Path;
@@ -35,7 +35,7 @@ class FolderDao {
             values.put(TYPE_COLUMN, String.valueOf(type));
         }
         values.put(FOLDER_ID_COLUMN, parent.id);
-        long id = db.insert(FOLDER_TABLE, null, values);
+        long id = db.insertOrThrow(FOLDER_TABLE, null, values);
         SQLiteFolder result = new SQLiteFolder(db, id);
         result.path = path;
         result.name = path.getLastSegment();
@@ -119,10 +119,22 @@ class FolderDao {
         ContentValues values = new ContentValues();
         values.put(FULL_NAME_COLUMN, String.valueOf(path));
         values.put(FOLDER_ID_COLUMN, parent.id);
-        db.update(FOLDER_TABLE, values, ID_COLUMN + " = ?", 
+        int updated = db.update(FOLDER_TABLE, values, ID_COLUMN + " = ?", 
                 new String[] { String.valueOf(folder.id) });
+        //if (updated == 0) {
+        //    throw new SQLiteException("no folders were updated, move failed");
+        //}
         folder.path = path;
         //TODO: link to parent?
+    }
+    
+    /**
+     *  Deletes the folder.
+     */
+    static void deleteFolder(SQLiteDatabase db, long id) {
+        assert(db != null);
+        assert(id != 0);
+        db.delete(FOLDER_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(id) });
     }
 
 }

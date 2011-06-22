@@ -19,9 +19,9 @@ public class SQLiteFolderList implements List<Folder> {
     /** ID of the folder to which the list belongs */
     final long id;
     /** Wrapped list */
-    final List<Folder> folders;
+    final List<SQLiteFolder> folders;
     
-    SQLiteFolderList(SQLiteDatabase db, long id, List<Folder> folders) {
+    SQLiteFolderList(SQLiteDatabase db, long id, List<SQLiteFolder> folders) {
         this.db = db;
         this.id = id;
         this.folders = folders;
@@ -34,29 +34,44 @@ public class SQLiteFolderList implements List<Folder> {
         if (!(folder instanceof SQLiteFolder)) {
             throw new UnsupportedOperationException("Cannot add not-SQLite folder");
         }
-        FolderDao.updateFolderParent(this.db, (SQLiteFolder)folder, this.id);
-        return this.folders.add(folder);
+        SQLiteFolder sqlFolder = (SQLiteFolder)folder;
+        db.beginTransaction();
+        try {
+            FolderDao.updateFolderParent(this.db, sqlFolder, this.id);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return this.folders.add(sqlFolder);
     }
     /**
      *  Inserts the folder as a subfolder to specified position.
      */
     public void add(int location, Folder folder) {
+        if (!(folder instanceof SQLiteFolder)) {
+            throw new UnsupportedOperationException("Cannot add not-SQLite folder");
+        }
         //TODO: do insert
-        this.folders.add(location, folder);
+        SQLiteFolder sqlFolder = (SQLiteFolder)folder;
+        this.folders.add(location, sqlFolder);
     }
     /**
      *  Inserts the folders as subfolders.
      */
     public boolean addAll(Collection<? extends Folder> folders) {
         //TODO: do insert
-        return this.folders.addAll(folders);
+        //TODO: type safety
+        Collection<SQLiteFolder> sqlFolders = (Collection<SQLiteFolder>)folders;
+        return this.folders.addAll(sqlFolders);
     }
     /**
      *  Inserts the folders as subfolders to specified position.
      */
     public boolean addAll(int location, Collection<? extends Folder> folders) {
         //TODO: do insert
-        return this.folders.addAll(location, folders);
+        //TODO: type safety
+        Collection<SQLiteFolder> sqlFolders = (Collection<SQLiteFolder>)folders;
+        return this.folders.addAll(location, sqlFolders);
     }
     /**
      *  Deletes all subfolders.
@@ -82,24 +97,37 @@ public class SQLiteFolderList implements List<Folder> {
     }
     public Iterator<Folder> iterator() {
         //TODO: return specific iterator to support remove ops.
-        return this.folders.iterator();
+        //TODO: implement
+        //return (Iterator<Folder>)this.folders.iterator();
+        return null;
     }
     public int lastIndexOf(Object object) {
         return this.folders.lastIndexOf(object);
     }
     public ListIterator<Folder> listIterator() {
         //TODO: return specific iterator to support remove ops.
-        return this.folders.listIterator();
+        //TODO: implement
+        //return this.folders.listIterator();
+        return null;
     }
     public ListIterator<Folder> listIterator(int location) {
         //TODO: return specific iterator to support remove ops.
-        return this.folders.listIterator(location);
+        //TODO: implement
+        //return this.folders.listIterator(location);
+        return null;
     }
     /**
      *  Deletes subfolder. 
      */
     public Folder remove(int location) {
-        //TODO: do delete
+        SQLiteFolder folder = this.folders.get(location);
+        db.beginTransaction();
+        try {
+            FolderDao.deleteFolder(this.db, folder.id);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
         return this.folders.remove(location);
     }
     /**
@@ -127,8 +155,12 @@ public class SQLiteFolderList implements List<Folder> {
      *  Updates the folder on specified location.
      */
     public Folder set(int location, Folder folder) {
+        if (!(folder instanceof SQLiteFolder)) {
+            throw new UnsupportedOperationException("Cannot set not-SQLite folder");
+        }
         //TODO: do update
-        return this.folders.set(location, folder);
+        SQLiteFolder sqlFolder = (SQLiteFolder)folder;
+        return this.folders.set(location, sqlFolder);
     }
     public int size() {
         return this.folders.size();

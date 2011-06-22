@@ -39,11 +39,12 @@ public class SQLiteFolderTest extends AndroidTestCase {
         List<Folder> children2 = parent.getFolders();
         assertEquals(1, children2.size());
         assertEquals(child2, children.get(0));
-        children2.add(child1);
+        Folder child3 = model.newFolder("child3", null);
+        children2.add(child3);
         List<Folder> children3 = parent.getFolders();
         assertEquals(2, children3.size());
         assertEquals(child2, children3.get(0));
-        assertEquals(child1, children3.get(1));
+        assertEquals(child3, children3.get(1));
     }
     
 }
