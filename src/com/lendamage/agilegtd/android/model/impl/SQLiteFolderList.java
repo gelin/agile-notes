@@ -31,7 +31,10 @@ public class SQLiteFolderList implements List<Folder> {
      *  Inserts the folder as a subfolder.
      */
     public boolean add(Folder folder) {
-        //TODO: do insert
+        if (!(folder instanceof SQLiteFolder)) {
+            throw new UnsupportedOperationException("Cannot add not-SQLite folder");
+        }
+        FolderDao.updateFolderParent(this.db, (SQLiteFolder)folder, this.id);
         return this.folders.add(folder);
     }
     /**

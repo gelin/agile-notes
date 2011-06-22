@@ -1,10 +1,5 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.NAME_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.TYPE_COLUMN;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -86,7 +81,7 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
         st.bindString(1, "");
         st.bindString(2, "");
         st.bindString(3, FolderType.ROOT.toString());
-        long id = st.executeInsert();
+        st.executeInsert();
     }
 
     @Override

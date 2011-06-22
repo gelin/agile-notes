@@ -57,7 +57,7 @@ public class SQLiteModel implements Model {
         db.beginTransaction();
         try {
             SQLiteFolder parent = (SQLiteFolder)getRootFolder();
-            SQLiteFolder result = SQLiteUtils.insertFolder(db, name, type, parent.id);
+            SQLiteFolder result = FolderDao.insertFolder(db, name, type, parent.id);
             db.setTransactionSuccessful();
             return result;
         } finally {
@@ -78,12 +78,12 @@ public class SQLiteModel implements Model {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        return SQLiteUtils.getFolder(db, cursor);
+        return FolderDao.getFolder(db, cursor);
     }
     
     //@Override
     public Folder getRootFolder() {
-        return SQLiteUtils.getRootFolder(db);
+        return FolderDao.selectRootFolder(db);
     }
 
 }

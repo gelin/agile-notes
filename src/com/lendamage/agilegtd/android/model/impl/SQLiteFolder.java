@@ -60,7 +60,7 @@ public class SQLiteFolder implements Folder {
                 null);
         List<Folder> result = new ArrayList<Folder>();
         while (cursor.moveToNext()) {
-            result.add(SQLiteUtils.getFolder(db, cursor));
+            result.add(FolderDao.getFolder(db, cursor));
         }
         return new SQLiteFolderList(db, id, result);
     }
