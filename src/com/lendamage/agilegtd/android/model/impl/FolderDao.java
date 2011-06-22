@@ -28,17 +28,14 @@ class FolderDao {
         }
         assert(parent != null);
         Path path = parent.getPath().addSegment(name);
-        SQLiteStatement st = db.compileStatement(
-                "INSERT into " + FOLDER_TABLE + 
-                " (" + FULL_NAME_COLUMN + ", " + NAME_COLUMN + ", " + TYPE_COLUMN + ", " + FOLDER_ID_COLUMN + ")" +
-                " values (?, ?, ?, ?)");
-        st.bindString(1, String.valueOf(path));
-        st.bindString(2, name);
+        ContentValues values = new ContentValues();
+        values.put(FULL_NAME_COLUMN, String.valueOf(path));
+        values.put(NAME_COLUMN, name);
         if (type != null) {
-            st.bindString(3, String.valueOf(type));
+            values.put(TYPE_COLUMN, String.valueOf(type));
         }
-        st.bindLong(4, parent.id);
-        long id = st.executeInsert();
+        values.put(FOLDER_ID_COLUMN, parent.id);
+        long id = db.insert(FOLDER_TABLE, null, values);
         SQLiteFolder result = new SQLiteFolder(db, id);
         result.path = path;
         result.name = path.getLastSegment();

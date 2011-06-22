@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -74,14 +75,11 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
     }
     
     void insertRootFolder(SQLiteDatabase db) {
-        SQLiteStatement st = db.compileStatement(
-                "INSERT into " + FOLDER_TABLE + 
-                " (" + FULL_NAME_COLUMN + ", " + NAME_COLUMN + ", " + TYPE_COLUMN + ")" +
-                " values (?, ?, ?)");
-        st.bindString(1, "");
-        st.bindString(2, "");
-        st.bindString(3, FolderType.ROOT.toString());
-        st.executeInsert();
+        ContentValues values = new ContentValues();
+        values.put(FULL_NAME_COLUMN, "");
+        values.put(NAME_COLUMN, "");
+        values.put(TYPE_COLUMN, String.valueOf(FolderType.ROOT));
+        db.insert(FOLDER_TABLE, null, values);
     }
 
     @Override
