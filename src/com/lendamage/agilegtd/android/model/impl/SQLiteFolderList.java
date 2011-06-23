@@ -35,14 +35,16 @@ public class SQLiteFolderList implements List<Folder> {
             throw new UnsupportedOperationException("Cannot add not-SQLite folder");
         }
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
+        boolean result = false;
         db.beginTransaction();
         try {
             FolderDao.updateFolderParent(this.db, sqlFolder, this.id);
+            result = this.folders.add(sqlFolder);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
-        return this.folders.add(sqlFolder);
+        return result;
     }
     /**
      *  Inserts the folder as a subfolder to specified position.
@@ -51,9 +53,19 @@ public class SQLiteFolderList implements List<Folder> {
         if (!(folder instanceof SQLiteFolder)) {
             throw new UnsupportedOperationException("Cannot add not-SQLite folder");
         }
-        //TODO: do insert
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
-        this.folders.add(location, sqlFolder);
+        db.beginTransaction();
+        try {
+            FolderDao.updateFolderParent(this.db, sqlFolder, this.id);
+            this.folders.add(location, sqlFolder);
+            for (int i = location; i < this.folders.size(); i++) {
+                SQLiteFolder iFolder = this.folders.get(i);
+                FolderDao.updateFolderOrder(this.db, iFolder, i);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
     }
     /**
      *  Inserts the folders as subfolders.
@@ -121,14 +133,16 @@ public class SQLiteFolderList implements List<Folder> {
      */
     public Folder remove(int location) {
         SQLiteFolder folder = this.folders.get(location);
+        Folder result = null;
         db.beginTransaction();
         try {
             FolderDao.deleteFolder(this.db, folder.id);
+            result = this.folders.remove(location);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
-        return this.folders.remove(location);
+        return result;
     }
     /**
      *  Deletes subfolder. 

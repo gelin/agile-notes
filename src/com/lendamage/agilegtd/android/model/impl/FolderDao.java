@@ -5,11 +5,11 @@ import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FO
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.NAME_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.TYPE_COLUMN;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Path;
@@ -126,6 +126,22 @@ class FolderDao {
         //}
         folder.path = path;
         //TODO: link to parent?
+    }
+    
+    /**
+     *  Updates the folder sort order.
+     */
+    static void updateFolderOrder(SQLiteDatabase db, SQLiteFolder folder, int order) {
+        assert(db != null);
+        assert(folder != null);
+        assert(folder.id != 0);
+        ContentValues values = new ContentValues();
+        values.put(SORT_ORDER_COLUMN, order);
+        int updated = db.update(FOLDER_TABLE, values, ID_COLUMN + " = ?", 
+                new String[] { String.valueOf(folder.id) });
+        //if (updated == 0) {
+        //    throw new SQLiteException("no folders were updated, order update failed");
+        //}
     }
     
     /**

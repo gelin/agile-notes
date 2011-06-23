@@ -2,6 +2,7 @@ package com.lendamage.agilegtd.android.model.impl;
 
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class SQLiteFolder implements Folder {
                 new String[] {String.valueOf(id)},
                 null,
                 null,
-                null);
+                SORT_ORDER_COLUMN + " ASC");
         List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
         while (cursor.moveToNext()) {
             result.add(FolderDao.getFolder(db, cursor));
@@ -97,6 +98,11 @@ public class SQLiteFolder implements Folder {
         if (id != other.id)
             return false;
         return true;
+    }
+    
+    @Override
+    public String toString() {
+        return this.id + ":" + this.name;
     }
 
 }
