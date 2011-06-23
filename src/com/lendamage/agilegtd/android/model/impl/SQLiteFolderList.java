@@ -19,11 +19,14 @@ public class SQLiteFolderList implements List<Folder> {
     /** ID of the folder to which the list belongs */
     final long id;
     /** Wrapped list */
-    final List<SQLiteFolder> folders;
+    List<SQLiteFolder> folders;
     
-    SQLiteFolderList(SQLiteDatabase db, long id, List<SQLiteFolder> folders) {
+    SQLiteFolderList(SQLiteDatabase db, long id) {
         this.db = db;
         this.id = id;
+    }
+    
+    void setFolders(List<SQLiteFolder> folders) {
         this.folders = folders;
     }
     
@@ -39,7 +42,9 @@ public class SQLiteFolderList implements List<Folder> {
         db.beginTransaction();
         try {
             FolderDao.updateFolderParent(this.db, sqlFolder, this.id);
+            this.folders.remove(sqlFolder);
             result = this.folders.add(sqlFolder);
+            updateOrder();
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -57,11 +62,9 @@ public class SQLiteFolderList implements List<Folder> {
         db.beginTransaction();
         try {
             FolderDao.updateFolderParent(this.db, sqlFolder, this.id);
+            this.folders.remove(sqlFolder);
             this.folders.add(location, sqlFolder);
-            for (int i = location; i < this.folders.size(); i++) {
-                SQLiteFolder iFolder = this.folders.get(i);
-                FolderDao.updateFolderOrder(this.db, iFolder, i);
-            }
+            updateOrder();
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -181,13 +184,22 @@ public class SQLiteFolderList implements List<Folder> {
     }
     public List<Folder> subList(int start, int end) {
         //TODO: the sublist should correctly work
-        return new SQLiteFolderList(db, id, this.folders.subList(start, end));
+        SQLiteFolderList result = new SQLiteFolderList(db, id);
+        result.setFolders(this.folders.subList(start, end));
+        return result;
     }
     public Object[] toArray() {
         return this.folders.toArray();
     }
     public <T> T[] toArray(T[] array) {
         return this.folders.toArray(array);
-    } 
+    }
+    
+    void updateOrder() {
+        for (int i = 0; i < this.folders.size(); i++) {
+            SQLiteFolder iFolder = this.folders.get(i);
+            FolderDao.updateFolderOrder(this.db, iFolder, i);
+        }
+    }
 
 }

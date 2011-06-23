@@ -28,10 +28,13 @@ public class SQLiteFolder implements Folder {
     String name;
     /** Type */
     FolderType type;
+    /** List of folders */
+    SQLiteFolderList folders;
     
     SQLiteFolder(SQLiteDatabase db, long id) {
         this.db = db;
         this.id = id;
+        this.folders = new SQLiteFolderList(db, id);
     }
     
     //@Override
@@ -63,7 +66,8 @@ public class SQLiteFolder implements Folder {
         while (cursor.moveToNext()) {
             result.add(FolderDao.getFolder(db, cursor));
         }
-        return new SQLiteFolderList(db, id, result);
+        this.folders.setFolders(result);
+        return this.folders;
     }
     
     //@Override
