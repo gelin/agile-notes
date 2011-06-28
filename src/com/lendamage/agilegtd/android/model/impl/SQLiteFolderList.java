@@ -119,17 +119,17 @@ public class SQLiteFolderList implements List<Folder> {
     public int lastIndexOf(Object object) {
         return this.folders.lastIndexOf(object);
     }
+    /**
+     *  Throws UnsupportedOperationException.
+     */
     public ListIterator<Folder> listIterator() {
-        //TODO: return specific iterator to support remove ops.
-        //TODO: implement
-        //return this.folders.listIterator();
-        return null;
+        throw new UnsupportedOperationException("listIterator() is not supported");
     }
+    /**
+     *  Throws UnsupportedOperationException.
+     */
     public ListIterator<Folder> listIterator(int location) {
-        //TODO: return specific iterator to support remove ops.
-        //TODO: implement
-        //return this.folders.listIterator(location);
-        return null;
+        throw new UnsupportedOperationException("listIterator() is not supported");
     }
     /**
      *  Deletes subfolder. 
@@ -182,11 +182,11 @@ public class SQLiteFolderList implements List<Folder> {
     public int size() {
         return this.folders.size();
     }
+    /**
+     *  Throws UnsupportedOperationException.
+     */
     public List<Folder> subList(int start, int end) {
-        //TODO: the sublist should correctly work
-        SQLiteFolderList result = new SQLiteFolderList(db, id);
-        result.setFolders(this.folders.subList(start, end));
-        return result;
+        throw new UnsupportedOperationException("subList() is not supported");
     }
     public Object[] toArray() {
         return this.folders.toArray();
