@@ -100,10 +100,24 @@ public class SQLiteFolderList implements List<Folder> {
      *  Inserts the folders as subfolders to specified position.
      */
     public boolean addAll(int location, Collection<? extends Folder> folders) {
-        //TODO: do insert
-        //TODO: type safety
-        Collection<SQLiteFolder> sqlFolders = (Collection<SQLiteFolder>)folders;
-        return this.folders.addAll(location, sqlFolders);
+        if (folders == null || folders.isEmpty()) {
+            return false;
+        }
+        if (!(folders instanceof SQLiteFolderList)) {
+            throw new UnsupportedOperationException("Cannot add not-SQLiteFolderList");
+        }
+        SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
+        ListIterator<SQLiteFolder> i = sqlFolders.folders.listIterator(sqlFolders.folders.size());
+        while (i.hasPrevious()) {   //inserting in reverse order to the same position
+            SQLiteFolder folder = i.previous();
+            if (folder.id == this.id) {
+                continue;
+            }
+            i.remove();
+            addFolder(location, folder);
+        }
+        updateOrder();
+        return true;
     }
     /**
      *  Deletes all subfolders.
