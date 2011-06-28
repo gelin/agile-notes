@@ -74,10 +74,25 @@ public class SQLiteFolderList implements List<Folder> {
      *  Inserts the folders as subfolders.
      */
     public boolean addAll(Collection<? extends Folder> folders) {
-        //TODO: do insert
-        //TODO: type safety
-        Collection<SQLiteFolder> sqlFolders = (Collection<SQLiteFolder>)folders;
-        return this.folders.addAll(sqlFolders);
+        if (folders == null || folders.isEmpty()) {
+            return false;
+        }
+        if (folders instanceof SQLiteFolderList) {
+            SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
+            Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
+            while (i.hasNext()) {
+                SQLiteFolder folder = i.next();
+                if (folder.id == this.id) {
+                    continue;
+                }
+                i.remove();
+                this.add(folder);   //TODO: avoid too many updates
+            }
+            return true;
+        } else {    //TODO: can it work?
+            Collection<SQLiteFolder> sqlFolders = (Collection<SQLiteFolder>)folders;
+            return this.folders.addAll(sqlFolders);
+        }
     }
     /**
      *  Inserts the folders as subfolders to specified position.
