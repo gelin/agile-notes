@@ -38,18 +38,15 @@ public class SQLiteFolderList implements List<Folder> {
             throw new UnsupportedOperationException("Cannot add not-SQLite folder");
         }
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
-        boolean result = false;
         db.beginTransaction();
         try {
-            FolderDao.updateFolderParent(this.db, sqlFolder, this.id);
-            this.folders.remove(sqlFolder);
-            result = this.folders.add(sqlFolder);
+            addFolder(this.folders.size(), sqlFolder);
             updateOrder();
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
-        return result;
+        return true;
     }
     /**
      *  Inserts the folder as a subfolder to specified position.
@@ -61,14 +58,20 @@ public class SQLiteFolderList implements List<Folder> {
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
         db.beginTransaction();
         try {
-            FolderDao.updateFolderParent(this.db, sqlFolder, this.id);
-            this.folders.remove(sqlFolder);
-            this.folders.add(location, sqlFolder);
+            addFolder(location, sqlFolder);
             updateOrder();
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
+    }
+    void addFolder(int location, SQLiteFolder folder) {
+        FolderDao.updateFolderParent(this.db, folder, this.id);
+        this.folders.remove(folder);
+        if (location > this.folders.size()) {
+            location = this.folders.size();
+        }
+        this.folders.add(location, folder);
     }
     /**
      *  Inserts the folders as subfolders.
@@ -77,22 +80,21 @@ public class SQLiteFolderList implements List<Folder> {
         if (folders == null || folders.isEmpty()) {
             return false;
         }
-        if (folders instanceof SQLiteFolderList) {
-            SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
-            Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
-            while (i.hasNext()) {
-                SQLiteFolder folder = i.next();
-                if (folder.id == this.id) {
-                    continue;
-                }
-                i.remove();
-                this.add(folder);   //TODO: avoid too many updates
-            }
-            return true;
-        } else {    //TODO: can it work?
-            Collection<SQLiteFolder> sqlFolders = (Collection<SQLiteFolder>)folders;
-            return this.folders.addAll(sqlFolders);
+        if (!(folders instanceof SQLiteFolderList)) {
+            throw new UnsupportedOperationException("Cannot add not-SQLiteFolderList");
         }
+        SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
+        Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
+        while (i.hasNext()) {
+            SQLiteFolder folder = i.next();
+            if (folder.id == this.id) {
+                continue;
+            }
+            i.remove();
+            addFolder(this.folders.size(), folder);
+        }
+        updateOrder();
+        return true;
     }
     /**
      *  Inserts the folders as subfolders to specified position.
