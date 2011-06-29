@@ -53,7 +53,7 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
                 NAME_COLUMN + " TEXT, " +
                 FULL_NAME_COLUMN + " TEXT, " +
                 FOLDER_ID_COLUMN + " INTEGER REFERENCES " + 
-                        FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL, " +
+                        FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE CASCADE, " +
                 SORT_ORDER_COLUMN + " INTEGER, " +
                 TYPE_COLUMN + " TEXT " +
                 ")");

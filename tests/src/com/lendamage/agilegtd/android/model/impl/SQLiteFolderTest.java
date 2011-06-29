@@ -218,4 +218,34 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child2, model.getRootFolder().getFolders().get(0));
     }
     
+    public void testFoldersRemove() {
+        Folder folder = model.newFolder("folder", null);
+        
+        assertEquals(1, model.getRootFolder().getFolders().size());
+        assertNotNull(model.getFolder(new SimplePath("folder")));
+        
+        model.getRootFolder().getFolders().remove(folder);
+        assertEquals(0, model.getRootFolder().getFolders().size());
+        assertNull(model.getFolder(new SimplePath("folder")));
+    }
+    
+    public void testFoldersRemoveResursive() {
+        Folder child1 = model.newFolder("child1", null);
+        Folder child2 = model.newFolder("child2", null);
+        Folder parent = model.newFolder("parent", null);
+        List<Folder> children = parent.getFolders();
+        children.add(child1);
+        children.add(child2);
+        
+        assertEquals(2, parent.getFolders().size());
+        assertNotNull(model.getFolder(new SimplePath("parent")));
+        assertNotNull(model.getFolder(new SimplePath("parent/child1")));
+        assertNotNull(model.getFolder(new SimplePath("parent/child2")));
+        
+        model.getRootFolder().getFolders().remove(parent);
+        assertNull(model.getFolder(new SimplePath("parent")));
+        assertNull(model.getFolder(new SimplePath("parent/child1")));
+        assertNull(model.getFolder(new SimplePath("parent/child2")));
+    }
+    
 }

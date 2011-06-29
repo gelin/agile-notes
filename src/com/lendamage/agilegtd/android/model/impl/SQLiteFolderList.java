@@ -198,8 +198,12 @@ class SQLiteFolderList implements List<Folder> {
      *  Deletes subfolder. 
      */
     public boolean remove(Object object) {
-        //TODO: do delete
-        return this.folders.remove(object);
+        int index = this.folders.indexOf(object);
+        if (index < 0) {
+            return false;
+        }
+        remove(index);
+        return true;
     }
     /**
      *  Deletes subfolders. 
