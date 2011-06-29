@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import android.test.AndroidTestCase;
@@ -205,7 +206,16 @@ public class SQLiteFolderTest extends AndroidTestCase {
     }
     
     public void testFoldersIteratorRemove() {
+        Folder child1 = model.newFolder("child1", null);
+        Folder child2 = model.newFolder("child2", null);
+        assertEquals(2, model.getRootFolder().getFolders().size());
         
+        Iterator<Folder> i = model.getRootFolder().getFolders().iterator();
+        i.next();
+        i.remove();
+        
+        assertEquals(1, model.getRootFolder().getFolders().size());
+        assertEquals(child2, model.getRootFolder().getFolders().get(0));
     }
     
 }
