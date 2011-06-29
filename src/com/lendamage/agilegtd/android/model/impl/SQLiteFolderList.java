@@ -12,7 +12,7 @@ import com.lendamage.agilegtd.model.Folder;
 /**
  *  Special implementation of list of folders to map changes to database.
  */
-public class SQLiteFolderList implements List<Folder> {
+class SQLiteFolderList implements List<Folder> {
 
     /** DB handler */
     transient SQLiteDatabase db;
@@ -161,10 +161,7 @@ public class SQLiteFolderList implements List<Folder> {
         return this.folders.isEmpty();
     }
     public Iterator<Folder> iterator() {
-        //TODO: return specific iterator to support remove ops.
-        //TODO: implement
-        //return (Iterator<Folder>)this.folders.iterator();
-        return null;
+        return new SQLiteFolderListIterator(this);
     }
     public int lastIndexOf(Object object) {
         return this.folders.lastIndexOf(object);
