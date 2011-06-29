@@ -25,7 +25,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child, children.get(0));
     }
     
-    public void testFolderAddRemove() {
+    public void testFoldersAddRemove() {
         Folder parent = model.newFolder("parent", null);
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
@@ -47,7 +47,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child3, children3.get(1));
     }
     
-    public void testFolderAddToLocation() {
+    public void testFoldersAddToLocation() {
         Folder parent = model.newFolder("parent", null);
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
@@ -60,7 +60,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child1, children.get(1));
     }
     
-    public void testFolderRearrange() {
+    public void testFoldersRearrange() {
         Folder parent = model.newFolder("parent", null);
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
@@ -79,7 +79,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child1, children2.get(1));
     }
     
-    public void testFolderRearrangeToLocation1() {
+    public void testFoldersRearrangeToLocation1() {
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
         Folder child3 = model.newFolder("child3", null);
@@ -98,7 +98,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child2, children2.get(2));
     }
     
-    public void testFolderRearrangeToLocation2() {
+    public void testFoldersRearrangeToLocation2() {
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
         Folder child3 = model.newFolder("child3", null);
@@ -117,7 +117,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child1, children2.get(2));
     }
     
-    public void testFolderRearrangeToLocation3() {
+    public void testFoldersRearrangeToLocation3() {
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
         Folder child3 = model.newFolder("child3", null);
@@ -136,7 +136,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child3, children2.get(2));
     }
     
-    public void testAddAll() {
+    public void testFoldersAddAll() {
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
         Folder parent = model.newFolder("parent", null);
@@ -155,7 +155,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(1, model.getRootFolder().getFolders().size());
     }
     
-    public void testAddAllToLocation() {
+    public void testFoldersAddAllToLocation() {
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
         Folder child3 = model.newFolder("child3", null);
@@ -182,7 +182,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child4, children2.get(3));
     }
     
-    public void testClearChildren() {
+    public void testFoldersClear() {
         Folder child1 = model.newFolder("child1", null);
         Folder child2 = model.newFolder("child2", null);
         
