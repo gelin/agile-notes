@@ -152,5 +152,14 @@ class FolderDao {
         assert(id != 0);
         db.delete(FOLDER_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(id) });
     }
+    
+    /**
+     *  Deletes all child folder.
+     */
+    static void deleteChildFolders(SQLiteDatabase db, long parentId) {
+        assert(db != null);
+        assert(parentId != 0);
+        db.delete(FOLDER_TABLE, FOLDER_ID_COLUMN + " = ?", new String[] { String.valueOf(parentId) });
+    }
 
 }

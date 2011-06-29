@@ -85,15 +85,21 @@ public class SQLiteFolderList implements List<Folder> {
         }
         SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
         Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
-        while (i.hasNext()) {
-            SQLiteFolder folder = i.next();
-            if (folder.id == this.id) {
-                continue;
+        db.beginTransaction();
+        try {
+            while (i.hasNext()) {
+                SQLiteFolder folder = i.next();
+                if (folder.id == this.id) {
+                    continue;
+                }
+                i.remove();
+                addFolder(this.folders.size(), folder);
             }
-            i.remove();
-            addFolder(this.folders.size(), folder);
+            updateOrder();
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
-        updateOrder();
         return true;
     }
     /**
@@ -108,22 +114,35 @@ public class SQLiteFolderList implements List<Folder> {
         }
         SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
         ListIterator<SQLiteFolder> i = sqlFolders.folders.listIterator(sqlFolders.folders.size());
-        while (i.hasPrevious()) {   //inserting in reverse order to the same position
-            SQLiteFolder folder = i.previous();
-            if (folder.id == this.id) {
-                continue;
+        db.beginTransaction();
+        try {
+            while (i.hasPrevious()) {   //inserting in reverse order to the same position
+                SQLiteFolder folder = i.previous();
+                if (folder.id == this.id) {
+                    continue;
+                }
+                i.remove();
+                addFolder(location, folder);
             }
-            i.remove();
-            addFolder(location, folder);
+            updateOrder();
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
-        updateOrder();
         return true;
     }
     /**
      *  Deletes all subfolders.
      */
     public void clear() {
-        //TODO: do delete
+        db.beginTransaction();
+        try {
+            FolderDao.deleteChildFolders(db, this.id);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        
         this.folders.clear();
     }
     public boolean contains(Object object) {
