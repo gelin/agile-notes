@@ -40,7 +40,6 @@ class FolderDao {
         result.path = path;
         result.name = path.getLastSegment();
         result.type = type;
-        //TODO: link to parent?
         return result;
     }
     
@@ -97,15 +96,15 @@ class FolderDao {
         if (type != null) {
             result.type = FolderType.valueOf(type);
         }
-        //TODO: link to parent?
         return result;
     }
     
     /**
      *  Updates the folder's parent link.
      *  Updates the folder's full name.
+     *  @throws IllegalStateException if the folder to update doesn't exist
      */
-    static void updateFolderParent(SQLiteDatabase db, SQLiteFolder folder, long parentId) {
+    static void updateFolderParent(SQLiteDatabase db, SQLiteFolder folder, long parentId) throws IllegalStateException {
         assert(db != null);
         assert(folder != null);
         assert(folder.id != 0);
@@ -121,17 +120,17 @@ class FolderDao {
         values.put(FOLDER_ID_COLUMN, parent.id);
         int updated = db.update(FOLDER_TABLE, values, ID_COLUMN + " = ?", 
                 new String[] { String.valueOf(folder.id) });
-        //if (updated == 0) {
-        //    throw new SQLiteException("no folders were updated, move failed");
-        //}
+        if (updated == 0) {
+            throw new IllegalStateException("no folder with id = " + folder.id + ", move failed");
+        }
         folder.path = path;
-        //TODO: link to parent?
     }
     
     /**
      *  Updates the folder sort order.
+     *  @throws IllegalStateException if the folder to update doesn't exist
      */
-    static void updateFolderOrder(SQLiteDatabase db, SQLiteFolder folder, int order) {
+    static void updateFolderOrder(SQLiteDatabase db, SQLiteFolder folder, int order) throws IllegalStateException {
         assert(db != null);
         assert(folder != null);
         assert(folder.id != 0);
@@ -139,9 +138,9 @@ class FolderDao {
         values.put(SORT_ORDER_COLUMN, order);
         int updated = db.update(FOLDER_TABLE, values, ID_COLUMN + " = ?", 
                 new String[] { String.valueOf(folder.id) });
-        //if (updated == 0) {
-        //    throw new SQLiteException("no folders were updated, order update failed");
-        //}
+        if (updated == 0) {
+            throw new IllegalStateException("no folder with id = " + folder.id + ", order update failed");
+        }
     }
     
     /**

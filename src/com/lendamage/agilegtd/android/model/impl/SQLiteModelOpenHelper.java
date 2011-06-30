@@ -64,12 +64,17 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
                 ")");
         db.execSQL("CREATE TABLE " + ACTION_IN_FOLDER_TABLE + " (" +
                 FOLDER_ID_COLUMN + " INTEGER REFERENCES " + 
-                        FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL, " +
+                        FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE CASCADE, " +
                 ACTION_ID_COLUMN + " INTEGER REFERENCES " + 
-                        ACTION_TABLE + "(" + ID_COLUMN + ") ON DELETE SET NULL, " +
+                        ACTION_TABLE + "(" + ID_COLUMN + ") ON DELETE CASCADE, " +
                 SORT_ORDER_COLUMN + " INTEGER, " +
                 "PRIMARY KEY (" + FOLDER_ID_COLUMN + ", "+ ACTION_ID_COLUMN + ") " +
                 ")");
+        //foreign keys are supported from SQLite v. 3.5.19 ( http://www.sqlite.org/foreignkeys.html )
+        //adding triggers to emulate ON DELETE CASCADE
+        db.execSQL("CREATE TRIGGER " + FOLDER_TABLE + "_AFTER_DELETE AFTER DELETE ON " + FOLDER_TABLE + " BEGIN " +
+                "DELETE FROM " + FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; END");
+        //TODO: on delete for actions
         insertRootFolder(db);
     }
     
