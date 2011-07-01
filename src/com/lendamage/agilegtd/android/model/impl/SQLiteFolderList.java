@@ -220,15 +220,28 @@ class SQLiteFolderList implements List<Folder> {
         throw new UnsupportedOperationException("retainAll() is not supported");
     }
     /**
-     *  Updates the folder on specified location.
+     *  Replaces the folder on specified location.
+     *  Returns null, because the old folder is deleted from the database and the return value is not
+     *  actual.
      */
     public Folder set(int location, Folder folder) {
         if (!(folder instanceof SQLiteFolder)) {
             throw new UnsupportedOperationException("cannot set not-SQLite folder");
         }
-        //TODO: do update
-        SQLiteFolder sqlFolder = (SQLiteFolder)folder;
-        return this.folders.set(location, sqlFolder);
+        SQLiteFolder newFolder = (SQLiteFolder)folder;
+        SQLiteFolder oldFolder = this.folders.set(location, newFolder);
+        db.beginTransaction();
+        try {
+            FolderDao.updateFolderParent(db, newFolder, this.id);
+            FolderDao.deleteFolder(db, oldFolder.id);
+            updateOrder();
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            this.folders.set(location, oldFolder);
+        } finally {
+            db.endTransaction();
+        }
+        return null;
     }
     public int size() {
         return this.folders.size();
