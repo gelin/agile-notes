@@ -35,7 +35,7 @@ class SQLiteFolderList implements List<Folder> {
      */
     public boolean add(Folder folder) {
         if (!(folder instanceof SQLiteFolder)) {
-            throw new UnsupportedOperationException("Cannot add not-SQLite folder");
+            throw new UnsupportedOperationException("cannot add not-SQLite folder");
         }
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
         db.beginTransaction();
@@ -53,7 +53,7 @@ class SQLiteFolderList implements List<Folder> {
      */
     public void add(int location, Folder folder) {
         if (!(folder instanceof SQLiteFolder)) {
-            throw new UnsupportedOperationException("Cannot add not-SQLite folder");
+            throw new UnsupportedOperationException("cannot add not-SQLite folder");
         }
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
         db.beginTransaction();
@@ -81,7 +81,7 @@ class SQLiteFolderList implements List<Folder> {
             return false;
         }
         if (!(folders instanceof SQLiteFolderList)) {
-            throw new UnsupportedOperationException("Cannot add not-SQLiteFolderList");
+            throw new UnsupportedOperationException("cannot add not-SQLiteFolderList");
         }
         SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
         Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
@@ -110,7 +110,7 @@ class SQLiteFolderList implements List<Folder> {
             return false;
         }
         if (!(folders instanceof SQLiteFolderList)) {
-            throw new UnsupportedOperationException("Cannot add not-SQLiteFolderList");
+            throw new UnsupportedOperationException("cannot add not-SQLiteFolderList");
         }
         SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
         ListIterator<SQLiteFolder> i = sqlFolders.folders.listIterator(sqlFolders.folders.size());
@@ -206,25 +206,25 @@ class SQLiteFolderList implements List<Folder> {
         return true;
     }
     /**
-     *  Deletes subfolders. 
+     *  Throws UnsupportedOpeartionException.
+     *  Different folders collections are never intersect. 
      */
     public boolean removeAll(Collection<?> folders) {
-        //TODO: do delete
-        return this.folders.removeAll(folders);
+        throw new UnsupportedOperationException("removeAll() is not supported");
     }
     /**
-     *  Deletes all subfolders, except the specified ones.
+     *  Throws UnsupportedOpeartionException.
+     *  Different folders collections are never intersect.
      */
     public boolean retainAll(Collection<?> folders) {
-        //TODO: do delete
-        return this.folders.retainAll(folders);
+        throw new UnsupportedOperationException("retainAll() is not supported");
     }
     /**
      *  Updates the folder on specified location.
      */
     public Folder set(int location, Folder folder) {
         if (!(folder instanceof SQLiteFolder)) {
-            throw new UnsupportedOperationException("Cannot set not-SQLite folder");
+            throw new UnsupportedOperationException("cannot set not-SQLite folder");
         }
         //TODO: do update
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
