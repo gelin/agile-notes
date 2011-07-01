@@ -13,7 +13,7 @@ public interface Folder extends Entity<Folder.Editor> {
      *  Lists subfolders.
      *  The returned list can be modified.
      *  If the folder is deleted from the list, it's deleted from the model.
-     *  If the folder is added to the list, it's assigned as a subfolder of this folder, the old possible assignment of the folder is removed.
+     *  If the folder is added to the list, it's assigned as a subfolder of this folder, the old assignment of the folder is removed.
      *  If the folder replaces already existed folder in the list, the replaced folder is deleted from the model, and the
      *  new folder is assigned as a subfolder of this folder.
      *  The list doesn't contain duplicates, if you add a folder which already exists in the list, 
@@ -39,7 +39,7 @@ public interface Folder extends Entity<Folder.Editor> {
     /**
      *  Returns full path of the folder.
      *  The full path displays the position of the folder in hierarchy, it's the read-only property.
-     *  The full path is changes when the folder is moved as subfolders of another folders.
+     *  The full path is changed when the folder is moved as subfolders of another folders.
      */
     Path getPath();
     

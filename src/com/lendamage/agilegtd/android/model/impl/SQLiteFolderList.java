@@ -179,20 +179,21 @@ class SQLiteFolderList implements List<Folder> {
         throw new UnsupportedOperationException("listIterator() is not supported");
     }
     /**
-     *  Deletes subfolder. 
+     *  Deletes subfolder.
+     *  Returns null, because the folder is deleted from the database and the return value is not
+     *  actual. 
      */
     public Folder remove(int location) {
         SQLiteFolder folder = this.folders.get(location);
-        Folder result = null;
         db.beginTransaction();
         try {
             FolderDao.deleteFolder(this.db, folder.id);
-            result = this.folders.remove(location);
+            this.folders.remove(location);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
-        return result;
+        return null;
     }
     /**
      *  Deletes subfolder. 

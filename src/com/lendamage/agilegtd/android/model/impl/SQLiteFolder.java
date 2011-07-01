@@ -1,7 +1,11 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_ID_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_IN_FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
 
 import java.util.ArrayList;
@@ -30,11 +34,14 @@ public class SQLiteFolder implements Folder {
     FolderType type;
     /** List of folders */
     SQLiteFolderList folders;
+    /** List of actions */
+    SQLiteActionList actions;
     
     SQLiteFolder(SQLiteDatabase db, long id) {
         this.db = db;
         this.id = id;
         this.folders = new SQLiteFolderList(db, id);
+        this.actions = new SQLiteActionList(db, id);
     }
     
     //@Override
@@ -54,11 +61,11 @@ public class SQLiteFolder implements Folder {
     
     //@Override
     public List<Folder> getFolders() {
-        assert(id != 0);
+        assert(this.id != 0);
         Cursor cursor = db.query(FOLDER_TABLE, 
                 null, 
                 FOLDER_ID_COLUMN + " = ?",
-                new String[] {String.valueOf(id)},
+                new String[] {String.valueOf(this.id)},
                 null,
                 null,
                 SORT_ORDER_COLUMN + " ASC");
@@ -72,8 +79,22 @@ public class SQLiteFolder implements Folder {
     
     //@Override
     public List<Action> getActions() {
-        // TODO Auto-generated method stub
-        return null;
+        assert(this.id != 0);
+        Cursor cursor = db.query(
+                ACTION_TABLE + " a JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
+                        "ON (a." + ID_COLUMN + " = af." + ACTION_ID_COLUMN + ")", 
+                null, 
+                FOLDER_ID_COLUMN + " = ?",
+                new String[] {String.valueOf(this.id)},
+                null,
+                null,
+                SORT_ORDER_COLUMN + " ASC");
+        List<SQLiteAction> result = new ArrayList<SQLiteAction>();
+        while (cursor.moveToNext()) {
+            result.add(ActionDao.getAction(db, cursor));
+        }
+        this.actions.setActions(result);
+        return this.actions;
     }
 
     //@Override

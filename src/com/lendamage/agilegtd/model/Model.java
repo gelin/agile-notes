@@ -29,5 +29,7 @@ public interface Model {
      *  The new folder is assigned as subfolder of the root folder, the assignment should be changed.
      */
     Folder newFolder(String name, FolderType type);
+    
+    //TODO: add getOrphanActions() method?
 
 }
