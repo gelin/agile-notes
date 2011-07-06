@@ -187,7 +187,7 @@ class SQLiteActionList implements List<Action> {
      *  Deletes the assignment of the action at specified location with the folder. 
      */
     public Action remove(int location) {
-        SQLiteAction action = this.actions.get(location);
+        //SQLiteAction action = this.actions.get(location);
         Action result = null;
         db.beginTransaction();
         try {
@@ -267,7 +267,7 @@ class SQLiteActionList implements List<Action> {
     
     void updateOrder() {
         for (int i = 0; i < this.actions.size(); i++) {
-            SQLiteAction action = this.actions.get(i);
+            //SQLiteAction action = this.actions.get(i);
             //TODO: implement
             //FolderDao.updateFolderOrder(this.db, action, i);
         }

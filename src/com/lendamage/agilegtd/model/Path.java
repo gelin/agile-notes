@@ -3,9 +3,9 @@ package com.lendamage.agilegtd.model;
 import java.util.List;
 
 /**
- *  Full path of the folder.
- *  Contains string path segments. 
- *  Can be parsed from the string and represented as a string.
+ *  Full path of the folder.<br>
+ *  Contains string path segments.<br> 
+ *  Can be parsed from the string and represented as a string.<br>
  *  The path is unmodifiable.
  */
 public interface Path {
@@ -27,7 +27,7 @@ public interface Path {
     Path replaceLastSegment(String segment);
     
     /**
-     *  Creates a new path, parent to this one.
+     *  Creates a new path, parent to this one.<br>
      *  For root path, returns root again.
      */
     Path getParent();

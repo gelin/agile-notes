@@ -19,13 +19,11 @@ import com.lendamage.agilegtd.model.Path;
  */
 class FolderDao {
 
-    static SQLiteFolder insertFolder(SQLiteDatabase db, String name, FolderType type, long parentId) {
+    static SQLiteFolder insertFolder(SQLiteDatabase db, long parentId, String name, FolderType type) {
         assert(db != null);
+        assert(parentId != 0);
         assert(name != null);
         SQLiteFolder parent = selectFolder(db, parentId);
-        if (parent == null) {
-            parent = selectRootFolder(db);
-        }
         assert(parent != null);
         Path path = parent.getPath().addSegment(name);
         ContentValues values = new ContentValues();

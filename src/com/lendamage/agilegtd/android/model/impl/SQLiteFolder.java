@@ -12,10 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Path;
 
@@ -57,6 +59,39 @@ public class SQLiteFolder implements Folder {
     //@Override
     public FolderType getType() {
         return this.type;
+    }
+    
+    //@Override
+    public Action newAction(String head, String body) {
+        assert(head != null);
+        db.beginTransaction();
+        try {
+            SQLiteAction result = ActionDao.insertAction(db, this.id, head, body);
+            result.head = head;
+            result.body = body;
+            db.setTransactionSuccessful();
+            return result;
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    //@Override
+    public Folder newFolder(String name, FolderType type) throws FolderAlreadyExistsException {
+        assert(name != null);
+        if (FolderType.ROOT.equals(type)) {
+            throw new FolderAlreadyExistsException("root already exists");
+        }
+        db.beginTransaction();
+        try {
+            SQLiteFolder result = FolderDao.insertFolder(db, this.id, name, type);
+            db.setTransactionSuccessful();
+            return result;
+        } catch (SQLiteConstraintException ce) {
+            throw new FolderAlreadyExistsException(ce);
+        } finally {
+            db.endTransaction();
+        }
     }
     
     //@Override

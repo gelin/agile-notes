@@ -51,7 +51,7 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + FOLDER_TABLE + " (" +
                 ID_COLUMN + " INTEGER PRIMARY KEY, "+
                 NAME_COLUMN + " TEXT, " +
-                FULL_NAME_COLUMN + " TEXT, " +
+                FULL_NAME_COLUMN + " TEXT UNIQUE, " +
                 FOLDER_ID_COLUMN + " INTEGER REFERENCES " + 
                         FOLDER_TABLE + "(" + ID_COLUMN + ") ON DELETE CASCADE, " +
                 SORT_ORDER_COLUMN + " INTEGER, " +

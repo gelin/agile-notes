@@ -18,8 +18,9 @@ import android.database.sqlite.SQLiteDatabase;
  */
 class ActionDao {
 
-    static SQLiteAction insertAction(SQLiteDatabase db, String head, String body) {
+    static SQLiteAction insertAction(SQLiteDatabase db, long folderId, String head, String body) {
         assert(db != null);
+        assert(folderId != 0);
         assert(head != null);
         
         ContentValues values = new ContentValues();
@@ -31,6 +32,7 @@ class ActionDao {
         SQLiteAction result = new SQLiteAction(db, id);
         result.head = head;
         result.body = body;
+        replaceActionFolder(db, result, folderId);
         return result;
     }
     

@@ -17,9 +17,9 @@ public class SQLiteFolderTest extends AndroidTestCase {
     }
     
     public void testGetFolders() {
-        SQLiteFolder parent = (SQLiteFolder)model.newFolder("parent", null);
-        SQLiteFolder child = (SQLiteFolder)model.newFolder("child", null);
-        parent.getFolders().add(child);
+        SQLiteFolder parent = (SQLiteFolder)model.getRootFolder().newFolder("parent", null);
+        SQLiteFolder child = (SQLiteFolder)parent.newFolder("child", null);
+        //parent.getFolders().add(child);
         List<Folder> children = parent.getFolders();
         assertNotNull(children);
         assertEquals(1, children.size());
@@ -27,15 +27,11 @@ public class SQLiteFolderTest extends AndroidTestCase {
     }
     
     public void testGetActions() {
-        SQLiteAction action1 = (SQLiteAction)model.newAction("action1", null);
-        SQLiteAction action2 = (SQLiteAction)model.newAction("action2", null);
-        List<Action> actions = model.getRootFolder().getActions();
-        assertEquals(0, actions.size());
-        actions.add(action1);
-        actions.add(action2);
+        SQLiteAction action1 = (SQLiteAction)model.getRootFolder().newAction("action1", null);
+        SQLiteAction action2 = (SQLiteAction)model.getRootFolder().newAction("action2", null);
         
-        List<Action> actions2 = model.getRootFolder().getActions();
-        assertEquals(2, actions2.size());
+        List<Action> actions = model.getRootFolder().getActions();
+        assertEquals(2, actions.size());
         assertEquals(action1, actions.get(0));
         assertEquals(action2, actions.get(1));
     }

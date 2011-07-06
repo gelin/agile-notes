@@ -6,9 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
-import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
 import com.lendamage.agilegtd.model.Path;
 
@@ -25,35 +23,6 @@ public class SQLiteModel implements Model {
      */
     public SQLiteModel(Context context, String dbName) {
         db = new SQLiteModelOpenHelper(context, dbName).getWritableDatabase();
-    }
-    
-    //@Override
-    public Action newAction(String head, String body) {
-        assert(head != null);
-        db.beginTransaction();
-        try {
-            SQLiteAction result = ActionDao.insertAction(db, head, body);
-            result.head = head;
-            result.body = body;
-            db.setTransactionSuccessful();
-            return result;
-        } finally {
-            db.endTransaction();
-        }
-    }
-
-    //@Override
-    public Folder newFolder(String name, FolderType type) {
-        assert(name != null);
-        db.beginTransaction();
-        try {
-            SQLiteFolder parent = (SQLiteFolder)getRootFolder();
-            SQLiteFolder result = FolderDao.insertFolder(db, name, type, parent.id);
-            db.setTransactionSuccessful();
-            return result;
-        } finally {
-            db.endTransaction();
-        }
     }
     
     //@Override
