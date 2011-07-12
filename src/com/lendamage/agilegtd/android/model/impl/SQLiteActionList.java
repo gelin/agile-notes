@@ -187,12 +187,11 @@ class SQLiteActionList implements List<Action> {
      *  Deletes the assignment of the action at specified location with the folder. 
      */
     public Action remove(int location) {
-        //SQLiteAction action = this.actions.get(location);
+        SQLiteAction action = this.actions.get(location);
         Action result = null;
         db.beginTransaction();
         try {
-            //TODO: implement
-            //FolderDao.deleteFolder(this.db, folder.id);
+            ActionDao.deleteActionFromFolder(this.db, this.id, action.id);
             result = this.actions.remove(location);
             db.setTransactionSuccessful();
         } finally {

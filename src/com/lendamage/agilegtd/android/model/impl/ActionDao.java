@@ -71,6 +71,20 @@ class ActionDao {
     }
     
     /**
+     *  Deletes the action from the folder.
+     *  If the action doesn't exists in any folder, remove it.
+     */
+    static void deleteActionFromFolder(SQLiteDatabase db, long folderId, long actionId) {
+        assert(db != null);
+        assert(folderId != 0);
+        assert(actionId != 0);
+        db.delete(ACTION_IN_FOLDER_TABLE, 
+                FOLDER_ID_COLUMN + " = ? AND " + ACTION_ID_COLUMN + " = ?", 
+                new String[] { String.valueOf(folderId), String.valueOf(actionId) });
+        //TODO: remove the action if it's removed from all folders
+    }
+    
+    /**
      *  Updates the actions to folder assignment.
      */
     static void replaceActionFolder(SQLiteDatabase db, SQLiteAction action, long folderId) {
