@@ -1,5 +1,7 @@
 package com.lendamage.agilegtd.model;
 
+import java.util.List;
+
 /**
  *  Agile GTD model
  */
@@ -15,5 +17,11 @@ public interface Model {
      *  If the folder is not found, null is returned.
      */
     Folder getFolder(Path fullPath);
+    
+    /**
+     *  Finds folders with specified type
+     *  @return unmodifiable list
+     */
+    List<Folder> findFolders(FolderType type);
 
 }
