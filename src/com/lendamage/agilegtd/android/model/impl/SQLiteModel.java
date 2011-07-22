@@ -42,7 +42,9 @@ public class SQLiteModel implements Model {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        return FolderDao.getFolder(db, cursor);
+        Folder folder = FolderDao.getFolder(db, cursor);
+        cursor.close();
+        return folder;
     }
     
     //@Override

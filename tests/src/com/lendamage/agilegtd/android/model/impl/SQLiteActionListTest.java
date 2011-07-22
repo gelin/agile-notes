@@ -35,6 +35,24 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action3, actions3.get(1));
     }
     
+    public void testRemoveAll() {
+        SQLiteAction action = (SQLiteAction)model.getRootFolder().newAction("action", null);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        folder.getActions().add(action);
+        assertTrue(model.getRootFolder().getActions().contains(action));
+        assertTrue(folder.getActions().contains(action));
+        
+        model.getRootFolder().getActions().remove(action);
+        assertFalse(model.getRootFolder().getActions().contains(action));
+        assertTrue(folder.getActions().contains(action));
+        
+        folder.getActions().remove(action);
+        assertFalse(model.getRootFolder().getActions().contains(action));
+        assertFalse(folder.getActions().contains(action));
+        
+        assertNull(ActionDao.selectAction(model.db, action.id));
+    }
+    
     /*
     public void testAddToLocation() {
         Folder parent = model.getRootFolder().newFolder("parent", null);

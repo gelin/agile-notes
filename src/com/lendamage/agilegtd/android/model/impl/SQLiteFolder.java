@@ -109,6 +109,7 @@ public class SQLiteFolder implements Folder {
             result.add(FolderDao.getFolder(db, cursor));
         }
         this.folders.setFolders(result);
+        cursor.close();
         return this.folders;
     }
     
@@ -129,6 +130,7 @@ public class SQLiteFolder implements Folder {
             result.add(ActionDao.getAction(db, cursor));
         }
         this.actions.setActions(result);
+        cursor.close();
         return this.actions;
     }
 

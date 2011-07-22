@@ -57,7 +57,9 @@ class FolderDao {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        return getFolder(db, cursor);
+        SQLiteFolder folder = getFolder(db, cursor);
+        cursor.close();
+        return folder;
     }
     
     /**
@@ -75,7 +77,9 @@ class FolderDao {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        return getFolder(db, cursor);
+        SQLiteFolder folder = getFolder(db, cursor);
+        cursor.close();
+        return folder;
     }
     
     /**
@@ -85,12 +89,12 @@ class FolderDao {
         assert(db != null);
         assert(cursor != null);
         assert(!cursor.isClosed() && !cursor.isBeforeFirst() && !cursor.isAfterLast());
-        long id = cursor.getLong(cursor.getColumnIndex(ID_COLUMN));
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(ID_COLUMN));
         SQLiteFolder result = new SQLiteFolder(db, id);
-        Path path = new SimplePath(cursor.getString(cursor.getColumnIndex(FULL_NAME_COLUMN)));
+        Path path = new SimplePath(cursor.getString(cursor.getColumnIndexOrThrow(FULL_NAME_COLUMN)));
         result.path = path;
-        result.name = cursor.getString(cursor.getColumnIndex(NAME_COLUMN));
-        String type = cursor.getString(cursor.getColumnIndex(TYPE_COLUMN));
+        result.name = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
+        String type = cursor.getString(cursor.getColumnIndexOrThrow(TYPE_COLUMN));
         if (type != null) {
             result.type = FolderType.valueOf(type);
         }

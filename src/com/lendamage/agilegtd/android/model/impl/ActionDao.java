@@ -40,10 +40,9 @@ class ActionDao {
      *  Returns the action by ID.
      */
     static SQLiteAction selectAction(SQLiteDatabase db, long id) {
-        //TODO
         assert(db != null);
         assert(id != 0);
-        Cursor cursor = db.query(FOLDER_TABLE, 
+        Cursor cursor = db.query(ACTION_TABLE, 
                 null, 
                 ID_COLUMN + " = ?",
                 new String[] {String.valueOf(id)},
@@ -53,7 +52,25 @@ class ActionDao {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        return getAction(db, cursor);
+        SQLiteAction action = getAction(db, cursor);
+        cursor.close();
+        return action;
+    }
+    
+    /**
+     *  Returns the action's folders cursor by the action ID.
+     */
+    static Cursor selectFolders(SQLiteDatabase db, long actionId) {
+        assert(db != null);
+        assert(actionId != 0);
+        Cursor cursor = db.query(ACTION_IN_FOLDER_TABLE, 
+                null, 
+                ACTION_ID_COLUMN + " = ?",
+                new String[] {String.valueOf(actionId)},
+                null,
+                null,
+                null);
+        return cursor;
     }
     
     /**
@@ -63,10 +80,10 @@ class ActionDao {
         assert(db != null);
         assert(cursor != null);
         assert(!cursor.isClosed() && !cursor.isBeforeFirst() && !cursor.isAfterLast());
-        long id = cursor.getLong(cursor.getColumnIndex(ID_COLUMN));
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(ID_COLUMN));
         SQLiteAction result = new SQLiteAction(db, id);
-        result.head = cursor.getString(cursor.getColumnIndex(HEAD_COLUMN));
-        result.body = cursor.getString(cursor.getColumnIndex(BODY_COLUMN));
+        result.head = cursor.getString(cursor.getColumnIndexOrThrow(HEAD_COLUMN));
+        result.body = cursor.getString(cursor.getColumnIndexOrThrow(BODY_COLUMN));
         return result;
     }
     
@@ -81,7 +98,14 @@ class ActionDao {
         db.delete(ACTION_IN_FOLDER_TABLE, 
                 FOLDER_ID_COLUMN + " = ? AND " + ACTION_ID_COLUMN + " = ?", 
                 new String[] { String.valueOf(folderId), String.valueOf(actionId) });
-        //TODO: remove the action if it's removed from all folders
+        //removing the action if it's removed from all folders is implemented by DB trigger
+        /*
+        Cursor cursor = selectFolders(db, actionId);
+        if (!cursor.moveToFirst()) {
+            db.delete(ACTION_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(actionId) });
+        }
+        cursor.close();
+        */
     }
     
     /**

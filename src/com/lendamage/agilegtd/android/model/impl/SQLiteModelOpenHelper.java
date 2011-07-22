@@ -72,9 +72,22 @@ public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
                 ")");
         //foreign keys are supported from SQLite v. 3.5.19 ( http://www.sqlite.org/foreignkeys.html )
         //adding triggers to emulate ON DELETE CASCADE
-        db.execSQL("CREATE TRIGGER " + FOLDER_TABLE + "_AFTER_DELETE AFTER DELETE ON " + FOLDER_TABLE + " BEGIN " +
-                "DELETE FROM " + FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; END");
-        //TODO: on delete for actions
+        db.execSQL("CREATE TRIGGER " + FOLDER_TABLE + "_AFTER_DELETE AFTER DELETE ON " + FOLDER_TABLE + 
+                " BEGIN " +
+                "DELETE FROM " + FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
+                "DELETE FROM " + ACTION_IN_FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
+                " END");
+        db.execSQL("CREATE TRIGGER " + ACTION_TABLE + "_AFTER_DELETE AFTER DELETE ON " + ACTION_TABLE + 
+                " BEGIN " +
+                "DELETE FROM " + ACTION_IN_FOLDER_TABLE + " WHERE " + ACTION_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
+                " END");
+        //when the last folder for the action is deleted
+        db.execSQL("CREATE TRIGGER " + ACTION_IN_FOLDER_TABLE + "_AFTER_DELETE AFTER DELETE ON " + ACTION_IN_FOLDER_TABLE +
+                " WHEN NOT EXISTS " +   
+                "( SELECT * FROM " + ACTION_IN_FOLDER_TABLE +" WHERE " + ACTION_ID_COLUMN + " = OLD." + ACTION_ID_COLUMN + " )" +
+                " BEGIN " +
+                "DELETE FROM " + ACTION_TABLE + " WHERE " + ID_COLUMN + " = OLD." + ACTION_ID_COLUMN + "; " +
+                " END");
         insertRootFolder(db);
     }
     
