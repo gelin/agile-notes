@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, FolderActivity!</string>
-    <string name="app_name">agile-gtd-android</string>
+    <string name="app_name">Agile GTD</string>
 </resources>
