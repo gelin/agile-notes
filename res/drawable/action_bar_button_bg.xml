@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:constantSize="true"
+    android:variablePadding="false">
+    <item android:state_pressed="true"
+          android:drawable="@android:drawable/btn_default_small" />
+    <item android:state_focused="true"
+          android:drawable="@android:drawable/btn_default_small" />
+    <item android:drawable="@android:color/transparent"/>
+</selector>

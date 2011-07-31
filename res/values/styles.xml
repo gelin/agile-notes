@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ActionBar" parent="@android:style/TextAppearance.WindowTitle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">0px</item>
+        <item name="android:orientation">horizontal</item>
+        <!-- 
+        <item name="android:background">@android:drawable/title_bar</item>
+        -->
+        <item name="android:background">@android:color/background_light</item>
+        <item name="android:textColor">@android:color/primary_text_light</item>
+        <item name="android:maxHeight">40sp</item>
+    </style>
+    <style name="ActionBar.Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">left|center_vertical</item>
+        <item name="android:paddingLeft">10sp</item>
+        <item name="android:paddingRight">10sp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="ActionBar.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/action_bar_button_bg</item>
+        <item name="android:maxWidth">40sp</item>
+        <item name="android:maxHeight">40sp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+</resources>

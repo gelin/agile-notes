@@ -5,21 +5,15 @@
     android:orientation="vertical">
     
     <LinearLayout android:id="@+id/action_bar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            style="@style/ActionBar">
         <TextView android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="left|center_vertical"/>
+                style="@style/ActionBar.Title"
+                android:text="@string/app_name"/>
         <ImageButton android:id="@+id/add_folder_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ActionBar.Button"
                 android:src="@android:drawable/ic_menu_add"/>
         <ImageButton android:id="@+id/add_action_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ActionBar.Button"
                 android:src="@android:drawable/ic_menu_add"/>
     </LinearLayout>
     
