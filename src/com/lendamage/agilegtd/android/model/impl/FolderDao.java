@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Path;
 
@@ -51,6 +52,27 @@ class FolderDao {
                 null, 
                 ID_COLUMN + " = ?",
                 new String[] {String.valueOf(id)},
+                null,
+                null,
+                null);
+        if (!cursor.moveToFirst()) {
+            return null;
+        }
+        SQLiteFolder folder = getFolder(db, cursor);
+        cursor.close();
+        return folder;
+    }
+    
+    /**
+     *  Returns the folder by path.
+     */
+    static SQLiteFolder selectFolder(SQLiteDatabase db, Path path) {
+        assert(db != null);
+        assert(path != null);
+        Cursor cursor = db.query(FOLDER_TABLE, 
+                null, 
+                FULL_NAME_COLUMN + " = ?",
+                new String[] {path.toString()},
                 null,
                 null,
                 null);
@@ -142,6 +164,34 @@ class FolderDao {
                 new String[] { String.valueOf(folder.id) });
         if (updated == 0) {
             throw new IllegalStateException("no folder with id = " + folder.id + ", order update failed");
+        }
+    }
+    
+    /**
+     *  Updates the folder name and type.
+     *  @throws IllegalStateException if the folder to update doesn't exist
+     */
+    static void updateFolder(SQLiteDatabase db, SQLiteFolder folder, String name, FolderType type) throws IllegalStateException {
+        assert(db != null);
+        assert(folder != null);
+        assert(folder.id != 0);
+        assert(folder.path != null);
+        assert(name != null);
+        SQLiteFolder parent = selectFolder(db, folder.path.getParent());
+        assert(parent != null);
+        Path path = parent.getPath().addSegment(name);
+        ContentValues values = new ContentValues();
+        values.put(NAME_COLUMN, name);
+        values.put(FULL_NAME_COLUMN, path.toString());
+        if (type == null) {
+            values.putNull(TYPE_COLUMN);
+        } else {
+            values.put(TYPE_COLUMN, String.valueOf(type));
+        }
+        int updated = db.update(FOLDER_TABLE, values, ID_COLUMN + " = ?", 
+                new String[] { String.valueOf(folder.id) });
+        if (updated == 0) {
+            throw new IllegalStateException("no folder with id = " + folder.id + ", update failed");
         }
     }
     

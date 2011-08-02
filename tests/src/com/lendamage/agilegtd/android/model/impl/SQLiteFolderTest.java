@@ -6,6 +6,7 @@ import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderType;
 
 public class SQLiteFolderTest extends AndroidTestCase {
     
@@ -34,6 +35,36 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(2, actions.size());
         assertEquals(action1, actions.get(0));
         assertEquals(action2, actions.get(1));
+    }
+    
+    public void testEdit() {
+        SQLiteFolder folder = (SQLiteFolder)model.getRootFolder().newFolder("folder", null);
+        assertEquals("folder", folder.getName());
+        assertNull(folder.getType());
+        
+        Folder.Editor editor = folder.edit();
+        editor.setName("newname");
+        editor.setType(FolderType.PROJECTS);
+        editor.commit();
+        
+        assertNull(model.getFolder(new SimplePath("folder")));
+        SQLiteFolder folder2 = (SQLiteFolder)model.getFolder(new SimplePath("newname"));
+        assertNotNull(folder2);
+        assertEquals(folder, folder2);
+        assertEquals("newname", folder2.getName());
+        assertEquals(FolderType.PROJECTS, folder2.getType());
+    }
+    
+    public void testEditNameOnly() {
+        //TODO
+    }
+    
+    public void testEditTypeOnly() {
+        //TODO
+    }
+    
+    public void testEditRoot() {
+        //TODO: test inability to change root folder name
     }
 
 }

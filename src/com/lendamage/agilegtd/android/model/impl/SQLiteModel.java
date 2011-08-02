@@ -31,20 +31,7 @@ public class SQLiteModel implements Model {
     
     //@Override
     public Folder getFolder(Path fullPath) {
-        assert(fullPath != null);
-        Cursor cursor = db.query(FOLDER_TABLE, 
-                null, 
-                FULL_NAME_COLUMN + " = ?",
-                new String[] {fullPath.toString()},
-                null,
-                null,
-                null);
-        if (!cursor.moveToFirst()) {
-            return null;
-        }
-        Folder folder = FolderDao.getFolder(db, cursor);
-        cursor.close();
-        return folder;
+        return FolderDao.selectFolder(db, fullPath);
     }
     
     //@Override

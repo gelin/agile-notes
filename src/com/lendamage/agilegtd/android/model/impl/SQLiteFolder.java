@@ -136,8 +136,7 @@ public class SQLiteFolder implements Folder {
 
     //@Override
     public Editor edit() {
-        // TODO Auto-generated method stub
-        return null;
+        return new SQLiteFolderEditor();
     }
 
     @Override
@@ -165,6 +164,31 @@ public class SQLiteFolder implements Folder {
     @Override
     public String toString() {
         return this.id + ":" + this.name;
+    }
+    
+    private class SQLiteFolderEditor implements Folder.Editor {
+
+        private String name;
+        private FolderType type;
+        
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setType(FolderType type) {
+            this.type = type;
+        }
+
+        public void commit() {
+            db.beginTransaction();
+            try {
+                FolderDao.updateFolder(db, SQLiteFolder.this, this.name, this.type);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+
     }
 
 }
