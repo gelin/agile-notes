@@ -136,6 +136,9 @@ public class SQLiteFolder implements Folder {
 
     //@Override
     public Editor edit() {
+        if (this.path.isRoot()) {
+            return new SQLiteRootFolderEditor();
+        }
         return new SQLiteFolderEditor();
     }
 
@@ -192,6 +195,19 @@ public class SQLiteFolder implements Folder {
             }
         }
 
+    }
+    
+    /**
+     *  Editor for root folder does nothing.
+     */
+    private class SQLiteRootFolderEditor implements Folder.Editor {
+        public void setName(String name) {
+        }
+        public void setType(FolderType type) {
+        }
+        public void commit() {
+        }
+        
     }
 
 }

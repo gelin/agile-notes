@@ -101,7 +101,24 @@ public class SQLiteFolderTest extends AndroidTestCase {
     }
     
     public void testEditRoot() {
-        //TODO: test inability to change root folder name
+        SQLiteFolder folder = (SQLiteFolder)model.getRootFolder();
+        assertEquals("", folder.getName());
+        assertEquals(FolderType.ROOT, folder.getType());
+        
+        Folder.Editor editor = folder.edit();
+        editor.setName("folder");
+        editor.setType(FolderType.PROJECTS);
+        editor.commit();
+        
+        assertEquals("", folder.getName());
+        assertEquals(FolderType.ROOT, folder.getType());
+        assertEquals(new SimplePath(""), folder.getPath());
+        
+        SQLiteFolder folder2 = (SQLiteFolder)model.getFolder(new SimplePath(""));
+        assertNotNull(folder2);
+        assertEquals(folder, folder2);
+        assertEquals("", folder2.getName());
+        assertEquals(FolderType.ROOT, folder2.getType());
     }
 
 }
