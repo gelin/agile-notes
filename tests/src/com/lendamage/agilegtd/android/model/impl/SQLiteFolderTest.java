@@ -60,11 +60,44 @@ public class SQLiteFolderTest extends AndroidTestCase {
     }
     
     public void testEditNameOnly() {
-        //TODO
+        SQLiteFolder folder = (SQLiteFolder)model.getRootFolder().newFolder("folder", FolderType.PROJECTS);
+        assertEquals("folder", folder.getName());
+        assertEquals(FolderType.PROJECTS, folder.getType());;
+        
+        Folder.Editor editor = folder.edit();
+        editor.setName("newname");
+        editor.commit();
+        
+        assertEquals("newname", folder.getName());
+        assertEquals(FolderType.PROJECTS, folder.getType());
+        assertEquals(new SimplePath("newname"), folder.getPath());
+        
+        assertNull(model.getFolder(new SimplePath("folder")));
+        SQLiteFolder folder2 = (SQLiteFolder)model.getFolder(new SimplePath("newname"));
+        assertNotNull(folder2);
+        assertEquals(folder, folder2);
+        assertEquals("newname", folder2.getName());
+        assertEquals(FolderType.PROJECTS, folder2.getType());
     }
     
     public void testEditTypeOnly() {
-        //TODO
+        SQLiteFolder folder = (SQLiteFolder)model.getRootFolder().newFolder("folder", null);
+        assertEquals("folder", folder.getName());
+        assertNull(folder.getType());
+        
+        Folder.Editor editor = folder.edit();
+        editor.setType(FolderType.PROJECTS);
+        editor.commit();
+        
+        assertEquals("folder", folder.getName());
+        assertEquals(FolderType.PROJECTS, folder.getType());
+        assertEquals(new SimplePath("folder"), folder.getPath());
+        
+        SQLiteFolder folder2 = (SQLiteFolder)model.getFolder(new SimplePath("folder"));
+        assertNotNull(folder2);
+        assertEquals(folder, folder2);
+        assertEquals("folder", folder2.getName());
+        assertEquals(FolderType.PROJECTS, folder2.getType());
     }
     
     public void testEditRoot() {

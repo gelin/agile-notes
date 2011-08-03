@@ -168,8 +168,8 @@ public class SQLiteFolder implements Folder {
     
     private class SQLiteFolderEditor implements Folder.Editor {
 
-        private String name;
-        private FolderType type;
+        private String name = SQLiteFolder.this.name;
+        private FolderType type = SQLiteFolder.this.type;
         
         public void setName(String name) {
             this.name = name;
