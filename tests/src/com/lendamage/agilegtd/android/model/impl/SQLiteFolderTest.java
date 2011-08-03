@@ -47,6 +47,10 @@ public class SQLiteFolderTest extends AndroidTestCase {
         editor.setType(FolderType.PROJECTS);
         editor.commit();
         
+        assertEquals("newname", folder.getName());
+        assertEquals(FolderType.PROJECTS, folder.getType());
+        assertEquals(new SimplePath("newname"), folder.getPath());
+        
         assertNull(model.getFolder(new SimplePath("folder")));
         SQLiteFolder folder2 = (SQLiteFolder)model.getFolder(new SimplePath("newname"));
         assertNotNull(folder2);

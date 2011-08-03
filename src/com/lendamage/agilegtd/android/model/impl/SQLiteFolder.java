@@ -184,6 +184,9 @@ public class SQLiteFolder implements Folder {
             try {
                 FolderDao.updateFolder(db, SQLiteFolder.this, this.name, this.type);
                 db.setTransactionSuccessful();
+                SQLiteFolder.this.name = this.name;
+                SQLiteFolder.this.path = SQLiteFolder.this.path.replaceLastSegment(this.name);
+                SQLiteFolder.this.type = this.type;
             } finally {
                 db.endTransaction();
             }

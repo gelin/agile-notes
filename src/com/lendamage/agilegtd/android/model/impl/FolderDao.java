@@ -177,9 +177,7 @@ class FolderDao {
         assert(folder.id != 0);
         assert(folder.path != null);
         assert(name != null);
-        SQLiteFolder parent = selectFolder(db, folder.path.getParent());
-        assert(parent != null);
-        Path path = parent.getPath().addSegment(name);
+        Path path = folder.path.replaceLastSegment(name);
         ContentValues values = new ContentValues();
         values.put(NAME_COLUMN, name);
         values.put(FULL_NAME_COLUMN, path.toString());
