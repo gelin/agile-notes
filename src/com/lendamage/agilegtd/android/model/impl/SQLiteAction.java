@@ -42,8 +42,7 @@ public class SQLiteAction implements Action {
 
     //@Override
     public Editor edit() {
-        // TODO Auto-generated method stub
-        return null;
+        return new SQLiteActionEditor();
     }
     
     @Override
@@ -71,6 +70,35 @@ public class SQLiteAction implements Action {
     @Override
     public String toString() {
         return this.id + ":" + this.head;
+    }
+    
+    private class SQLiteActionEditor implements Action.Editor {
+
+        private String head = SQLiteAction.this.head;
+        private String body = SQLiteAction.this.body;
+        
+        public Action.Editor setHead(String head) {
+            this.head = head;
+            return this;
+        }
+
+        public Action.Editor setBody(String body) {
+            this.body = body;
+            return this;
+        }
+
+        public void commit() {
+            db.beginTransaction();
+            try {
+                ActionDao.updateAction(db, SQLiteAction.this, this.head, this.body);
+                db.setTransactionSuccessful();
+                SQLiteAction.this.head = this.head;
+                SQLiteAction.this.body = this.body;
+            } finally {
+                db.endTransaction();
+            }
+        }
+
     }
 
 }

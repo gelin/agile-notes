@@ -62,7 +62,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
     public void testEditNameOnly() {
         SQLiteFolder folder = (SQLiteFolder)model.getRootFolder().newFolder("folder", FolderType.PROJECTS);
         assertEquals("folder", folder.getName());
-        assertEquals(FolderType.PROJECTS, folder.getType());;
+        assertEquals(FolderType.PROJECTS, folder.getType());
         
         Folder.Editor editor = folder.edit();
         editor.setName("newname");

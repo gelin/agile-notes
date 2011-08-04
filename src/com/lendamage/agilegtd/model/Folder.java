@@ -72,12 +72,12 @@ public interface Folder extends Entity<Folder.Editor> {
         /**
          *  Updates the folder name.
          */
-        void setName(String name);
+        Editor setName(String name);
         
         /**
          *  Updates the folder type.
          */
-        void setType(FolderType type);
+        Editor setType(FolderType type);
         
     }
 

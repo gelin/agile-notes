@@ -156,5 +156,28 @@ class ActionDao {
         assert(parentId != 0);
         db.delete(FOLDER_TABLE, FOLDER_ID_COLUMN + " = ?", new String[] { String.valueOf(parentId) });
     }
+    
+    /**
+     *  Updates the action head and body.
+     *  @throws IllegalStateException if the action to update doesn't exist
+     */
+    static void updateAction(SQLiteDatabase db, SQLiteAction action, String head, String body) throws IllegalStateException {
+        assert(db != null);
+        assert(action != null);
+        assert(action.id != 0);
+        assert(head != null);
+        ContentValues values = new ContentValues();
+        values.put(HEAD_COLUMN, head);
+        if (body == null) {
+            values.putNull(BODY_COLUMN);
+        } else {
+            values.put(BODY_COLUMN, body);
+        }
+        int updated = db.update(ACTION_TABLE, values, ID_COLUMN + " = ?", 
+                new String[] { String.valueOf(action.id) });
+        if (updated == 0) {
+            throw new IllegalStateException("no action with id = " + action.id + ", update failed");
+        }
+    }
 
 }

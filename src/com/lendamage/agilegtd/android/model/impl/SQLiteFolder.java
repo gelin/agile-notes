@@ -174,12 +174,14 @@ public class SQLiteFolder implements Folder {
         private String name = SQLiteFolder.this.name;
         private FolderType type = SQLiteFolder.this.type;
         
-        public void setName(String name) {
+        public Folder.Editor setName(String name) {
             this.name = name;
+            return this;
         }
 
-        public void setType(FolderType type) {
+        public Folder.Editor setType(FolderType type) {
             this.type = type;
+            return this;
         }
 
         public void commit() {
@@ -201,9 +203,11 @@ public class SQLiteFolder implements Folder {
      *  Editor for root folder does nothing.
      */
     private class SQLiteRootFolderEditor implements Folder.Editor {
-        public void setName(String name) {
+        public Folder.Editor setName(String name) {
+            return this;
         }
-        public void setType(FolderType type) {
+        public Folder.Editor setType(FolderType type) {
+            return this;
         }
         public void commit() {
         }
