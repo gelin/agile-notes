@@ -89,11 +89,6 @@ class SQLiteActionList implements List<Action> {
         try {
             while (i.hasNext()) {
                 SQLiteAction action = i.next();
-                //TODO: implement
-                //if (folder.id == this.id) {
-                //    continue;
-                //}
-                //i.remove();
                 addAction(this.actions.size(), action);
             }
             updateOrder();

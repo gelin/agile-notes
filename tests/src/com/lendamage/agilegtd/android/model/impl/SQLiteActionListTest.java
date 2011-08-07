@@ -138,53 +138,56 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action3, actions2.get(2));
     }
     
-    /*
     public void testAddAll() {
-        Folder child1 = model.getRootFolder().newFolder("child1", null);
-        Folder child2 = model.getRootFolder().newFolder("child2", null);
-        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
         
-        List<Folder> children = model.getRootFolder().getFolders();
-        assertEquals(3, children.size());
-        assertEquals(child1, children.get(0));
-        assertEquals(child2, children.get(1));
+        List<Action> actions = model.getRootFolder().getActions();
+        assertEquals(2, actions.size());
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
         
-        parent.getFolders().addAll(children);
-        List<Folder> children2 = parent.getFolders();
-        assertEquals(2, children2.size());
-        assertEquals(child1, children2.get(0));
-        assertEquals(child2, children2.get(1));
+        folder.getActions().addAll(actions);
+        List<Action> actions2 = folder.getActions();
+        assertEquals(2, actions2.size());
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action2, actions2.get(1));
         
-        assertEquals(1, model.getRootFolder().getFolders().size());
+        assertEquals("no actions should be deleted", 2, model.getRootFolder().getActions().size());
     }
     
     public void testAddAllToLocation() {
-        Folder child1 = model.getRootFolder().newFolder("child1", null);
-        Folder child2 = model.getRootFolder().newFolder("child2", null);
-        Folder child3 = model.getRootFolder().newFolder("child3", null);
-        Folder child4 = model.getRootFolder().newFolder("child4", null);
-        Folder parent1 = model.getRootFolder().newFolder("parent1", null);
-        Folder parent2 = model.getRootFolder().newFolder("parent2", null);
+        Action action1 = model.getRootFolder().newAction("child1", null);
+        Action action2 = model.getRootFolder().newAction("child2", null);
+        Action action3 = model.getRootFolder().newAction("child3", null);
+        Action action4 = model.getRootFolder().newAction("child4", null);
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
         
-        List<Folder> children1 = parent1.getFolders();
-        children1.add(child1);
-        children1.add(child2);
-        List<Folder> children2 = parent2.getFolders();
-        children2.add(child3);
-        children2.add(child4);
+        List<Action> actions1 = folder1.getActions();
+        actions1.add(action1);
+        actions1.add(action2);
+        List<Action> actions2 = folder2.getActions();
+        actions2.add(action3);
+        actions2.add(action4);
         
-        assertEquals(2, children2.size());
+        assertEquals(2, actions2.size());
         
-        children2.addAll(0, children1);
-        children2 = parent2.getFolders();
+        actions2.addAll(0, actions1);
+        actions2 = folder2.getActions();
         
-        assertEquals(4, children2.size());
-        assertEquals(child1, children2.get(0));
-        assertEquals(child2, children2.get(1));
-        assertEquals(child3, children2.get(2));
-        assertEquals(child4, children2.get(3));
+        assertEquals(4, actions2.size());
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action2, actions2.get(1));
+        assertEquals(action3, actions2.get(2));
+        assertEquals(action4, actions2.get(3));
+        
+        assertEquals(4, model.getRootFolder().getActions().size());
+        assertEquals(2, folder1.getActions().size());
     }
     
+    /*
     public void testClear() {
         Folder child1 = model.getRootFolder().newFolder("child1", null);
         Folder child2 = model.getRootFolder().newFolder("child2", null);
