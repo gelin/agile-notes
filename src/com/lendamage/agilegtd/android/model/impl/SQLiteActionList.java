@@ -159,9 +159,7 @@ class SQLiteActionList implements List<Action> {
         return this.actions.isEmpty();
     }
     public Iterator<Action> iterator() {
-        //TODO: implement
-        //return new SQLiteActionListIterator(this);
-        return null;
+        return new SQLiteActionListIterator(this);
     }
     public int lastIndexOf(Object object) {
         return this.actions.lastIndexOf(object);
