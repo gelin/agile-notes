@@ -207,7 +207,6 @@ class SQLiteActionList implements List<Action> {
      *  Deletes assignment of the actions with the folder. 
      */
     public boolean removeAll(Collection<?> actions) {
-        //TODO: implement
         throw new UnsupportedOperationException("removeAll() is not supported");
     }
     /**
@@ -215,7 +214,6 @@ class SQLiteActionList implements List<Action> {
      *  Only actions specified in the parameter are stay assigned.
      */
     public boolean retainAll(Collection<?> actions) {
-        //TODO: implement
         throw new UnsupportedOperationException("retainAll() is not supported");
     }
     /**

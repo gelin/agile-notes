@@ -7,7 +7,6 @@ import java.util.Set;
  *  Each action contains the head and the body.<br>
  *  Each action can belong to any number of folders.
  */
-//TODO: removing of actions
 public interface Action extends Entity<Action.Editor> {
     
     /**
