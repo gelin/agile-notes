@@ -266,9 +266,8 @@ class SQLiteActionList implements List<Action> {
     
     void updateOrder() {
         for (int i = 0; i < this.actions.size(); i++) {
-            //SQLiteAction action = this.actions.get(i);
-            //TODO: implement
-            //FolderDao.updateFolderOrder(this.db, action, i);
+            SQLiteAction action = this.actions.get(i);
+            ActionDao.updateActionOrder(this.db, action, i);
         }
     }
 
