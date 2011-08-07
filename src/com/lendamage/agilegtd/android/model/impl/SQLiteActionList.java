@@ -135,8 +135,7 @@ class SQLiteActionList implements List<Action> {
     public void clear() {
         db.beginTransaction();
         try {
-            //TODO: implement
-            //FolderDao.deleteChildFolders(db, this.id);
+            ActionDao.deleteActionsFromFolder(db, this.id);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();

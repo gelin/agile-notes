@@ -198,8 +198,8 @@ public class SQLiteFolderListTest extends AndroidTestCase {
     }
     
     public void testClear() {
-        Folder child1 = model.getRootFolder().newFolder("child1", null);
-        Folder child2 = model.getRootFolder().newFolder("child2", null);
+        model.getRootFolder().newFolder("child1", null);
+        model.getRootFolder().newFolder("child2", null);
         
         assertEquals(2, model.getRootFolder().getFolders().size());
         
@@ -220,7 +220,7 @@ public class SQLiteFolderListTest extends AndroidTestCase {
     }
     
     public void testIteratorRemove() {
-        Folder child1 = model.getRootFolder().newFolder("child1", null);
+        model.getRootFolder().newFolder("child1", null);
         Folder child2 = model.getRootFolder().newFolder("child2", null);
         assertEquals(2, model.getRootFolder().getFolders().size());
         

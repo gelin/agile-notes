@@ -98,7 +98,7 @@ public class SQLiteModelTest extends AndroidTestCase {
     
     public void testTransactionCommit() {
         SQLiteFolder parent = (SQLiteFolder)model.getRootFolder().newFolder("parent", null);
-        SQLiteFolder child = (SQLiteFolder)parent.newFolder("child", null);
+        parent.newFolder("child", null);
         //parent.getFolders().add(child);
         SQLiteModel model2 = new SQLiteModel(getContext(), "agile-gtd-test.db");
         assertNotNull(model2.getRootFolder());

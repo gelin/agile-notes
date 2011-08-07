@@ -149,12 +149,12 @@ class ActionDao {
     }
     
     /**
-     *  Deletes all child folder.
+     *  Deletes all actions from the folder.
      */
-    static void deleteChildFolders(SQLiteDatabase db, long parentId) {
+    static void deleteActionsFromFolder(SQLiteDatabase db, long folderId) {
         assert(db != null);
-        assert(parentId != 0);
-        db.delete(FOLDER_TABLE, FOLDER_ID_COLUMN + " = ?", new String[] { String.valueOf(parentId) });
+        assert(folderId != 0);
+        db.delete(ACTION_IN_FOLDER_TABLE, FOLDER_ID_COLUMN + " = ?", new String[] { String.valueOf(folderId) });
     }
     
     /**

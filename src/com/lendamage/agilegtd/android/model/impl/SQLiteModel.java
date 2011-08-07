@@ -1,12 +1,8 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
-
 import java.util.List;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lendamage.agilegtd.model.Folder;
