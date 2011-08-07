@@ -187,6 +187,30 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(2, folder1.getActions().size());
     }
     
+    public void testAddAllToThis() {
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        
+        List<Action> actions = model.getRootFolder().getActions();
+        model.getRootFolder().getActions().addAll(actions);
+        List<Action> actions2 = model.getRootFolder().getActions();
+        assertEquals(2, actions2.size());
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action2, actions2.get(1));
+    }
+    
+    public void testAddAllToThisToLocation() {
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        
+        List<Action> actions = model.getRootFolder().getActions();
+        model.getRootFolder().getActions().addAll(1, actions);
+        List<Action> actions2 = model.getRootFolder().getActions();
+        assertEquals(2, actions2.size());
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action2, actions2.get(1));
+    }
+    
     /*
     public void testClear() {
         Folder child1 = model.getRootFolder().newFolder("child1", null);

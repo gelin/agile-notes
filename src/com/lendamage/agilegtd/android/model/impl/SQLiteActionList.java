@@ -84,6 +84,9 @@ class SQLiteActionList implements List<Action> {
             throw new UnsupportedOperationException("cannot add not-SQLiteActionList");
         }
         SQLiteActionList sqlActions = (SQLiteActionList)actions;
+        if (sqlActions.id == this.id) {
+            return false;   //no need to insert into self
+        }
         Iterator<SQLiteAction> i = sqlActions.actions.iterator();
         db.beginTransaction();
         try {
@@ -109,16 +112,14 @@ class SQLiteActionList implements List<Action> {
             throw new UnsupportedOperationException("cannot add not-SQLiteActionList");
         }
         SQLiteActionList sqlActions = (SQLiteActionList)actions;
+        if (sqlActions.id == this.id) {
+            return false;   //no need to insert into self
+        }
         ListIterator<SQLiteAction> i = sqlActions.actions.listIterator(sqlActions.actions.size());
         db.beginTransaction();
         try {
             while (i.hasPrevious()) {   //inserting in reverse order to the same position
                 SQLiteAction action = i.previous();
-                //TODO: implement
-                //if (folder.id == this.id) {
-                //    continue;
-                //}
-                //i.remove();
                 addAction(location, action);
             }
             updateOrder();

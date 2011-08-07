@@ -84,6 +84,9 @@ class SQLiteFolderList implements List<Folder> {
             throw new UnsupportedOperationException("cannot add not-SQLiteFolderList");
         }
         SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
+        if (sqlFolders.id == this.id) {
+            return false;   //no need to insert into self
+        }
         Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
         db.beginTransaction();
         try {
@@ -113,6 +116,9 @@ class SQLiteFolderList implements List<Folder> {
             throw new UnsupportedOperationException("cannot add not-SQLiteFolderList");
         }
         SQLiteFolderList sqlFolders = (SQLiteFolderList)folders;
+        if (sqlFolders.id == this.id) {
+            return false;   //no need to insert into self
+        }
         ListIterator<SQLiteFolder> i = sqlFolders.folders.listIterator(sqlFolders.folders.size());
         db.beginTransaction();
         try {

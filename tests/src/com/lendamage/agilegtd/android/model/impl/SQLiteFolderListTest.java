@@ -173,6 +173,30 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         assertEquals(child4, children2.get(3));
     }
     
+    public void testAddAllToThis() {
+        Folder child1 = model.getRootFolder().newFolder("child1", null);
+        Folder child2 = model.getRootFolder().newFolder("child2", null);
+        
+        List<Folder> children = model.getRootFolder().getFolders();
+        model.getRootFolder().getFolders().addAll(children);
+        List<Folder> children2 = model.getRootFolder().getFolders();
+        assertEquals(2, children2.size());
+        assertEquals(child1, children2.get(0));
+        assertEquals(child2, children2.get(1));
+    }
+    
+    public void testAddAllToThisToLocation() {
+        Folder child1 = model.getRootFolder().newFolder("child1", null);
+        Folder child2 = model.getRootFolder().newFolder("child2", null);
+        
+        List<Folder> children = model.getRootFolder().getFolders();
+        model.getRootFolder().getFolders().addAll(1, children);
+        List<Folder> children2 = model.getRootFolder().getFolders();
+        assertEquals(2, children2.size());
+        assertEquals(child1, children2.get(0));
+        assertEquals(child2, children2.get(1));
+    }
+    
     public void testClear() {
         Folder child1 = model.getRootFolder().newFolder("child1", null);
         Folder child2 = model.getRootFolder().newFolder("child2", null);
