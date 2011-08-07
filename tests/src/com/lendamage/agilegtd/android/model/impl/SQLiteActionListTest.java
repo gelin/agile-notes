@@ -235,7 +235,7 @@ public class SQLiteActionListTest extends AndroidTestCase {
     }
     
     public void testIteratorRemove() {
-        Action action1 = model.getRootFolder().newAction("action1", null);
+        model.getRootFolder().newAction("action1", null);
         Action action2 = model.getRootFolder().newAction("action2", null);
         assertEquals(2, model.getRootFolder().getActions().size());
         
@@ -257,24 +257,21 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(0, model.getRootFolder().getActions().size());
     }
     
-    /*
     public void testSet() {
-        Folder child1 = model.getRootFolder().newFolder("child1", null);
-        Folder child2 = model.getRootFolder().newFolder("child2", null);
-        Folder parent = model.getRootFolder().newFolder("parent", null);
-        List<Folder> children = parent.getFolders();
-        children.add(child1);
-        children.add(child2);
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        List<Action> actions = folder.getActions();
+        actions.add(action1);
+        actions.add(action2);
         
-        Folder child3 = model.getRootFolder().newFolder("child3", null);
-        children.set(1, child3);
+        Action action3 = model.getRootFolder().newAction("action3", null);
+        actions.set(1, action3);
         
-        List<Folder> children2 = parent.getFolders();
-        assertEquals(2, children2.size());
-        assertEquals(child1, children2.get(0));
-        assertEquals(child3, children2.get(1));
-        assertNull(model.getFolder(new SimplePath("parent/child2")));
+        List<Action> actions2 = folder.getActions();
+        assertEquals(2, actions2.size());
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action3, actions2.get(1));
     }
-    */
-    
+
 }

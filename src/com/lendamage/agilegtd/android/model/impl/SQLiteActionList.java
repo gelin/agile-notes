@@ -66,7 +66,7 @@ class SQLiteActionList implements List<Action> {
         }
     }
     void addAction(int location, SQLiteAction action) {
-        ActionDao.replaceActionFolder(this.db, action, this.id);
+        ActionDao.replaceActionFolder(this.db, this.id, action);
         this.actions.remove(action);
         if (location > this.actions.size()) {
             location = this.actions.size();
@@ -229,9 +229,8 @@ class SQLiteActionList implements List<Action> {
         SQLiteAction oldAction = this.actions.set(location, newAction);
         db.beginTransaction();
         try {
-            //TODO: implement
-            //FolderDao.updateFolderParent(db, newFolder, this.id);
-            //FolderDao.deleteFolder(db, oldFolder.id);
+            ActionDao.replaceActionFolder(db, this.id, newAction);
+            ActionDao.deleteActionFromFolder(db, this.id, oldAction.id);
             updateOrder();
             db.setTransactionSuccessful();
         } catch (Exception e) {
@@ -239,7 +238,7 @@ class SQLiteActionList implements List<Action> {
         } finally {
             db.endTransaction();
         }
-        return null;    //TODO
+        return oldAction;
     }
     public int size() {
         return this.actions.size();

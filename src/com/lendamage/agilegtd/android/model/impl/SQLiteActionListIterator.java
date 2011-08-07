@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
 
 class SQLiteActionListIterator implements Iterator<Action> {
 

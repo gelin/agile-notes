@@ -5,7 +5,6 @@ import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.AC
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.BODY_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.HEAD_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
@@ -32,7 +31,7 @@ class ActionDao {
         SQLiteAction result = new SQLiteAction(db, id);
         result.head = head;
         result.body = body;
-        replaceActionFolder(db, result, folderId);
+        replaceActionFolder(db, folderId, result);
         return result;
     }
     
@@ -109,9 +108,9 @@ class ActionDao {
     }
     
     /**
-     *  Updates the actions to folder assignment.
+     *  Inserts or updates the actions to folder assignment.
      */
-    static void replaceActionFolder(SQLiteDatabase db, SQLiteAction action, long folderId) {
+    static void replaceActionFolder(SQLiteDatabase db, long folderId, SQLiteAction action) {
         assert(db != null);
         assert(action != null);
         assert(action.id != 0);
@@ -137,15 +136,6 @@ class ActionDao {
         if (updated == 0) {
             throw new IllegalStateException("no action with id = " + action.id + ", order update failed");
         }
-    }
-    
-    /**
-     *  Deletes the folder.
-     */
-    static void deleteFolder(SQLiteDatabase db, long id) {
-        assert(db != null);
-        assert(id != 0);
-        db.delete(FOLDER_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(id) });
     }
     
     /**
