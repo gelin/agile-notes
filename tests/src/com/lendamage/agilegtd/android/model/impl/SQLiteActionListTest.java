@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import android.test.AndroidTestCase;
@@ -233,50 +234,30 @@ public class SQLiteActionListTest extends AndroidTestCase {
         }
     }
     
-    /*
     public void testIteratorRemove() {
-        Folder child1 = model.getRootFolder().newFolder("child1", null);
-        Folder child2 = model.getRootFolder().newFolder("child2", null);
-        assertEquals(2, model.getRootFolder().getFolders().size());
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        assertEquals(2, model.getRootFolder().getActions().size());
         
-        Iterator<Folder> i = model.getRootFolder().getFolders().iterator();
+        Iterator<Action> i = model.getRootFolder().getActions().iterator();
         i.next();
         i.remove();
         
-        assertEquals(1, model.getRootFolder().getFolders().size());
-        assertEquals(child2, model.getRootFolder().getFolders().get(0));
+        assertEquals(1, model.getRootFolder().getActions().size());
+        assertEquals(action2, model.getRootFolder().getActions().get(0));
     }
     
     public void testRemove() {
-        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Action action = model.getRootFolder().newAction("action", null);
         
-        assertEquals(1, model.getRootFolder().getFolders().size());
-        assertNotNull(model.getFolder(new SimplePath("folder")));
+        assertEquals(1, model.getRootFolder().getActions().size());
+        assertEquals(action, model.getRootFolder().getActions().get(0));
         
-        model.getRootFolder().getFolders().remove(folder);
-        assertEquals(0, model.getRootFolder().getFolders().size());
-        assertNull(model.getFolder(new SimplePath("folder")));
+        model.getRootFolder().getActions().remove(action);
+        assertEquals(0, model.getRootFolder().getActions().size());
     }
     
-    public void testRemoveResursive() {
-        Folder child1 = model.getRootFolder().newFolder("child1", null);
-        Folder child2 = model.getRootFolder().newFolder("child2", null);
-        Folder parent = model.getRootFolder().newFolder("parent", null);
-        List<Folder> children = parent.getFolders();
-        children.add(child1);
-        children.add(child2);
-        
-        assertEquals(2, parent.getFolders().size());
-        assertNotNull(model.getFolder(new SimplePath("parent")));
-        assertNotNull(model.getFolder(new SimplePath("parent/child1")));
-        assertNotNull(model.getFolder(new SimplePath("parent/child2")));
-        
-        model.getRootFolder().getFolders().remove(parent);
-        assertNull(model.getFolder(new SimplePath("parent")));
-        assertNull(model.getFolder(new SimplePath("parent/child1")));
-        assertNull(model.getFolder(new SimplePath("parent/child2")));
-    }
-    
+    /*
     public void testSet() {
         Folder child1 = model.getRootFolder().newFolder("child1", null);
         Folder child2 = model.getRootFolder().newFolder("child2", null);
