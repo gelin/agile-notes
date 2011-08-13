@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import android.test.AndroidTestCase;
@@ -25,6 +26,48 @@ public class SQLiteActionTest extends AndroidTestCase {
         assertEquals(2, folders.size());
         assertTrue(folders.contains(model.getRootFolder()));
         assertTrue(folders.contains(folder));
+    }
+    
+    public void testGetFoldersOrder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        folder1.getActions().add(action);
+        folder2.getActions().add(action);
+        
+        Iterator<Folder> folders1 = action.getFolders().iterator();
+        assertEquals(model.getRootFolder(), folders1.next());
+        assertEquals(folder1, folders1.next());
+        assertEquals(folder2, folders1.next());
+        
+        model.getRootFolder().getFolders().add(0, folder2);
+        Iterator<Folder> folders2 = action.getFolders().iterator();
+        assertEquals(model.getRootFolder(), folders2.next());
+        assertEquals(folder2, folders2.next());
+        assertEquals(folder1, folders2.next());
+    }
+    
+    public void testGetFoldersOrder2() {
+        Folder parent1 = model.getRootFolder().newFolder("parent1", null);
+        Folder parent2 = model.getRootFolder().newFolder("parent2", null);
+        Folder folder = parent1.newFolder("folder", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        parent1.getActions().add(action);
+        parent2.getActions().add(action);
+        folder.getActions().add(action);
+        
+        Iterator<Folder> folders1 = action.getFolders().iterator();
+        assertEquals(model.getRootFolder(), folders1.next());
+        assertEquals(parent1, folders1.next());
+        assertEquals(folder, folders1.next());
+        assertEquals(parent2, folders1.next());
+        
+        parent2.getFolders().add(folder);
+        Iterator<Folder> folders2 = action.getFolders().iterator();
+        assertEquals(model.getRootFolder(), folders2.next());
+        assertEquals(parent1, folders2.next());
+        assertEquals(parent2, folders2.next());
+        assertEquals(folder, folders2.next());
     }
     
     public void testEdit() {

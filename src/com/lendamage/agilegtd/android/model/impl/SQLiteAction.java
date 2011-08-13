@@ -5,6 +5,7 @@ import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.AC
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,7 @@ public class SQLiteAction implements Action {
                 new String[] {String.valueOf(this.id)},
                 null,
                 null,
-                null);  //TODO: sorting
+                "f." + SORT_ORDER_COLUMN + " ASC");
         List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
         while (cursor.moveToNext()) {
             result.add(FolderDao.getFolder(db, cursor));

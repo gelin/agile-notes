@@ -122,10 +122,7 @@ class SQLiteFolderSet implements Set<Folder> {
         return this.folders.isEmpty();
     }
     public Iterator<Folder> iterator() {
-        /*  TODO
-        return new SQLiteFolderListIterator(this);
-        */
-        return null;
+        return new SQLiteFolderSetIterator(this);
     }
     /**
      *  Deletes assignment between folder and action. 
