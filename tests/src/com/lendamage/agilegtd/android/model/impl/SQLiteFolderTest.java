@@ -33,8 +33,8 @@ public class SQLiteFolderTest extends AndroidTestCase {
         List<Folder> folders = model.getRootFolder().getFolders();
         SQLiteFolder folder1 = (SQLiteFolder)folders.get(0);
         SQLiteFolder folder2 = (SQLiteFolder)folders.get(1);
-        assertEquals(1, folder1.sortOrder);
-        assertEquals(2, folder2.sortOrder);
+        assertEquals(0, folder1.sortOrder);
+        assertEquals(1, folder2.sortOrder);
     }
     
     public void testGetActions() {

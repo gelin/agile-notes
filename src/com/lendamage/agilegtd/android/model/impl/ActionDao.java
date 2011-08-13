@@ -80,7 +80,7 @@ class ActionDao {
                 new String[] {String.valueOf(actionId)},
                 null,
                 null,
-                "f." + SORT_ORDER_COLUMN + " ASC");
+                "f." + SORT_ORDER_COLUMN + " ASC, f." + ID_COLUMN + " ASC");
         return cursor;
     }
     

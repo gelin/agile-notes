@@ -39,8 +39,8 @@ public class SQLiteActionTest extends AndroidTestCase {
         Iterator<Folder> folders = action.getFolders().iterator();
         SQLiteFolder sqlFolder1 = (SQLiteFolder)folders.next();
         SQLiteFolder sqlFolder2 = (SQLiteFolder)folders.next();
-        assertEquals(1, sqlFolder1.sortOrder);
-        assertEquals(2, sqlFolder2.sortOrder);
+        assertEquals(0, sqlFolder1.sortOrder);
+        assertEquals(1, sqlFolder2.sortOrder);
     }
     
     public void testGetFoldersOrder() {
@@ -83,6 +83,35 @@ public class SQLiteActionTest extends AndroidTestCase {
         assertEquals(parent1, folders2.next());
         assertEquals(parent2, folders2.next());
         assertEquals(folder, folders2.next());
+    }
+    
+    public void testGetFoldersOrder3() {
+        Folder parent1 = model.getRootFolder().newFolder("parent1", null);
+        Folder parent2 = model.getRootFolder().newFolder("parent2", null);
+        Folder folder1 = parent1.newFolder("folder1", null);
+        Folder folder2 = parent1.newFolder("folder2", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        parent1.getActions().add(action);
+        parent2.getActions().add(action);
+        folder1.getActions().add(action);
+        folder2.getActions().add(action);
+        
+        Iterator<Folder> folders1 = action.getFolders().iterator();
+        assertEquals(model.getRootFolder(), folders1.next());
+        assertEquals(parent1, folders1.next());
+        assertEquals(folder1, folders1.next());
+        assertEquals(folder2, folders1.next());
+        assertEquals(parent2, folders1.next());
+        
+        parent2.getFolders().add(folder2);
+        parent2.getFolders().add(folder1);
+        model.getRootFolder().getFolders().add(0, parent2);
+        Iterator<Folder> folders2 = action.getFolders().iterator();
+        assertEquals(model.getRootFolder(), folders2.next());
+        assertEquals(parent2, folders2.next());
+        assertEquals(folder2, folders2.next());
+        assertEquals(folder1, folders2.next());
+        assertEquals(parent1, folders2.next());
     }
     
     public void testEdit() {

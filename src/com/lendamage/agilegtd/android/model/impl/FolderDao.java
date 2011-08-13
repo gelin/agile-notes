@@ -118,7 +118,7 @@ class FolderDao {
                 new String[] {String.valueOf(folderId)},
                 null,
                 null,
-                SORT_ORDER_COLUMN + " ASC");
+                SORT_ORDER_COLUMN + " ASC, " + ID_COLUMN + " ASC");
     }
     
     /**
@@ -135,7 +135,7 @@ class FolderDao {
                 new String[] {String.valueOf(folderId)},
                 null,
                 null,
-                SORT_ORDER_COLUMN + " ASC");
+                SORT_ORDER_COLUMN + " ASC, " + ID_COLUMN + " ASC");
     }
     
     /**

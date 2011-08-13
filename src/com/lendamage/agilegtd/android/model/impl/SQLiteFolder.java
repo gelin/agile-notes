@@ -71,6 +71,7 @@ class SQLiteFolder implements Folder {
             SQLiteAction result = ActionDao.insertAction(db, this.id, head, body);
             result.head = head;
             result.body = body;
+            //this.getActions().add(result);  //to update order, TODO: optimize
             db.setTransactionSuccessful();
             return result;
         } finally {
@@ -87,6 +88,7 @@ class SQLiteFolder implements Folder {
         db.beginTransaction();
         try {
             SQLiteFolder result = FolderDao.insertFolder(db, this.id, name, type);
+            //this.getFolders().add(result);  //to update order, TODO: optimize
             db.setTransactionSuccessful();
             return result;
         } catch (SQLiteConstraintException ce) {
