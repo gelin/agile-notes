@@ -27,16 +27,6 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child, children.get(0));
     }
     
-    public void testSortOrder() {
-        model.getRootFolder().newFolder("folder1", null);
-        model.getRootFolder().newFolder("folder2", null);
-        List<Folder> folders = model.getRootFolder().getFolders();
-        SQLiteFolder folder1 = (SQLiteFolder)folders.get(0);
-        SQLiteFolder folder2 = (SQLiteFolder)folders.get(1);
-        assertEquals(0, folder1.sortOrder);
-        assertEquals(1, folder2.sortOrder);
-    }
-    
     public void testGetActions() {
         SQLiteAction action1 = (SQLiteAction)model.getRootFolder().newAction("action1", null);
         SQLiteAction action2 = (SQLiteAction)model.getRootFolder().newAction("action2", null);
@@ -129,6 +119,36 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(folder, folder2);
         assertEquals("", folder2.getName());
         assertEquals(FolderType.ROOT, folder2.getType());
+    }
+    
+    public void testNewFolderOrder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        List<Folder> folders = model.getRootFolder().getFolders();
+        folders.add(0, folder2);
+        Folder folder3 = model.getRootFolder().newFolder("folder3", null);
+        Folder folder4 = model.getRootFolder().newFolder("folder4", null);
+        
+        List<Folder> folders2 = model.getRootFolder().getFolders();
+        assertEquals(folder2, folders2.get(0));
+        assertEquals(folder1, folders2.get(1));
+        assertEquals(folder3, folders2.get(2));
+        assertEquals(folder4, folders2.get(3));
+    }
+    
+    public void testNewActionOrder() {
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        List<Action> actions = model.getRootFolder().getActions();
+        actions.add(0, action2);
+        Action action3 = model.getRootFolder().newAction("action3", null);
+        Action action4 = model.getRootFolder().newAction("action4", null);
+        
+        List<Action> actions2 = model.getRootFolder().getActions();
+        assertEquals(action2, actions2.get(0));
+        assertEquals(action1, actions2.get(1));
+        assertEquals(action3, actions2.get(2));
+        assertEquals(action4, actions2.get(3));
     }
 
 }

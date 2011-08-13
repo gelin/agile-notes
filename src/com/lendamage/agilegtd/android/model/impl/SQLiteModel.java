@@ -32,6 +32,7 @@ public class SQLiteModel implements Model {
     
     //@Override
     public Folder getRootFolder() {
+        //TODO: optimize, root folder is always the same and is not editable
         return FolderDao.selectRootFolder(db);
     }
     

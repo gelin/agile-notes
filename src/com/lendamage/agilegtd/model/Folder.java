@@ -12,7 +12,7 @@ public interface Folder extends Entity<Folder.Editor> {
     /**
      *  Creates a new Action.<br>
      *  It is the only way to create the Action.<br>
-     *  The new action is assigned to this folder and added to the list of actions returned by {@code #getActions()}.
+     *  The new action is assigned to this folder and added to the end of list of actions returned by {@code #getActions()}.
      */
     Action newAction(String head, String body);
     
@@ -20,7 +20,7 @@ public interface Folder extends Entity<Folder.Editor> {
      *  Creates a new Folder.<br>
      *  It is the only way to create the Folder.<br>
      *  The new folder is assigned as subfolder of the current folder 
-     *  and added to the list of folders returned by {@code #getFolders()}.<br>
+     *  and added to the end of list of folders returned by {@code #getFolders()}.<br>
      *  If the folder with the same name already exists in this folder, 
      *  the existed folder is returned. No new folder is created in this case.
      *  @throws FolderAlreadyExistsException    if the folder with the same name already exists
