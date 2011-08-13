@@ -1,6 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import java.util.List;
+import java.util.Set;
 
 import android.test.AndroidTestCase;
 
@@ -17,14 +17,14 @@ public class SQLiteActionTest extends AndroidTestCase {
     }
     
     public void testGetFolders() {
-        //TODO
-        SQLiteFolder parent = (SQLiteFolder)model.getRootFolder().newFolder("parent", null);
-        SQLiteFolder child = (SQLiteFolder)parent.newFolder("child", null);
-        //parent.getFolders().add(child);
-        List<Folder> children = parent.getFolders();
-        assertNotNull(children);
-        assertEquals(1, children.size());
-        assertEquals(child, children.get(0));
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        folder.getActions().add(action);
+        Set<Folder> folders = action.getFolders();
+        assertNotNull(folders);
+        assertEquals(2, folders.size());
+        assertTrue(folders.contains(model.getRootFolder()));
+        assertTrue(folders.contains(folder));
     }
     
     public void testEdit() {

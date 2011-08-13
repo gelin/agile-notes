@@ -1,11 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import java.util.Iterator;
-import java.util.List;
-
 import android.test.AndroidTestCase;
-
-import com.lendamage.agilegtd.model.Folder;
 
 public class SQLiteFolderSetTest extends AndroidTestCase {
     

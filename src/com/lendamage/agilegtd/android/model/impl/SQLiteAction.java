@@ -1,7 +1,16 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_ID_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_IN_FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lendamage.agilegtd.model.Action;
@@ -18,10 +27,13 @@ public class SQLiteAction implements Action {
     String head;
     /** Action body */
     String body;
+    /** Set of folders */
+    SQLiteFolderSet folders;
     
     SQLiteAction(SQLiteDatabase db, long id) {
         this.db = db;
         this.id = id;
+        this.folders = new SQLiteFolderSet(db, id);
     }
     
     //@Override
@@ -36,8 +48,23 @@ public class SQLiteAction implements Action {
 
     //@Override
     public Set<Folder> getFolders() {
-        // TODO Auto-generated method stub
-        return null;
+        assert(this.id != 0);
+        Cursor cursor = db.query(
+                FOLDER_TABLE + " f JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
+                "ON (f." + ID_COLUMN + " = af." + FOLDER_ID_COLUMN + ")", 
+                null, 
+                ACTION_ID_COLUMN + " = ?",
+                new String[] {String.valueOf(this.id)},
+                null,
+                null,
+                null);  //TODO: sorting
+        List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
+        while (cursor.moveToNext()) {
+            result.add(FolderDao.getFolder(db, cursor));
+        }
+        this.folders.setFolders(result);
+        cursor.close();
+        return this.folders;
     }
 
     //@Override
