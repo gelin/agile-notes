@@ -27,6 +27,16 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(child, children.get(0));
     }
     
+    public void testSortOrder() {
+        model.getRootFolder().newFolder("folder1", null);
+        model.getRootFolder().newFolder("folder2", null);
+        List<Folder> folders = model.getRootFolder().getFolders();
+        SQLiteFolder folder1 = (SQLiteFolder)folders.get(0);
+        SQLiteFolder folder2 = (SQLiteFolder)folders.get(1);
+        assertEquals(1, folder1.sortOrder);
+        assertEquals(2, folder2.sortOrder);
+    }
+    
     public void testGetActions() {
         SQLiteAction action1 = (SQLiteAction)model.getRootFolder().newAction("action1", null);
         SQLiteAction action2 = (SQLiteAction)model.getRootFolder().newAction("action2", null);

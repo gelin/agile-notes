@@ -6,9 +6,12 @@ import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.AC
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.BODY_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.HEAD_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.NAME_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.TYPE_COLUMN;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -66,7 +69,13 @@ class ActionDao {
         Cursor cursor = db.query(
                 FOLDER_TABLE + " f JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
                 "ON (f." + ID_COLUMN + " = af." + FOLDER_ID_COLUMN + ")", 
-                null, 
+                new String[] {
+                        "f." + ID_COLUMN + " " + ID_COLUMN,
+                        "f." + FULL_NAME_COLUMN + " " + FULL_NAME_COLUMN,
+                        "f." + NAME_COLUMN + " " + NAME_COLUMN,
+                        "f." + TYPE_COLUMN + " " + TYPE_COLUMN,
+                        "f." + SORT_ORDER_COLUMN + " " + SORT_ORDER_COLUMN,
+                        }, 
                 ACTION_ID_COLUMN + " = ?",
                 new String[] {String.valueOf(actionId)},
                 null,

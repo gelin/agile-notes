@@ -1,6 +1,7 @@
 package com.lendamage.agilegtd.android.model.impl;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import android.test.AndroidTestCase;
@@ -26,6 +27,20 @@ public class SQLiteActionTest extends AndroidTestCase {
         assertEquals(2, folders.size());
         assertTrue(folders.contains(model.getRootFolder()));
         assertTrue(folders.contains(folder));
+    }
+    
+    public void testFoldersSortOrder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        folder1.getActions().add(action);
+        folder2.getActions().add(action);
+        
+        Iterator<Folder> folders = action.getFolders().iterator();
+        SQLiteFolder sqlFolder1 = (SQLiteFolder)folders.next();
+        SQLiteFolder sqlFolder2 = (SQLiteFolder)folders.next();
+        assertEquals(1, sqlFolder1.sortOrder);
+        assertEquals(2, sqlFolder2.sortOrder);
     }
     
     public void testGetFoldersOrder() {
