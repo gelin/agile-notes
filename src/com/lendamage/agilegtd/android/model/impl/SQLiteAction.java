@@ -8,6 +8,7 @@ import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 
-public class SQLiteAction implements Action {
+class SQLiteAction implements Action {
 
     /** DB handler */
     transient SQLiteDatabase db;
@@ -50,21 +51,20 @@ public class SQLiteAction implements Action {
     //@Override
     public Set<Folder> getFolders() {
         assert(this.id != 0);
-        Cursor cursor = db.query(
-                FOLDER_TABLE + " f JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
-                "ON (f." + ID_COLUMN + " = af." + FOLDER_ID_COLUMN + ")", 
-                null, 
-                ACTION_ID_COLUMN + " = ?",
-                new String[] {String.valueOf(this.id)},
-                null,
-                null,
-                "f." + SORT_ORDER_COLUMN + " ASC");
-        List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
-        while (cursor.moveToNext()) {
-            result.add(FolderDao.getFolder(db, cursor));
+        db.beginTransaction();
+        try {
+            Cursor cursor = ActionDao.selectFolders(db, this.id);
+            List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
+            while (cursor.moveToNext()) {
+                result.add(FolderDao.getFolder(db, cursor));
+            }
+            Collections.sort(result, new SQLiteFolderComparator(db));
+            this.folders.setFolders(result);
+            cursor.close();
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
-        this.folders.setFolders(result);
-        cursor.close();
         return this.folders;
     }
 

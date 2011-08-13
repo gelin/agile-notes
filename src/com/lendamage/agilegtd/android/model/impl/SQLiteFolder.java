@@ -21,7 +21,7 @@ import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Path;
 
-public class SQLiteFolder implements Folder {
+class SQLiteFolder implements Folder {
 
     /** DB handler */
     transient SQLiteDatabase db;
@@ -34,6 +34,8 @@ public class SQLiteFolder implements Folder {
     String name;
     /** Type */
     FolderType type;
+    /** Sort older */
+    long sortOrder;
     /** List of folders */
     SQLiteFolderList folders;
     /** List of actions */
@@ -97,40 +99,38 @@ public class SQLiteFolder implements Folder {
     //@Override
     public List<Folder> getFolders() {
         assert(this.id != 0);
-        Cursor cursor = db.query(FOLDER_TABLE, 
-                null, 
-                FOLDER_ID_COLUMN + " = ?",
-                new String[] {String.valueOf(this.id)},
-                null,
-                null,
-                SORT_ORDER_COLUMN + " ASC");
-        List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
-        while (cursor.moveToNext()) {
-            result.add(FolderDao.getFolder(db, cursor));
+        db.beginTransaction();
+        try {
+            Cursor cursor = FolderDao.selectFolders(db, this.id);
+            List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
+            while (cursor.moveToNext()) {
+                result.add(FolderDao.getFolder(db, cursor));
+            }
+            this.folders.setFolders(result);
+            cursor.close();
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
-        this.folders.setFolders(result);
-        cursor.close();
         return this.folders;
     }
     
     //@Override
     public List<Action> getActions() {
         assert(this.id != 0);
-        Cursor cursor = db.query(
-                ACTION_TABLE + " a JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
-                        "ON (a." + ID_COLUMN + " = af." + ACTION_ID_COLUMN + ")", 
-                null, 
-                FOLDER_ID_COLUMN + " = ?",
-                new String[] {String.valueOf(this.id)},
-                null,
-                null,
-                SORT_ORDER_COLUMN + " ASC");
-        List<SQLiteAction> result = new ArrayList<SQLiteAction>();
-        while (cursor.moveToNext()) {
-            result.add(ActionDao.getAction(db, cursor));
+        db.beginTransaction();
+        try {
+            Cursor cursor = FolderDao.selectActions(db, this.id);
+            List<SQLiteAction> result = new ArrayList<SQLiteAction>();
+            while (cursor.moveToNext()) {
+                result.add(ActionDao.getAction(db, cursor));
+            }
+            this.actions.setActions(result);
+            cursor.close();
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
-        this.actions.setActions(result);
-        cursor.close();
         return this.actions;
     }
 

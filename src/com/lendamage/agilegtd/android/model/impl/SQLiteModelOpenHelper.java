@@ -11,7 +11,7 @@ import com.lendamage.agilegtd.model.FolderType;
 /**
  *  Helper to open our SQLite database.
  */
-public class SQLiteModelOpenHelper extends SQLiteOpenHelper {
+class SQLiteModelOpenHelper extends SQLiteOpenHelper {
 
     /** Version of database schema */
     private static final int DATABASE_VERSION = 1;

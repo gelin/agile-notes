@@ -1,5 +1,8 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_ID_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_IN_FOLDER_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
@@ -104,6 +107,38 @@ class FolderDao {
     }
     
     /**
+     *  Returns cursor over all subfolders.
+     */
+    static Cursor selectFolders(SQLiteDatabase db, long folderId) {
+        assert(db != null);
+        assert(folderId != 0);
+        return db.query(FOLDER_TABLE, 
+                null, 
+                FOLDER_ID_COLUMN + " = ?",
+                new String[] {String.valueOf(folderId)},
+                null,
+                null,
+                SORT_ORDER_COLUMN + " ASC");
+    }
+    
+    /**
+     *  Returns cursor over all actions.
+     */
+    static Cursor selectActions(SQLiteDatabase db, long folderId) {
+        assert(db != null);
+        assert(folderId != 0);
+        return db.query(
+                ACTION_TABLE + " a JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
+                "ON (a." + ID_COLUMN + " = af." + ACTION_ID_COLUMN + ")", 
+                null, 
+                FOLDER_ID_COLUMN + " = ?",
+                new String[] {String.valueOf(folderId)},
+                null,
+                null,
+                SORT_ORDER_COLUMN + " ASC");
+    }
+    
+    /**
      *  Returns the folder from the current cursor position.
      */
     static SQLiteFolder getFolder(SQLiteDatabase db, Cursor cursor) {
@@ -119,6 +154,7 @@ class FolderDao {
         if (type != null) {
             result.type = FolderType.valueOf(type);
         }
+        result.sortOrder = cursor.getLong(cursor.getColumnIndexOrThrow(SORT_ORDER_COLUMN));
         return result;
     }
     

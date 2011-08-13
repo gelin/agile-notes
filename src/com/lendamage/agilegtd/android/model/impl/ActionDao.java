@@ -5,6 +5,7 @@ import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.AC
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.BODY_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.HEAD_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
@@ -62,13 +63,15 @@ class ActionDao {
     static Cursor selectFolders(SQLiteDatabase db, long actionId) {
         assert(db != null);
         assert(actionId != 0);
-        Cursor cursor = db.query(ACTION_IN_FOLDER_TABLE, 
+        Cursor cursor = db.query(
+                FOLDER_TABLE + " f JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
+                "ON (f." + ID_COLUMN + " = af." + FOLDER_ID_COLUMN + ")", 
                 null, 
                 ACTION_ID_COLUMN + " = ?",
                 new String[] {String.valueOf(actionId)},
                 null,
                 null,
-                null);
+                "f." + SORT_ORDER_COLUMN + " ASC");
         return cursor;
     }
     
