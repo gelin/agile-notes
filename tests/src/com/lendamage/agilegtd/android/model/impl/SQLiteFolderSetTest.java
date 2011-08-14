@@ -1,5 +1,10 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import java.util.Set;
+
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
+
 import android.test.AndroidTestCase;
 
 public class SQLiteFolderSetTest extends AndroidTestCase {
@@ -11,29 +16,27 @@ public class SQLiteFolderSetTest extends AndroidTestCase {
         model = new SQLiteModel(getContext(), "agile-gtd-test.db");
     }
     
-    /*
     public void testAddRemove() {
-        Folder parent = model.getRootFolder().newFolder("parent", null);
-        Folder child1 = parent.newFolder("child1", null);
-        Folder child2 = parent.newFolder("child2", null);
-        //parent.getFolders().add(child1);
-        //parent.getFolders().add(child2);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Action action = model.getRootFolder().newAction("action", null);
         
-        List<Folder> children = parent.getFolders();
-        assertEquals(child1, children.get(0));
-        assertEquals(child2, children.get(1));
-        children.remove(0);
-        List<Folder> children2 = parent.getFolders();
-        assertEquals(1, children2.size());
-        assertEquals(child2, children.get(0));
-        Folder child3 = parent.newFolder("child3", null);
-        //children2.add(child3);
-        List<Folder> children3 = parent.getFolders();
-        assertEquals(2, children3.size());
-        assertEquals(child2, children3.get(0));
-        assertEquals(child3, children3.get(1));
+        Set<Folder> folders1 = action.getFolders();
+        assertEquals(1, folders1.size());
+        assertTrue(folders1.contains(model.getRootFolder()));
+        
+        folders1.add(folder);
+        Set<Folder> folders2 = action.getFolders();
+        assertEquals(2, folders2.size());
+        assertTrue(folders2.contains(model.getRootFolder()));
+        assertTrue(folders2.contains(folder));
+        
+        folders2.remove(folder);
+        Set<Folder> folders3 = action.getFolders();
+        assertEquals(1, folders3.size());
+        assertTrue(folders3.contains(model.getRootFolder()));
     }
     
+    /*
     public void testAddAll() {
         Folder child1 = model.getRootFolder().newFolder("child1", null);
         Folder child2 = model.getRootFolder().newFolder("child2", null);

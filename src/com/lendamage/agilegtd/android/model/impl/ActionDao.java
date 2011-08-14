@@ -35,7 +35,7 @@ class ActionDao {
         SQLiteAction result = new SQLiteAction(db, id);
         result.head = head;
         result.body = body;
-        replaceActionFolder(db, folderId, result);
+        replaceActionInFolder(db, folderId, result.id);
         return result;
     }
     
@@ -122,14 +122,13 @@ class ActionDao {
     /**
      *  Inserts or updates the actions to folder assignment.
      */
-    static void replaceActionFolder(SQLiteDatabase db, long folderId, SQLiteAction action) {
+    static void replaceActionInFolder(SQLiteDatabase db, long folderId, long actionId) {
         assert(db != null);
-        assert(action != null);
-        assert(action.id != 0);
         assert(folderId != 0);
+        assert(actionId != 0);
         ContentValues values = new ContentValues();
         values.put(FOLDER_ID_COLUMN, folderId);
-        values.put(ACTION_ID_COLUMN, action.id);
+        values.put(ACTION_ID_COLUMN, actionId);
         db.replaceOrThrow(ACTION_IN_FOLDER_TABLE, null, values);
     }
     

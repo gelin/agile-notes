@@ -1,6 +1,7 @@
 package com.lendamage.agilegtd.android.model.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -34,33 +35,27 @@ class SQLiteFolderSet implements Set<Folder> {
      *  Inserts the folder to the action.
      */
     public boolean add(Folder folder) {
-        /*  TODO
         if (!(folder instanceof SQLiteFolder)) {
             throw new UnsupportedOperationException("cannot add not-SQLite folder");
         }
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
         db.beginTransaction();
         try {
-            addFolder(this.folders.size(), sqlFolder);
+            addFolder(sqlFolder);
             updateOrder();
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
         return true;
-        */
-        return false;
     }
-    /*
-    void addFolder(int location, SQLiteFolder folder) {
-        FolderDao.updateFolderParent(this.db, folder, this.id);
+
+    void addFolder(SQLiteFolder folder) {
+        ActionDao.replaceActionInFolder(db, folder.id, this.id);
         this.folders.remove(folder);
-        if (location > this.folders.size()) {
-            location = this.folders.size();
-        }
-        this.folders.add(location, folder);
+        this.folders.add(folder);
     }
-    */
+    
     /**
      *  Assigns the folders to the action.
      */
@@ -128,15 +123,19 @@ class SQLiteFolderSet implements Set<Folder> {
      *  Deletes assignment between folder and action. 
      */
     public boolean remove(Object object) {
-        /*  TODO
-        int index = this.folders.indexOf(object);
-        if (index < 0) {
+        if (!this.folders.contains(object)) {
             return false;
         }
-        remove(index);
+        SQLiteFolder folder = (SQLiteFolder)object;
+        db.beginTransaction();
+        try {
+            ActionDao.deleteActionFromFolder(db, folder.id, this.id);
+            this.folders.remove(object);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
         return true;
-        */
-        return false;
     }
     /**
      *  Throws UnsupportedOpeartionException.
@@ -160,6 +159,10 @@ class SQLiteFolderSet implements Set<Folder> {
     }
     public <T> T[] toArray(T[] array) {
         return this.folders.toArray(array);
+    }
+    
+    void updateOrder() {
+        Collections.sort(this.folders, new SQLiteFolderComparator(db));
     }
 
 }
