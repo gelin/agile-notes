@@ -1,8 +1,11 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lendamage.agilegtd.model.Folder;
@@ -40,8 +43,22 @@ public class SQLiteModel implements Model {
     
     //@Override
     public List<Folder> findFolders(FolderType type) {
-        //TODO: implement
-        return null;
+        List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
+        db.beginTransaction();
+        try {
+            Cursor cursor = FolderDao.selectFolders(db, type);
+            while (cursor.moveToNext()) {
+                result.add(FolderDao.getFolder(db, cursor));
+            }
+            Collections.sort(result, new SQLiteFolderComparator(db));
+            cursor.close();
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        List<Folder> typedResult = new ArrayList<Folder>();
+        typedResult.addAll(result);
+        return Collections.unmodifiableList(typedResult);
     }
 
 }

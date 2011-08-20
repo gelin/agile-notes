@@ -1,7 +1,10 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import java.util.List;
+
 import android.test.AndroidTestCase;
 
+import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
 
@@ -104,6 +107,56 @@ public class SQLiteModelTest extends AndroidTestCase {
         assertNotNull(model2.getRootFolder());
         assertNotNull(model2.getFolder(new SimplePath("parent")));
         assertNotNull(model2.getFolder(new SimplePath("parent/child")));
+    }
+    
+    public void testFindFoldersRoot() {
+        List<Folder> folders = model.findFolders(FolderType.ROOT);
+        assertEquals(model.getRootFolder(), folders.get(0));
+    }
+    
+    public void testFindFoldersCompleted() {
+        Folder completed1 = model.getRootFolder().newFolder("Completed1", FolderType.COMPLETED);
+        Folder completed2 = model.getRootFolder().newFolder("Completed2", FolderType.COMPLETED);
+        List<Folder> folders = model.findFolders(FolderType.COMPLETED);
+        assertEquals(2, folders.size());
+        assertEquals(completed1, folders.get(0));
+        assertEquals(completed2, folders.get(1));
+    }
+    
+    public void testFindFoldersNull() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        List<Folder> folders = model.findFolders(null);
+        assertEquals(2, folders.size());
+        assertEquals(folder1, folders.get(0));
+        assertEquals(folder2, folders.get(1));
+    }
+    
+    public void testFindFoldersOrder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        model.getRootFolder().getFolders().add(0, folder2);
+        List<Folder> folders = model.findFolders(null);
+        assertEquals(2, folders.size());
+        assertEquals(folder2, folders.get(0));
+        assertEquals(folder1, folders.get(1));
+    }
+    
+    public void testFindFoldersOrder2() {
+        Folder parent1 = model.getRootFolder().newFolder("parent1", null);
+        Folder parent2 = model.getRootFolder().newFolder("parent2", null);
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        model.getRootFolder().getFolders().add(0, parent2);
+        parent1.getFolders().add(folder2);
+        parent1.getFolders().add(folder1);
+        
+        List<Folder> folders = model.findFolders(null);
+        assertEquals(4, folders.size());
+        assertEquals(parent2, folders.get(0));
+        assertEquals(parent1, folders.get(1));
+        assertEquals(folder2, folders.get(2));
+        assertEquals(folder1, folders.get(3));
     }
 
 }

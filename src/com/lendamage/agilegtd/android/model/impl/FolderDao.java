@@ -122,6 +122,29 @@ class FolderDao {
     }
     
     /**
+     *  Returns cursor over all folders of specified type.
+     */
+    static Cursor selectFolders(SQLiteDatabase db, FolderType type) {
+        assert(db != null);
+        String selection;
+        String[] selectionArgs;
+        if (type == null) {
+            selection = TYPE_COLUMN + " IS NULL";
+            selectionArgs = null;
+        } else {
+            selection = TYPE_COLUMN + " = ?";
+            selectionArgs = new String[] { String.valueOf(type) };
+        }
+        return db.query(FOLDER_TABLE, 
+                null, 
+                selection,
+                selectionArgs,
+                null,
+                null,
+                SORT_ORDER_COLUMN + " ASC, " + ID_COLUMN + " ASC");
+    }
+    
+    /**
      *  Returns cursor over all actions.
      */
     static Cursor selectActions(SQLiteDatabase db, long folderId) {
