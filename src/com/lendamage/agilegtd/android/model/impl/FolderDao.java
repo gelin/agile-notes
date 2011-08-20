@@ -3,9 +3,11 @@ package com.lendamage.agilegtd.android.model.impl;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_IN_FOLDER_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.BODY_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.HEAD_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.NAME_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
@@ -113,12 +115,15 @@ class FolderDao {
         assert(db != null);
         assert(folderId != 0);
         return db.query(FOLDER_TABLE, 
-                null, 
+                new String[] {
+                    ID_COLUMN, FULL_NAME_COLUMN, NAME_COLUMN, TYPE_COLUMN, SORT_ORDER_COLUMN,
+                    "ifnull(" + SORT_ORDER_COLUMN + ", " + Long.MAX_VALUE + ") s"
+                },
                 FOLDER_ID_COLUMN + " = ?",
                 new String[] {String.valueOf(folderId)},
                 null,
                 null,
-                SORT_ORDER_COLUMN + " ASC, " + ID_COLUMN + " ASC");
+                "s ASC, " + ID_COLUMN + " ASC");
     }
     
     /**
@@ -130,12 +135,17 @@ class FolderDao {
         return db.query(
                 ACTION_TABLE + " a JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
                 "ON (a." + ID_COLUMN + " = af." + ACTION_ID_COLUMN + ")", 
-                null, 
+                new String[] {
+                        "a." + ID_COLUMN + " " + ID_COLUMN,
+                        "a." + HEAD_COLUMN + " " + HEAD_COLUMN,
+                        "a." + BODY_COLUMN + " " + BODY_COLUMN,
+                        "ifnull(" + SORT_ORDER_COLUMN + ", " + Long.MAX_VALUE + ") s"
+                },
                 FOLDER_ID_COLUMN + " = ?",
                 new String[] {String.valueOf(folderId)},
                 null,
                 null,
-                SORT_ORDER_COLUMN + " ASC, " + ID_COLUMN + " ASC");
+                "s ASC, " + ID_COLUMN + " ASC");
     }
     
     /**
