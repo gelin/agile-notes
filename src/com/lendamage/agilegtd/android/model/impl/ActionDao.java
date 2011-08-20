@@ -159,6 +159,15 @@ class ActionDao {
     }
     
     /**
+     *  Deletes the action and all it's associations.
+     */
+    static void deleteAction(SQLiteDatabase db, long actionId) {
+        assert(db != null);
+        assert(actionId != 0);
+        db.delete(ACTION_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(actionId) });
+    }
+    
+    /**
      *  Updates the action head and body.
      *  @throws IllegalStateException if the action to update doesn't exist
      */

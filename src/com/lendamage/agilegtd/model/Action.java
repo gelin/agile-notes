@@ -14,8 +14,10 @@ public interface Action extends Entity<Action.Editor> {
      *  The returned set is modifiable.<br>
      *  If the folder is deleted from the set, the assignment of the action with this folder is removed.<br>
      *  If the folder is added to the set, the assignment of the action with this folder is added.<br>
+     *  If the set becomes empty (for example, by clear() call), the action is effectively
+     *  deleted from model, because it becomes not assigned to any folder.<br>
      *  The order of the folders in the set equals to the "natural" order of the folders - how they are nested and
-     *  ordered withing the folders tree. The order cannot be changed here.
+     *  ordered withing the folders tree. The order cannot be changed here.<br>
      */
     Set<Folder> getFolders();
     

@@ -88,17 +88,22 @@ public class SQLiteFolderSetTest extends AndroidTestCase {
         assertEquals(3, folders2.size());
     }
     
-    /*
     public void testClear() {
-        model.getRootFolder().newFolder("child1", null);
-        model.getRootFolder().newFolder("child2", null);
+        model.getRootFolder().newFolder("folder1", null);
+        model.getRootFolder().newFolder("folder2", null);
+        SQLiteAction action = (SQLiteAction)model.getRootFolder().newAction("action", null);
         
-        assertEquals(2, model.getRootFolder().getFolders().size());
+        action.getFolders().addAll(model.getRootFolder().getFolders());
         
-        model.getRootFolder().getFolders().clear();
-        assertEquals(0, model.getRootFolder().getFolders().size());
+        assertEquals(3, action.getFolders().size());
+        
+        action.getFolders().clear();
+        assertEquals(0, action.getFolders().size());
+        
+        assertNull(ActionDao.selectAction(action.db, action.id));
     }
     
+    /*
     public void testIterator() {
         Folder child1 = model.getRootFolder().newFolder("child1", null);
         Folder child2 = model.getRootFolder().newFolder("child2", null);

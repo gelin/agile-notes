@@ -92,17 +92,15 @@ class SQLiteFolderSet implements Set<Folder> {
      *  Deletes all folders assigned to the action.
      */
     public void clear() {
-        /*  TODO
         db.beginTransaction();
         try {
-            FolderDao.deleteChildFolders(db, this.id);
+            ActionDao.deleteAction(db, this.id);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
         
         this.folders.clear();
-        */
     }
     public boolean contains(Object object) {
         return this.folders.contains(object);
