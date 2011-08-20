@@ -17,12 +17,15 @@ public class SQLiteModel implements Model {
 
     /** DB handler */
     transient SQLiteDatabase db;
+    /** Root folder */
+    SQLiteFolder root;
     
     /**
      *  Creates the model
      */
     public SQLiteModel(Context context, String dbName) {
         db = new SQLiteModelOpenHelper(context, dbName).getWritableDatabase();
+        root = FolderDao.selectRootFolder(db);
     }
     
     //@Override
@@ -32,8 +35,7 @@ public class SQLiteModel implements Model {
     
     //@Override
     public Folder getRootFolder() {
-        //TODO: optimize, root folder is always the same and is not editable
-        return FolderDao.selectRootFolder(db);
+        return root;
     }
     
     //@Override
