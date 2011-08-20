@@ -59,28 +59,27 @@ class SQLiteFolderSet implements Set<Folder> {
     /**
      *  Assigns the folders to the action.
      */
+    @SuppressWarnings("unchecked")
     public boolean addAll(Collection<? extends Folder> folders) {
-        /*  TODO
         if (folders == null || folders.isEmpty()) {
             return false;
         }
-        if (!(folders instanceof SQLiteFolderSet)) {
-            throw new UnsupportedOperationException("cannot add not-SQLiteFolderList");
+        if (folders instanceof SQLiteFolderSet) {
+            SQLiteFolderSet sqlFolders = (SQLiteFolderSet)folders;
+            if (sqlFolders.id == this.id) {
+                return false;   //no need to insert into self
+            }
+        } else if (folders instanceof SQLiteFolderList) {
+            //just accepting this type of collection
+        } else {
+            throw new UnsupportedOperationException("cannot add collection of not-SQLiteFolders");
         }
-        SQLiteFolderSet sqlFolders = (SQLiteFolderSet)folders;
-        if (sqlFolders.id == this.id) {
-            return false;   //no need to insert into self
-        }
-        Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
+        Iterator<SQLiteFolder> i = (Iterator<SQLiteFolder>)folders.iterator();
         db.beginTransaction();
         try {
             while (i.hasNext()) {
                 SQLiteFolder folder = i.next();
-                if (folder.id == this.id) {
-                    continue;
-                }
-                i.remove();
-                addFolder(this.folders.size(), folder);
+                addFolder(folder);
             }
             updateOrder();
             db.setTransactionSuccessful();
@@ -88,8 +87,6 @@ class SQLiteFolderSet implements Set<Folder> {
             db.endTransaction();
         }
         return true;
-        */
-        return false;
     }
     /**
      *  Deletes all folders assigned to the action.
