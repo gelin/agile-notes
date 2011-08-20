@@ -32,7 +32,7 @@ class SQLiteFolderSetIterator implements Iterator<Folder> {
         if (!inBounds()) {
             throw new IllegalStateException();
         }
-        this.set.remove(location);
+        this.set.remove(this.set.folders.get(location));
     }
     
     boolean inBounds() {

@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import com.lendamage.agilegtd.model.Action;
@@ -117,20 +118,21 @@ public class SQLiteFolderSetTest extends AndroidTestCase {
         }
     }
     
-    /*
     public void testIteratorRemove() {
-        model.getRootFolder().newFolder("child1", null);
-        Folder child2 = model.getRootFolder().newFolder("child2", null);
-        assertEquals(2, model.getRootFolder().getFolders().size());
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        action.getFolders().add(folder);
+        assertEquals(2, action.getFolders().size());
         
-        Iterator<Folder> i = model.getRootFolder().getFolders().iterator();
+        Iterator<Folder> i = action.getFolders().iterator();
         i.next();
         i.remove();
         
-        assertEquals(1, model.getRootFolder().getFolders().size());
-        assertEquals(child2, model.getRootFolder().getFolders().get(0));
+        assertEquals(1, action.getFolders().size());
+        assertTrue(action.getFolders().contains(folder));
     }
     
+    /*
     public void testRemove() {
         Folder folder = model.getRootFolder().newFolder("folder", null);
         
