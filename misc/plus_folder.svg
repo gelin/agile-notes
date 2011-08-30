@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.1 r9760"
-   sodipodi:docname="plus-folder.svg">
+   sodipodi:docname="plus_folder.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -134,7 +134,7 @@
       <feFlood
          id="feFlood3536"
          result="result10"
-         flood-opacity="0.69999999999999996"
+         flood-opacity="1"
          flood-color="rgb(255,255,255)" />
       <feBlend
          id="feBlend3538"
@@ -210,16 +210,6 @@
          result="result2"
          in="result4" />
     </filter>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3778"
-       id="linearGradient4221"
-       x1="25"
-       y1="0"
-       x2="25"
-       y2="48"
-       gradientUnits="userSpaceOnUse"
-       spreadMethod="pad" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -269,7 +259,7 @@
      transform="translate(0,-1004.3622)"
      style="opacity:1">
     <path
-       style="fill:url(#linearGradient4221);stroke:none;fill-opacity:1;filter:url(#filter3908)"
+       style="fill:#ffffff;stroke:none;fill-opacity:1;filter:url(#filter3908)"
        d="M 7,8 C 5,8 4,9 4,11 l 0,3 0,26 40,0 0,-26 -20,0 0,-3 C 24,9 23,8 21,8 z m 15,10 5,0 0,7 7,0 0,5 -7,0 0,7 -5,0 0,-7 -7,0 0,-5 7,0 z"
        transform="translate(0,1004.3622)"
        id="rect4329"

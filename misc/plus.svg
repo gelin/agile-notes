@@ -32,11 +32,11 @@
     <linearGradient
        id="linearGradient3778">
       <stop
-         style="stop-color:#b2b2b2;stop-opacity:1;"
+         style="stop-color:#cccccc;stop-opacity:1;"
          offset="0"
          id="stop3780" />
       <stop
-         style="stop-color:#8c8c8c;stop-opacity:1;"
+         style="stop-color:#999999;stop-opacity:1;"
          offset="1"
          id="stop3782" />
     </linearGradient>
@@ -59,16 +59,6 @@
        x2="19.203911"
        y2="18.402235"
        gradientTransform="matrix(2.5361009,0,0,2.4520549,-4.8180408,-21.12329)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3778"
-       id="linearGradient3808"
-       x1="0.47366318"
-       y1="23.999998"
-       x2="47.526295"
-       y2="23.999998"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0,1.0201342,-1.0555556,0,49.333333,1003.879)" />
     <filter
        id="filter3908"
        inkscape:label="Inner Shadow"
@@ -134,7 +124,7 @@
       <feFlood
          id="feFlood3536"
          result="result10"
-         flood-opacity="0.69999999999999996"
+         flood-opacity="1"
          flood-color="rgb(255,255,255)" />
       <feBlend
          id="feBlend3538"
@@ -213,10 +203,10 @@
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#ffffff"
+     pagecolor="#808080"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="14.25"
      inkscape:cx="24"
@@ -258,7 +248,7 @@
      transform="translate(0,-1004.3622)"
      style="opacity:1">
     <path
-       style="fill:url(#linearGradient3808);fill-opacity:1;stroke:none;fill-rule:nonzero;filter:url(#filter3908)"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;fill-rule:nonzero;filter:url(#filter3908)"
        d="m 43,1028.3622 c 0,-10.4889 -8.506589,-19 -19,-19 -10.493411,0 -19,8.5111 -19,19 0,10.4889 8.506589,19 19,19 10.493411,0 19,-8.5111 19,-19 z m -6.861111,-2.5503 0,5.1006 -9.5,0 0,9.6913 -5.277778,0 0,-9.6913 -9.5,0 0,-5.1006 9.5,0 0,-9.6913 5.277778,0 0,9.6913 z"
        id="path3774"
        inkscape:connector-curvature="0"
