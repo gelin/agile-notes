@@ -9,6 +9,14 @@ gen_icon() {
     convert -resize $img_size -background transparent misc/$file_name.svg res/$res_folder/$file_name.png 
 }
 
+gen_app_icon() {
+    file_name=$1
+    
+    gen_icon $file_name 72x72 drawable-hdpi
+    gen_icon $file_name 48x48 drawable
+    gen_icon $file_name 36x36 drawable-ldpi
+}
+
 gen_action_bar_icon() {
     file_name=$1
     
@@ -17,5 +25,6 @@ gen_action_bar_icon() {
     gen_icon $file_name 24x24 drawable-ldpi
 }
 
+gen_app_icon icon
 gen_action_bar_icon plus
 gen_action_bar_icon plus_folder

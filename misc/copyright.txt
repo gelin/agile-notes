@@ -1,0 +1,9 @@
+icon.svg
+plus.svg
+plus_folder.svg
+(c) Denis Nelubin
+CC BY-SA
+
+checkbox_checked_disabled.svg
+http://www.openclipart.org/detail/96271/checkbox-checked-disabled-by-skind
+CC0 PD
