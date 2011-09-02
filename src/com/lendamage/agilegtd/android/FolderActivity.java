@@ -37,6 +37,7 @@ public class FolderActivity extends Activity {
                 showDialog(ADD_FOLDER_DIALOG);
             }
         });
+        //TODO: choose the folder
     }
     
     @Override
@@ -77,6 +78,7 @@ public class FolderActivity extends Activity {
                 }
             });
             Dialog dialog = builder.create();
+            //TODO: fix dialog height
             //http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/java/android/preference/DialogPreference.java;h=bbad2b6d432ce44ad05ddbc44487000b150135ef;hb=HEAD
             Window window = dialog.getWindow();
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE |
