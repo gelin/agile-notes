@@ -24,8 +24,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_margin">0px</item>
+        <item name="android:padding">4sp</item>
+        <!-- 
         <item name="android:paddingLeft">2sp</item>
         <item name="android:paddingRight">2sp</item>
+        -->
         <item name="android:background">@drawable/action_bar_button_bg</item>
         <item name="android:scaleType">fitCenter</item>
         <item name="android:adjustViewBounds">true</item>
