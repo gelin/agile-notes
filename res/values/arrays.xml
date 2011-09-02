@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="folder_types_names">
+        <item>@string/project_folder</item>
+        <item>@string/context_folder</item>
+        <item>@string/priority_folder</item>
+        <item>@string/person_folder</item>
+        <item>@string/projects_folder</item>
+        <item>@string/contexts_folder</item>
+        <item>@string/priorities_folder</item>
+        <item>@string/persons_folder</item>
+        <item>@string/inbox_folder</item>
+        <item>@string/trash_folder</item>
+        <item>@string/completed_folder</item>
+    </string-array>
+    <string-array name="folder_types_values">
+        <item>PROJECT</item>
+        <item>CONTEXT</item>
+        <item>PRIORITY</item>
+        <item>PERSON</item>
+        <item>PROJECTS</item>
+        <item>CONTEXTS</item>
+        <item>PRIORITIES</item>
+        <item>PERSONS</item>
+        <item>INBOX</item>
+        <item>TRASH</item>
+        <item>COMPLETED</item>
+    </string-array>
+</resources>

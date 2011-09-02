@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Agile GTD</string>
+    <string name="add_folder">Add folder</string>
+    <string name="create_folder">Create folder</string>
+    <string name="project_folder">Project</string>
+    <string name="context_folder">Context</string>
+    <string name="priority_folder">Priority</string>
+    <string name="person_folder">Person</string>
+    <string name="projects_folder">Projects</string>
+    <string name="contexts_folder">Contexts</string>
+    <string name="priorities_folder">Priorities</string>
+    <string name="persons_folder">Persons</string>
+    <string name="inbox_folder">Inbox</string>
+    <string name="trash_folder">Trash</string>
+    <string name="completed_folder">Completed</string>
 </resources>

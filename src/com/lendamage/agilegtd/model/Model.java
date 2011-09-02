@@ -23,5 +23,10 @@ public interface Model {
      *  @return unmodifiable list
      */
     List<Folder> findFolders(FolderType type);
+    
+    /**
+     *  Closes the model. All unsaved changes are saved, further modifications are errorneous.
+     */
+    void close();
 
 }

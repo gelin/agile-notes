@@ -60,5 +60,9 @@ public class SQLiteModel implements Model {
         typedResult.addAll(result);
         return Collections.unmodifiableList(typedResult);
     }
+    
+    public void close() {
+        db.close();
+    }
 
 }
