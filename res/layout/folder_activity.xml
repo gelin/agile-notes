@@ -17,4 +17,9 @@
                 android:src="@drawable/plus"/>
     </LinearLayout>
     
+    <ListView android:id="@+id/folders_actions"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    </ListView>
+    
 </LinearLayout>

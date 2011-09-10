@@ -1,12 +1,15 @@
 package com.lendamage.agilegtd.android;
 
 import com.lendamage.agilegtd.android.model.impl.SQLiteModel;
+import com.lendamage.agilegtd.android.model.impl.SimplePath;
+import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.Model;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,16 +26,20 @@ public class FolderActivity extends Activity {
     
     /** Add folder dialog ID */
     private static final int ADD_FOLDER_DIALOG = 0;
+    /** Intent extra to pass folder path as a string to open specified folder */
+    public static final String FOLDER_PATH_EXTRA = FolderActivity.class.getName() + ".FOLDER_PATH_EXTRA";
     
     /** Current model */
     Model model;
+    /** Current folder */
+    Folder folder;
     
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.folder);
+        setContentView(R.layout.folder_activity);
         findViewById(R.id.add_folder_button).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 showDialog(ADD_FOLDER_DIALOG);
@@ -44,6 +52,18 @@ public class FolderActivity extends Activity {
     protected void onResume() {
         super.onResume();
         model = ModelAccessor.openModel(this);
+        Intent intent = getIntent();
+        if (intent.hasExtra(FOLDER_PATH_EXTRA)) {
+            this.folder = model.getFolder(new SimplePath(intent.getStringExtra(FOLDER_PATH_EXTRA)));
+        }
+        if (this.folder != null) {
+            setTitle(this.folder.getPath().toString());
+        }
+        if (this.folder == null) {
+            this.folder = model.getRootFolder();
+        }
+        ListView foldersActionsList = (ListView)findViewById(R.id.folders_actions);
+        foldersActionsList.setAdapter(new FolderListAdapter(this, this.folder));
     }
     
     @Override
@@ -73,8 +93,7 @@ public class FolderActivity extends Activity {
             
             builder.setPositiveButton(R.string.create_folder, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    //TODO: closer to reality
-                    model.getRootFolder().newFolder(name.getText().toString(), null);
+                    folder.newFolder(name.getText().toString(), null);
                 }
             });
             Dialog dialog = builder.create();
