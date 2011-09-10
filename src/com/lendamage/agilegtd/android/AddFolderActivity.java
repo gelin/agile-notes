@@ -6,18 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.lendamage.agilegtd.android.model.impl.SimplePath;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.Model;
 
-public class FolderActivity extends Activity {
+public class AddFolderActivity extends Activity {
     
     /** Current model */
     Model model;
-    /** Current folder */
+    /** Parent folder */
     Folder folder;
     
     /** Called when the activity is first created. */
@@ -25,20 +26,14 @@ public class FolderActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.folder_activity);
-        findViewById(R.id.add_folder_button).setOnClickListener(new OnClickListener() {
+        setContentView(R.layout.add_folder_activity);
+        findViewById(R.id.ok_button).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(FolderActivity.this, AddFolderActivity.class);
-                intent.putExtra(FOLDER_PATH_EXTRA, FolderActivity.this.folder.getPath().toString());
-                startActivity(intent);
+                createFolder();
             }
         });
-    }
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-        model = ModelAccessor.openModel(this);
+        //TODO: refactor
+        this.model = ModelAccessor.openModel(this);
         Intent intent = getIntent();
         if (intent.hasExtra(FOLDER_PATH_EXTRA)) {
             this.folder = model.getFolder(new SimplePath(intent.getStringExtra(FOLDER_PATH_EXTRA)));
@@ -49,19 +44,21 @@ public class FolderActivity extends Activity {
         if (this.folder == null) {
             this.folder = model.getRootFolder();
         }
-        ListView foldersActionsList = (ListView)findViewById(R.id.folders_actions);
-        foldersActionsList.setAdapter(new FolderListAdapter(this, this.folder));
+        
+        final Spinner type = (Spinner)findViewById(R.id.folder_type);
+        //TODO: refactor to use Enum directly
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.folder_types_names, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        type.setAdapter(adapter);
     }
     
-    @Override
-    protected void onPause() {
-        super.onPause();
-        model.close();
-    };
-    
-    private void setTitle(String title) {
-        TextView titleView = (TextView)findViewById(R.id.title);
-        titleView.setText(title);
+    void createFolder() {
+        EditText name = (EditText)findViewById(R.id.folder_name);
+        //TODO: use type
+        this.folder.newFolder(name.getText().toString(), null);
+        this.model.close();
+        finish();
     }
     
 }

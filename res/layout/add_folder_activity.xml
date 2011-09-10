@@ -4,6 +4,17 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+    
+    <LinearLayout android:id="@+id/action_bar"
+            style="@style/ActionBar">
+        <TextView android:id="@+id/title"
+                style="@style/ActionBar.Title"
+                android:text="@string/add_folder"/>
+        <ImageButton android:id="@+id/ok_button"
+                style="@style/ActionBar.Button"
+                android:src="@drawable/plus_folder"/>
+    </LinearLayout>
+    
     <TextView android:text="@string/folder_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
@@ -17,4 +28,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:prompt="@string/folder_type"/>
+
 </LinearLayout>
