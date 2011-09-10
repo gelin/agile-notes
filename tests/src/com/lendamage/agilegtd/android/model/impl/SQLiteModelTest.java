@@ -158,5 +158,13 @@ public class SQLiteModelTest extends AndroidTestCase {
         assertEquals(folder2, folders.get(2));
         assertEquals(folder1, folders.get(3));
     }
+    
+    public void testMultipleModels() {
+        model.getRootFolder().newFolder("folder", null);
+        //model.close();
+        getContext().getDatabasePath("agile-gtd-test.db").delete();
+        SQLiteModel model2 = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        assertEquals(1, model2.getRootFolder().getFolders().size());
+    }
 
 }
