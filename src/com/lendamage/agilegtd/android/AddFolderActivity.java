@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android;
 
+import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
 
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AddFolderActivity extends AbstractFolderActivity {
     
@@ -45,9 +47,19 @@ public class AddFolderActivity extends AbstractFolderActivity {
     
     void createFolder() {
         EditText name = (EditText)findViewById(R.id.folder_name);
+        if (name.length() == 0) {
+            Toast.makeText(this, R.string.enter_folder_name_error, Toast.LENGTH_LONG).show();
+            name.requestFocus();
+            return;
+        }
         Spinner type = (Spinner)findViewById(R.id.folder_type);
-        this.folder.newFolder(name.getText().toString(), (FolderType)type.getSelectedItem());
-        finish();
+        try {
+            this.folder.newFolder(name.getText().toString(), (FolderType)type.getSelectedItem());
+            finish();
+        } catch (FolderAlreadyExistsException e) {
+            Toast.makeText(this, R.string.folder_already_exists_error, Toast.LENGTH_LONG).show();
+            name.requestFocus();
+        }
     }
-    
+
 }
