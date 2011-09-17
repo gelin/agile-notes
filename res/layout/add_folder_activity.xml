@@ -12,7 +12,7 @@
                 android:text="@string/add_folder"/>
         <ImageButton android:id="@+id/ok_button"
                 style="@style/ActionBar.Button"
-                android:src="@drawable/plus_folder"/>
+                android:src="@drawable/ok"/>
     </LinearLayout>
     
     <EditText android:id="@+id/folder_name"
