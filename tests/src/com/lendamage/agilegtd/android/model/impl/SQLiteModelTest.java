@@ -2,6 +2,7 @@ package com.lendamage.agilegtd.android.model.impl;
 
 import java.util.List;
 
+import android.database.sqlite.SQLiteException;
 import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.model.Folder;
@@ -161,10 +162,20 @@ public class SQLiteModelTest extends AndroidTestCase {
     
     public void testMultipleModels() {
         model.getRootFolder().newFolder("folder", null);
-        //model.close();
-        getContext().getDatabasePath("agile-gtd-test.db").delete();
+        model.close();
         SQLiteModel model2 = new SQLiteModel(getContext(), "agile-gtd-test.db");
         assertEquals(1, model2.getRootFolder().getFolders().size());
+    }
+    
+    public void testSelectAfterClose() {
+        model.getRootFolder().newFolder("folder", null);
+        model.close();
+        try {
+            assertEquals(1, model.getRootFolder().getFolders().size());
+            fail();
+        } catch (SQLiteException e) {
+            assertTrue(e.getMessage().contains("BEGIN EXCLUSIVE"));
+        }
     }
 
 }
