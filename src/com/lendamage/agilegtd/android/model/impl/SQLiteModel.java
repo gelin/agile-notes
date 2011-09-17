@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
+import com.lendamage.agilegtd.model.ModelException;
 import com.lendamage.agilegtd.model.Path;
 
 /**
@@ -28,12 +29,29 @@ public class SQLiteModel implements Model {
      */
     public SQLiteModel(Context context, String dbName) {
         db = new SQLiteModelOpenHelper(context, dbName).getWritableDatabase();
-        root = FolderDao.selectRootFolder(db);
+        db.beginTransaction();
+        try {
+            root = FolderDao.selectRootFolder(db);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        if (root == null) {
+            throw new ModelException("no root folder");
+        }
     }
     
     //@Override
     public Folder getFolder(Path fullPath) {
-        return FolderDao.selectFolder(db, fullPath);
+        Folder result = null;
+        db.beginTransaction();
+        try {
+            result = FolderDao.selectFolder(db, fullPath);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return result;
     }
     
     //@Override

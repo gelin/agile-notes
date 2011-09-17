@@ -26,7 +26,7 @@ public class FolderListAdapter extends BaseAdapter {
     }
     
     public int getCount() {;
-        //TODO: add actions
+        //TODO: add actions.
         return folder.getFolders().size();
     }
 

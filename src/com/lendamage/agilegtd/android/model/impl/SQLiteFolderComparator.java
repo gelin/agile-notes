@@ -18,7 +18,7 @@ class SQLiteFolderComparator implements Comparator<SQLiteFolder> {
     /** Cache of the folders */
     Map<Path, SQLiteFolder> folders = new HashMap<Path, SQLiteFolder>();
     /** Database connection */
-    SQLiteDatabase db;
+    transient SQLiteDatabase db;
     
     SQLiteFolderComparator(SQLiteDatabase db) {
         this.db = db;

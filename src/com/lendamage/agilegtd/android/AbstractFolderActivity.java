@@ -23,19 +23,21 @@ public abstract class AbstractFolderActivity extends Activity {
     protected void onResume() {
         super.onResume();
         this.model = ModelAccessor.openModel(this);
+        this.folder = null;
         Intent intent = getIntent();
         if (intent.hasExtra(FOLDER_PATH_EXTRA)) {
-            this.folder = model.getFolder(new SimplePath(intent.getStringExtra(FOLDER_PATH_EXTRA)));
+            this.folder = this.model.getFolder(new SimplePath(intent.getStringExtra(FOLDER_PATH_EXTRA)));
         }
         if (this.folder == null) {
-            this.folder = model.getRootFolder();
+            this.folder = this.model.getRootFolder();
         }
+        //Log.d(TAG, "AbstractFolderActivity.onResume() model=" + this.model + " folder=" + this.folder);
     }
     
     @Override
     protected void onPause() {
         super.onPause();
-        model.close();
+        this.model.close();
     };
 
 }
