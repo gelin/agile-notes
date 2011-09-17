@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/open_folder"
+        android:title="@string/open_folder"/>
+    <item android:id="@+id/edit_folder"
+        android:title="@string/edit_folder"/>
+    <item android:id="@+id/move_up_folder"
+        android:title="@string/move_up_folder"/>
+    <item android:id="@+id/move_down_folder"
+        android:title="@string/move_down_folder"/>
+    <item android:id="@+id/delete_folder"
+        android:title="@string/delete_folder"/>
+
+</menu>
