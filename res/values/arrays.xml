@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="folder_types_names">
-        <item>@string/none</item>
+        <item>@string/folder_type_hint</item>
         <item>@string/project_folder</item>
         <item>@string/context_folder</item>
         <item>@string/priority_folder</item>

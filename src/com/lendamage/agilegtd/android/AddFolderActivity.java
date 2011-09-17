@@ -3,7 +3,6 @@ package com.lendamage.agilegtd.android;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -22,11 +21,7 @@ public class AddFolderActivity extends AbstractFolderActivity {
         });
         
         Spinner type = (Spinner)findViewById(R.id.folder_type);
-        //TODO: refactor to use Enum directly
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.folder_types_names, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        type.setAdapter(adapter);
+        type.setAdapter(new FolderTypeAdapter(this));
     }
     
     void createFolder() {

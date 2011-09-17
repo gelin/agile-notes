@@ -4,7 +4,9 @@
     <string name="add_folder">Add folder</string>
     <string name="create_folder">Create folder</string>
     <string name="folder_name">Name</string>
+    <string name="folder_name_hint">Folder Name</string>
     <string name="folder_type">Type</string>
+    <string name="folder_type_hint">&lt;Folder Type&gt;</string>
     <string name="project_folder">Project</string>
     <string name="context_folder">Context</string>
     <string name="priority_folder">Priority</string>
