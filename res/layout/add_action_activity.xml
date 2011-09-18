@@ -20,7 +20,8 @@
         android:layout_weight="1"
         android:hint="@string/action_body_hint"
         android:inputType="textMultiLine"
-        android:gravity="top"/>
+        android:gravity="top"
+        android:scrollbars="vertical"/>
     <Button android:id="@+id/ok_big_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
