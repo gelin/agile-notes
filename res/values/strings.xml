@@ -25,6 +25,7 @@
     <string name="edit_folder">Edit</string>
     <string name="move_up_folder">Move Up</string>
     <string name="move_down_folder">Move Down</string>
+    <string name="move_to_folder">Move To...</string>
     <string name="delete_folder">Delete</string>
     <string name="edit_folder_title">Edit folder</string>
     <string name="save_folder">Save folder</string>
