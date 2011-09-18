@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Agile GTD</string>
-    <string name="add_folder">Add folder</string>
+    <string name="add_folder_title">Add folder</string>
     <string name="create_folder">Create folder</string>
     <string name="folder_name">Name</string>
     <string name="folder_name_hint">Folder Name</string>
@@ -26,4 +26,6 @@
     <string name="move_up_folder">Move Up</string>
     <string name="move_down_folder">Move Down</string>
     <string name="delete_folder">Delete</string>
+    <string name="edit_folder_title">Edit folder</string>
+    <string name="save_folder">Save folder</string>
 </resources>

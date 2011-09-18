@@ -69,6 +69,29 @@ public class FolderTypeAdapter extends BaseAdapter {
         return view;
     }
     
+    /**
+     *  Helper method to bind the view, returns the position within the spinner
+     *  of the specified folder type. 
+     */
+    int getPosition(FolderType type) {
+        int nullPosition = -1;
+        int result = -1;
+        for (int i = 0; i < this.values.length; i++) {
+            FolderType value = this.values[i];
+            if (value == null && nullPosition < 0) {
+                nullPosition = i;
+            }
+            if (value != null && result < 0 && value.equals(type)) {
+                result = i;
+                return result;
+            }
+        }
+        if (result < 0) {
+            return nullPosition;
+        }
+        return result;
+    }
+    
     static FolderType[] stringsToFolderTypes(String[] strings) {
         FolderType[] result = new FolderType[strings.length];
         for (int i = 0; i < strings.length; i++) {

@@ -8,7 +8,7 @@
             style="@style/ActionBar">
         <TextView android:id="@+id/title"
                 style="@style/ActionBar.Title"
-                android:text="@string/add_folder_title"/>
+                android:text="@string/edit_folder_title"/>
         <ImageButton android:id="@+id/ok_button"
                 style="@style/ActionBar.Button"
                 android:src="@drawable/ok"/>
@@ -26,6 +26,6 @@
     <Button android:id="@+id/ok_big_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_folder"/>
+        android:text="@string/save_folder"/>
 
 </LinearLayout>

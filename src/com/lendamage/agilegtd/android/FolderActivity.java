@@ -76,7 +76,7 @@ public class FolderActivity extends AbstractFolderActivity {
           openFolder((Folder)foldersActions.getItemAtPosition(info.position));
           return true;
       case R.id.edit_folder:
-          //TODO
+          editFolder((Folder)foldersActions.getItemAtPosition(info.position));
           return true;
       case R.id.move_up_folder:
           //TODO
@@ -94,6 +94,12 @@ public class FolderActivity extends AbstractFolderActivity {
     
     void openFolder(Folder folder) {
         Intent intent = new Intent(this, FolderActivity.class);
+        intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
+        startActivity(intent);
+    }
+    
+    void editFolder(Folder folder) {
+        Intent intent = new Intent(this, EditFolderActivity.class);
         intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
         startActivity(intent);
     }

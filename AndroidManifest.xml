@@ -18,6 +18,10 @@
         <activity android:name=".AddFolderActivity"
                   android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        
+        <activity android:name=".EditFolderActivity"
+                  android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
 
     </application>
 
