@@ -1,12 +1,11 @@
 package com.lendamage.agilegtd.android;
 
-import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
-import com.lendamage.agilegtd.model.FolderType;
-
-import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
+import com.lendamage.agilegtd.model.FolderType;
 
 public class EditFolderActivity extends AbstractEditFolderActivity {
     

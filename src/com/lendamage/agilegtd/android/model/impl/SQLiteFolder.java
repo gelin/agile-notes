@@ -184,6 +184,8 @@ class SQLiteFolder implements Folder {
                 SQLiteFolder.this.name = this.name;
                 SQLiteFolder.this.path = SQLiteFolder.this.path.replaceLastSegment(this.name);
                 SQLiteFolder.this.type = this.type;
+            } catch (SQLiteConstraintException ce) {
+                throw new FolderAlreadyExistsException(ce);
             } finally {
                 db.endTransaction();
             }

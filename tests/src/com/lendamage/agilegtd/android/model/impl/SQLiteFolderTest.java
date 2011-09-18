@@ -6,6 +6,7 @@ import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
 
 public class SQLiteFolderTest extends AndroidTestCase {
@@ -119,6 +120,22 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(folder, folder2);
         assertEquals("", folder2.getName());
         assertEquals(FolderType.ROOT, folder2.getType());
+    }
+    
+    public void testEditSameName() {
+        SQLiteFolder folder = (SQLiteFolder)model.getRootFolder().newFolder("folder", null);
+        model.getRootFolder().newFolder("folder2", null);
+        
+        Folder.Editor editor = folder.edit();
+        editor.setName("folder2");
+        
+        try {
+            editor.commit();
+            fail();
+        } catch (FolderAlreadyExistsException e) {
+            //pass
+        }
+        assertNotNull(model.getFolder(new SimplePath("folder")));
     }
     
     public void testNewFolderOrder() {
