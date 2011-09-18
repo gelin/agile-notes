@@ -29,4 +29,7 @@
     <string name="delete_folder">Delete</string>
     <string name="edit_folder_title">Edit folder</string>
     <string name="save_folder">Save folder</string>
+    <string name="delete_folder_confirm">Are you sure want to delete this folder? All subfolders and actions will be permanently destroyed.</string>
+    <string name="delete_button">Delete</string>
+    <string name="cancel_button">Cancel</string>
 </resources>

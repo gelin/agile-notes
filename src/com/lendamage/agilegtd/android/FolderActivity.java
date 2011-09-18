@@ -6,6 +6,9 @@ import java.util.List;
 
 import com.lendamage.agilegtd.model.Folder;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -22,6 +25,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class FolderActivity extends AbstractFolderActivity {
 
+    /** Delete folder confirmation dialog */
+    static final int DELETE_FOLDER_CONFIRM_DIALOG = 0;
+    
+    /** Folder to delete */
+    Folder folderToDelete = null;
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,8 +105,12 @@ public class FolderActivity extends AbstractFolderActivity {
         case R.id.move_down_folder:
             moveDownFolder(folder);
             return true;
-        case R.id.delete_folder:
+        case R.id.move_to_folder:
             //TODO
+            return true;
+        case R.id.delete_folder:
+            this.folderToDelete = folder;
+            showDialog(DELETE_FOLDER_CONFIRM_DIALOG);
             return true;
         default:
             return super.onContextItemSelected(item);
@@ -123,10 +136,7 @@ public class FolderActivity extends AbstractFolderActivity {
             return;
         }
         folders.add(position - 1, folder);
-        
-        ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
-        FolderListAdapter adapter = (FolderListAdapter)foldersActions.getAdapter();
-        adapter.notifyDataSetChanged();
+        updateFoldersActions();
     }
     
     void moveDownFolder(Folder folder) {
@@ -136,15 +146,53 @@ public class FolderActivity extends AbstractFolderActivity {
             return;
         }
         folders.add(position + 1, folder);
-        
+        updateFoldersActions();
+    }
+    
+    void deleteFolder(Folder folder) {
+        this.folder.getFolders().remove(folder);
+        updateFoldersActions();
+    }
+    
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+        case DELETE_FOLDER_CONFIRM_DIALOG:
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.delete_folder).
+                    setCancelable(true).
+                    setMessage(R.string.delete_folder_confirm).
+                    setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            deleteFolder(FolderActivity.this.folderToDelete);
+                        }
+                    }).
+                    setNegativeButton(R.string.cancel_button, null);
+            return builder.create();
+        default:
+            return super.onCreateDialog(id);
+        }
+    }
+    
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        super.onPrepareDialog(id, dialog);
+        switch (id) {
+        case DELETE_FOLDER_CONFIRM_DIALOG:
+            dialog.setTitle(this.folderToDelete.getName());
+            return;
+        }
+    };
+
+    void setTitle(String title) {
+        TextView titleView = (TextView)findViewById(R.id.title);
+        titleView.setText(title);
+    }
+    
+    void updateFoldersActions() {
         ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
         FolderListAdapter adapter = (FolderListAdapter)foldersActions.getAdapter();
         adapter.notifyDataSetChanged();
-    }
-
-    private void setTitle(String title) {
-        TextView titleView = (TextView)findViewById(R.id.title);
-        titleView.setText(title);
     }
 
 }
