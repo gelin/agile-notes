@@ -23,6 +23,12 @@ import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ *  Activity which displays the folder content: subfolders and activities.
+ *  The path to the folder to display is passed in extra.
+ *  If no path is passed, the root folder is displayed.
+ *  It's the start activity of the application.
+ */
 public class FolderActivity extends AbstractFolderActivity {
 
     /** Delete folder confirmation dialog */
@@ -40,6 +46,14 @@ public class FolderActivity extends AbstractFolderActivity {
         findViewById(R.id.add_folder_button).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(FolderActivity.this, AddFolderActivity.class);
+                intent.putExtra(FOLDER_PATH_EXTRA, FolderActivity.this.folder.getPath().toString());
+                startActivity(intent);
+            }
+        });
+        
+        findViewById(R.id.add_action_button).setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(FolderActivity.this, AddActionActivity.class);
                 intent.putExtra(FOLDER_PATH_EXTRA, FolderActivity.this.folder.getPath().toString());
                 startActivity(intent);
             }

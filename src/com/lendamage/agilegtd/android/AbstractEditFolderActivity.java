@@ -10,6 +10,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ *  Base activity for the activities which changes the folder.
+ */
 abstract class AbstractEditFolderActivity extends AbstractFolderActivity {
     
     /** Called when the activity is first created. */

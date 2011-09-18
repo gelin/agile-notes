@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 /**
- *  Adapter which represents the list of subfolders and actions withing the
+ *  Adapter which represents the list of subfolders and actions within the
  *  specified folder.
  */
 public class FolderListAdapter extends BaseAdapter {

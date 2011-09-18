@@ -5,6 +5,10 @@ import android.content.Context;
 import com.lendamage.agilegtd.android.model.impl.SQLiteModel;
 import com.lendamage.agilegtd.model.Model;
 
+/**
+ *  Convenience class to create the model
+ *  under specified path.
+ */
 class ModelAccessor {
     
     /** Database name */

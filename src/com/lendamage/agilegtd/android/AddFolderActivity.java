@@ -7,6 +7,10 @@ import android.widget.Toast;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
 
+/**
+ *  Activity to add a new folder.
+ *  The path to the parent folder is passed in extra.
+ */
 public class AddFolderActivity extends AbstractEditFolderActivity {
 
     @Override

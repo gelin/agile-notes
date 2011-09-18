@@ -7,6 +7,10 @@ import android.widget.Toast;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
 
+/**
+ *  Activity to edit already existed folder.
+ *  The path to the folder is passed in extra.
+ */
 public class EditFolderActivity extends AbstractEditFolderActivity {
     
     boolean binded = false;

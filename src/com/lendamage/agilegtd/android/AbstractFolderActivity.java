@@ -9,7 +9,7 @@ import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.Model;
 
 /**
- *  Common class for activites which works with the folder and
+ *  Base class for activites which works with the folder and
  *  takes the folder path in intent.
  */
 abstract class AbstractFolderActivity extends Activity {

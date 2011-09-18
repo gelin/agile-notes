@@ -2,7 +2,6 @@ package com.lendamage.agilegtd.android.model.impl;
 
 import java.util.List;
 
-import android.database.sqlite.SQLiteException;
 import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.model.Folder;

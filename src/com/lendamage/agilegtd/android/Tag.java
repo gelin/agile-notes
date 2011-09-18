@@ -1,5 +1,8 @@
 package com.lendamage.agilegtd.android;
 
+/**
+ *  This class contains the tag for logging.
+ */
 public class Tag {
     
     /** Tag for logging */
