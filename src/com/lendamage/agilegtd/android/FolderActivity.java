@@ -2,6 +2,8 @@ package com.lendamage.agilegtd.android;
 
 import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
 
+import java.util.List;
+
 import com.lendamage.agilegtd.model.Folder;
 
 import android.content.Intent;
@@ -24,8 +26,8 @@ public class FolderActivity extends AbstractFolderActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.folder_activity);
+        
         findViewById(R.id.add_folder_button).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(FolderActivity.this, AddFolderActivity.class);
@@ -57,39 +59,49 @@ public class FolderActivity extends AbstractFolderActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenuInfo menuInfo) {
-      super.onCreateContextMenu(menu, v, menuInfo);
-      MenuInflater inflater = getMenuInflater();
-      inflater.inflate(R.menu.folder_menu, menu);
-      
-      View itemView = ((AdapterContextMenuInfo)menuInfo).targetView;
-      TextView folderName = (TextView)itemView.findViewById(R.id.folder_name);
-      menu.setHeaderTitle(folderName.getText());
-
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.folder_menu, menu);
+        
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
+        ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
+        FolderListAdapter adapter = (FolderListAdapter)foldersActions.getAdapter();
+        if (adapter.isFirstFolder(info.position)) {
+            menu.findItem(R.id.move_up_folder).setEnabled(false);
+        }
+        if (adapter.isLastFolder(info.position)) {
+            menu.findItem(R.id.move_down_folder).setEnabled(false);
+        }
+        
+        //TODO: add action
+        Folder folder = (Folder)foldersActions.getItemAtPosition(info.position);
+        menu.setHeaderTitle(folder.getName());
     }
     
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-      AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-      ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
-      switch (item.getItemId()) {
-      case R.id.open_folder:
-          openFolder((Folder)foldersActions.getItemAtPosition(info.position));
-          return true;
-      case R.id.edit_folder:
-          editFolder((Folder)foldersActions.getItemAtPosition(info.position));
-          return true;
-      case R.id.move_up_folder:
-          //TODO
-          return true;
-      case R.id.move_down_folder:
-          //TODO
-          return true;
-      case R.id.delete_folder:
-          //TODO
-          return true;
-      default:
-        return super.onContextItemSelected(item);
-      }
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
+        Folder folder = (Folder)foldersActions.getItemAtPosition(info.position);
+        switch (item.getItemId()) {
+        case R.id.open_folder:
+            openFolder(folder);
+            return true;
+        case R.id.edit_folder:
+            editFolder(folder);
+            return true;
+        case R.id.move_up_folder:
+            moveUpFolder(folder);
+            return true;
+        case R.id.move_down_folder:
+            moveDownFolder(folder);
+            return true;
+        case R.id.delete_folder:
+            //TODO
+            return true;
+        default:
+            return super.onContextItemSelected(item);
+        }
     }
     
     void openFolder(Folder folder) {
@@ -102,6 +114,32 @@ public class FolderActivity extends AbstractFolderActivity {
         Intent intent = new Intent(this, EditFolderActivity.class);
         intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
         startActivity(intent);
+    }
+    
+    void moveUpFolder(Folder folder) {
+        List<Folder> folders = this.folder.getFolders();
+        int position = folders.indexOf(folder);
+        if (position <= 0) {
+            return;
+        }
+        folders.add(position - 1, folder);
+        
+        ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
+        FolderListAdapter adapter = (FolderListAdapter)foldersActions.getAdapter();
+        adapter.notifyDataSetChanged();
+    }
+    
+    void moveDownFolder(Folder folder) {
+        List<Folder> folders = this.folder.getFolders();
+        int position = folders.indexOf(folder);
+        if (position >= folders.size()) {
+            return;
+        }
+        folders.add(position + 1, folder);
+        
+        ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
+        FolderListAdapter adapter = (FolderListAdapter)foldersActions.getAdapter();
+        adapter.notifyDataSetChanged();
     }
 
     private void setTitle(String title) {

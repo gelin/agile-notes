@@ -52,5 +52,21 @@ public class FolderListAdapter extends BaseAdapter {
         
         return view;
     }
+    
+    /**
+     *  Checks that the specified position is the position of the first folder.
+     */
+    boolean isFirstFolder(int position) {
+        //TODO: add actions
+        return position == 0;
+    }
+    
+    /**
+     *  Checks that the specified position is the position of the last folder.
+     */
+    boolean isLastFolder(int position) {
+        //TODO: add actions
+        return position == getCount() - 1;
+    }
 
 }
