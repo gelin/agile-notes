@@ -173,8 +173,8 @@ public class SQLiteModelTest extends AndroidTestCase {
         try {
             assertEquals(1, model.getRootFolder().getFolders().size());
             fail();
-        } catch (SQLiteException e) {
-            assertTrue(e.getMessage().contains("BEGIN EXCLUSIVE"));
+        } catch (IllegalStateException e) {
+            assertTrue(e.getMessage().contains("closed"));
         }
     }
 

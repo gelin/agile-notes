@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_IN_FOLDER_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
@@ -23,7 +24,7 @@ import com.lendamage.agilegtd.model.Path;
 class FolderDao {
 
     static SQLiteFolder insertFolder(SQLiteDatabase db, long parentId, String name, FolderType type) {
-        assert(db != null);
+        checkDb(db);
         assert(parentId != 0);
         assert(name != null);
         SQLiteFolder parent = selectFolder(db, parentId);
@@ -48,7 +49,7 @@ class FolderDao {
      *  Returns the folder by ID.
      */
     static SQLiteFolder selectFolder(SQLiteDatabase db, long id) {
-        assert(db != null);
+        checkDb(db);
         assert(id != 0);
         Cursor cursor = db.query(FOLDER_TABLE, 
                 null, 
@@ -69,7 +70,7 @@ class FolderDao {
      *  Returns the folder by path.
      */
     static SQLiteFolder selectFolder(SQLiteDatabase db, Path path) {
-        assert(db != null);
+        checkDb(db);
         assert(path != null);
         Cursor cursor = db.query(FOLDER_TABLE, 
                 null, 
@@ -90,7 +91,7 @@ class FolderDao {
      *  Returns root folder by type.
      */
     static SQLiteFolder selectRootFolder(SQLiteDatabase db) {
-        assert(db != null);
+        checkDb(db);
         Cursor cursor = db.query(FOLDER_TABLE, 
                 null, 
                 TYPE_COLUMN + " = ?",
@@ -110,7 +111,7 @@ class FolderDao {
      *  Returns cursor over all subfolders.
      */
     static Cursor selectFolders(SQLiteDatabase db, long folderId) {
-        assert(db != null);
+        checkDb(db);
         assert(folderId != 0);
         return db.query(FOLDER_TABLE, 
                 null, 
@@ -125,7 +126,7 @@ class FolderDao {
      *  Returns cursor over all folders of specified type.
      */
     static Cursor selectFolders(SQLiteDatabase db, FolderType type) {
-        assert(db != null);
+        checkDb(db);
         String selection;
         String[] selectionArgs;
         if (type == null) {
@@ -148,7 +149,7 @@ class FolderDao {
      *  Returns cursor over all actions.
      */
     static Cursor selectActions(SQLiteDatabase db, long folderId) {
-        assert(db != null);
+        checkDb(db);
         assert(folderId != 0);
         return db.query(
                 ACTION_TABLE + " a JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
@@ -165,7 +166,7 @@ class FolderDao {
      *  Returns the folder from the current cursor position.
      */
     static SQLiteFolder getFolder(SQLiteDatabase db, Cursor cursor) {
-        assert(db != null);
+        checkDb(db);
         assert(cursor != null);
         assert(!cursor.isClosed() && !cursor.isBeforeFirst() && !cursor.isAfterLast());
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(ID_COLUMN));
@@ -187,7 +188,7 @@ class FolderDao {
      *  @throws IllegalStateException if the folder to update doesn't exist
      */
     static void updateFolderParent(SQLiteDatabase db, SQLiteFolder folder, long parentId) throws IllegalStateException {
-        assert(db != null);
+        checkDb(db);
         assert(folder != null);
         assert(folder.id != 0);
         assert(parentId != 0);
@@ -213,7 +214,7 @@ class FolderDao {
      *  @throws IllegalStateException if the folder to update doesn't exist
      */
     static void updateFolderOrder(SQLiteDatabase db, SQLiteFolder folder, int order) throws IllegalStateException {
-        assert(db != null);
+        checkDb(db);
         assert(folder != null);
         assert(folder.id != 0);
         ContentValues values = new ContentValues();
@@ -230,7 +231,7 @@ class FolderDao {
      *  @throws IllegalStateException if the folder to update doesn't exist
      */
     static void updateFolder(SQLiteDatabase db, SQLiteFolder folder, String name, FolderType type) throws IllegalStateException {
-        assert(db != null);
+        checkDb(db);
         assert(folder != null);
         assert(folder.id != 0);
         assert(folder.path != null);
@@ -255,7 +256,7 @@ class FolderDao {
      *  Deletes the folder.
      */
     static void deleteFolder(SQLiteDatabase db, long id) {
-        assert(db != null);
+        checkDb(db);
         assert(id != 0);
         db.delete(FOLDER_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(id) });
     }
@@ -264,7 +265,7 @@ class FolderDao {
      *  Deletes all child folder.
      */
     static void deleteChildFolders(SQLiteDatabase db, long parentId) {
-        assert(db != null);
+        checkDb(db);
         assert(parentId != 0);
         db.delete(FOLDER_TABLE, FOLDER_ID_COLUMN + " = ?", new String[] { String.valueOf(parentId) });
     }

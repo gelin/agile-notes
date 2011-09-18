@@ -1,5 +1,7 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,7 @@ class SQLiteFolder implements Folder {
     //@Override
     public Action newAction(String head, String body) {
         assert(head != null);
+        checkDb(db);
         db.beginTransaction();
         try {
             SQLiteAction result = ActionDao.insertAction(db, this.id, head, body);
@@ -76,6 +79,7 @@ class SQLiteFolder implements Folder {
         if (FolderType.ROOT.equals(type)) {
             throw new FolderAlreadyExistsException("root already exists");
         }
+        checkDb(db);
         db.beginTransaction();
         try {
             SQLiteFolder result = FolderDao.insertFolder(db, this.id, name, type);
@@ -91,6 +95,7 @@ class SQLiteFolder implements Folder {
     //@Override
     public List<Folder> getFolders() {
         assert(this.id != 0);
+        checkDb(db);
         db.beginTransaction();
         try {
             Cursor cursor = FolderDao.selectFolders(db, this.id);
@@ -110,6 +115,7 @@ class SQLiteFolder implements Folder {
     //@Override
     public List<Action> getActions() {
         assert(this.id != 0);
+        checkDb(db);
         db.beginTransaction();
         try {
             Cursor cursor = FolderDao.selectActions(db, this.id);
@@ -177,6 +183,7 @@ class SQLiteFolder implements Folder {
         }
 
         public void commit() {
+            checkDb(db);
             db.beginTransaction();
             try {
                 FolderDao.updateFolder(db, SQLiteFolder.this, this.name, this.type);

@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_ID_COLUMN;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_IN_FOLDER_TABLE;
 import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
@@ -22,7 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 class ActionDao {
 
     static SQLiteAction insertAction(SQLiteDatabase db, long folderId, String head, String body) {
-        assert(db != null);
+        checkDb(db);
         assert(folderId != 0);
         assert(head != null);
         
@@ -43,8 +44,9 @@ class ActionDao {
      *  Returns the action by ID.
      */
     static SQLiteAction selectAction(SQLiteDatabase db, long id) {
-        assert(db != null);
+        checkDb(db);
         assert(id != 0);
+        
         Cursor cursor = db.query(ACTION_TABLE, 
                 null, 
                 ID_COLUMN + " = ?",
@@ -64,8 +66,9 @@ class ActionDao {
      *  Returns the action's folders cursor by the action ID.
      */
     static Cursor selectFolders(SQLiteDatabase db, long actionId) {
-        assert(db != null);
+        checkDb(db);
         assert(actionId != 0);
+        
         Cursor cursor = db.query(
                 FOLDER_TABLE + " f JOIN " + ACTION_IN_FOLDER_TABLE + " af " +
                 "ON (f." + ID_COLUMN + " = af." + FOLDER_ID_COLUMN + ")", 
@@ -88,7 +91,7 @@ class ActionDao {
      *  Returns the action from the current cursor position.
      */
     static SQLiteAction getAction(SQLiteDatabase db, Cursor cursor) {
-        assert(db != null);
+        checkDb(db);
         assert(cursor != null);
         assert(!cursor.isClosed() && !cursor.isBeforeFirst() && !cursor.isAfterLast());
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(ID_COLUMN));
@@ -103,7 +106,7 @@ class ActionDao {
      *  If the action doesn't exists in any folder, remove it.
      */
     static void deleteActionFromFolder(SQLiteDatabase db, long folderId, long actionId) {
-        assert(db != null);
+        checkDb(db);
         assert(folderId != 0);
         assert(actionId != 0);
         db.delete(ACTION_IN_FOLDER_TABLE, 
@@ -123,7 +126,7 @@ class ActionDao {
      *  Inserts or updates the actions to folder assignment.
      */
     static void replaceActionInFolder(SQLiteDatabase db, long folderId, long actionId) {
-        assert(db != null);
+        checkDb(db);
         assert(folderId != 0);
         assert(actionId != 0);
         ContentValues values = new ContentValues();
@@ -137,7 +140,7 @@ class ActionDao {
      *  @throws IllegalStateException if the action to update doesn't exist
      */
     static void updateActionOrder(SQLiteDatabase db, SQLiteAction action, int order) throws IllegalStateException {
-        assert(db != null);
+        checkDb(db);
         assert(action != null);
         assert(action.id != 0);
         ContentValues values = new ContentValues();
@@ -153,7 +156,7 @@ class ActionDao {
      *  Deletes all actions from the folder.
      */
     static void deleteActionsFromFolder(SQLiteDatabase db, long folderId) {
-        assert(db != null);
+        checkDb(db);
         assert(folderId != 0);
         db.delete(ACTION_IN_FOLDER_TABLE, FOLDER_ID_COLUMN + " = ?", new String[] { String.valueOf(folderId) });
     }
@@ -162,7 +165,7 @@ class ActionDao {
      *  Deletes the action and all it's associations.
      */
     static void deleteAction(SQLiteDatabase db, long actionId) {
-        assert(db != null);
+        checkDb(db);
         assert(actionId != 0);
         db.delete(ACTION_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(actionId) });
     }
@@ -172,7 +175,7 @@ class ActionDao {
      *  @throws IllegalStateException if the action to update doesn't exist
      */
     static void updateAction(SQLiteDatabase db, SQLiteAction action, String head, String body) throws IllegalStateException {
-        assert(db != null);
+        checkDb(db);
         assert(action != null);
         assert(action.id != 0);
         assert(head != null);

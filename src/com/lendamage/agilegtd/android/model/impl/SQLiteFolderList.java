@@ -1,5 +1,7 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +40,7 @@ class SQLiteFolderList implements List<Folder> {
             throw new UnsupportedOperationException("cannot add not-SQLite folder");
         }
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
+        checkDb(db);
         db.beginTransaction();
         try {
             addFolder(this.folders.size(), sqlFolder);
@@ -56,6 +59,7 @@ class SQLiteFolderList implements List<Folder> {
             throw new UnsupportedOperationException("cannot add not-SQLite folder");
         }
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
+        checkDb(db);
         db.beginTransaction();
         try {
             addFolder(location, sqlFolder);
@@ -88,6 +92,7 @@ class SQLiteFolderList implements List<Folder> {
             return false;   //no need to insert into self
         }
         Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
+        checkDb(db);
         db.beginTransaction();
         try {
             while (i.hasNext()) {
@@ -120,6 +125,7 @@ class SQLiteFolderList implements List<Folder> {
             return false;   //no need to insert into self
         }
         ListIterator<SQLiteFolder> i = sqlFolders.folders.listIterator(sqlFolders.folders.size());
+        checkDb(db);
         db.beginTransaction();
         try {
             while (i.hasPrevious()) {   //inserting in reverse order to the same position
@@ -141,6 +147,7 @@ class SQLiteFolderList implements List<Folder> {
      *  Deletes all subfolders.
      */
     public void clear() {
+        checkDb(db);
         db.beginTransaction();
         try {
             FolderDao.deleteChildFolders(db, this.id);
@@ -191,6 +198,7 @@ class SQLiteFolderList implements List<Folder> {
      */
     public Folder remove(int location) {
         SQLiteFolder folder = this.folders.get(location);
+        checkDb(db);
         db.beginTransaction();
         try {
             FolderDao.deleteFolder(this.db, folder.id);
@@ -237,6 +245,7 @@ class SQLiteFolderList implements List<Folder> {
         }
         SQLiteFolder newFolder = (SQLiteFolder)folder;
         SQLiteFolder oldFolder = this.folders.set(location, newFolder);
+        checkDb(db);
         db.beginTransaction();
         try {
             FolderDao.updateFolderParent(db, newFolder, this.id);

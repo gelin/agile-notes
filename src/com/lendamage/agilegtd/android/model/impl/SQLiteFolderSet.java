@@ -1,5 +1,7 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -39,6 +41,7 @@ class SQLiteFolderSet implements Set<Folder> {
             throw new UnsupportedOperationException("cannot add not-SQLite folder");
         }
         SQLiteFolder sqlFolder = (SQLiteFolder)folder;
+        checkDb(db);
         db.beginTransaction();
         try {
             addFolder(sqlFolder);
@@ -75,6 +78,7 @@ class SQLiteFolderSet implements Set<Folder> {
             throw new UnsupportedOperationException("cannot add collection of not-SQLiteFolders");
         }
         Iterator<SQLiteFolder> i = (Iterator<SQLiteFolder>)folders.iterator();
+        checkDb(db);
         db.beginTransaction();
         try {
             while (i.hasNext()) {
@@ -92,6 +96,7 @@ class SQLiteFolderSet implements Set<Folder> {
      *  Deletes all folders assigned to the action.
      */
     public void clear() {
+        checkDb(db);
         db.beginTransaction();
         try {
             ActionDao.deleteAction(db, this.id);
@@ -122,6 +127,7 @@ class SQLiteFolderSet implements Set<Folder> {
             return false;
         }
         SQLiteFolder folder = (SQLiteFolder)object;
+        checkDb(db);
         db.beginTransaction();
         try {
             ActionDao.deleteActionFromFolder(db, folder.id, this.id);

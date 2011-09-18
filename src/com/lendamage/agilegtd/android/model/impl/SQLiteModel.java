@@ -1,5 +1,7 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +31,7 @@ public class SQLiteModel implements Model {
      */
     public SQLiteModel(Context context, String dbName) {
         db = new SQLiteModelOpenHelper(context, dbName).getWritableDatabase();
+        checkDb(db);
         db.beginTransaction();
         try {
             root = FolderDao.selectRootFolder(db);
@@ -44,6 +47,7 @@ public class SQLiteModel implements Model {
     //@Override
     public Folder getFolder(Path fullPath) {
         Folder result = null;
+        checkDb(db);
         db.beginTransaction();
         try {
             result = FolderDao.selectFolder(db, fullPath);
@@ -62,6 +66,7 @@ public class SQLiteModel implements Model {
     //@Override
     public List<Folder> findFolders(FolderType type) {
         List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
+        checkDb(db);
         db.beginTransaction();
         try {
             Cursor cursor = FolderDao.selectFolders(db, type);

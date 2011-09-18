@@ -1,5 +1,7 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +40,7 @@ class SQLiteActionList implements List<Action> {
             throw new UnsupportedOperationException("cannot add not-SQLite action");
         }
         SQLiteAction sqlAction = (SQLiteAction)action;
+        checkDb(db);
         db.beginTransaction();
         try {
             addAction(this.actions.size(), sqlAction);
@@ -56,6 +59,7 @@ class SQLiteActionList implements List<Action> {
             throw new UnsupportedOperationException("cannot add not-SQLite action");
         }
         SQLiteAction sqlAction = (SQLiteAction)action;
+        checkDb(db);
         db.beginTransaction();
         try {
             addAction(location, sqlAction);
@@ -88,6 +92,7 @@ class SQLiteActionList implements List<Action> {
             return false;   //no need to insert into self
         }
         Iterator<SQLiteAction> i = sqlActions.actions.iterator();
+        checkDb(db);
         db.beginTransaction();
         try {
             while (i.hasNext()) {
@@ -116,6 +121,7 @@ class SQLiteActionList implements List<Action> {
             return false;   //no need to insert into self
         }
         ListIterator<SQLiteAction> i = sqlActions.actions.listIterator(sqlActions.actions.size());
+        checkDb(db);
         db.beginTransaction();
         try {
             while (i.hasPrevious()) {   //inserting in reverse order to the same position
@@ -133,6 +139,7 @@ class SQLiteActionList implements List<Action> {
      *  Deletes all assignments of actions from this folder.
      */
     public void clear() {
+        checkDb(db);
         db.beginTransaction();
         try {
             ActionDao.deleteActionsFromFolder(db, this.id);
@@ -182,6 +189,7 @@ class SQLiteActionList implements List<Action> {
     public Action remove(int location) {
         SQLiteAction action = this.actions.get(location);
         Action result = null;
+        checkDb(db);
         db.beginTransaction();
         try {
             ActionDao.deleteActionFromFolder(this.db, this.id, action.id);
@@ -225,6 +233,7 @@ class SQLiteActionList implements List<Action> {
         }
         SQLiteAction newAction = (SQLiteAction)action;
         SQLiteAction oldAction = this.actions.set(location, newAction);
+        checkDb(db);
         db.beginTransaction();
         try {
             ActionDao.replaceActionInFolder(db, this.id, newAction.id);

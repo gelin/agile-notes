@@ -1,5 +1,7 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +46,7 @@ class SQLiteAction implements Action {
     //@Override
     public Set<Folder> getFolders() {
         assert(this.id != 0);
+        checkDb(db);
         db.beginTransaction();
         try {
             Cursor cursor = ActionDao.selectFolders(db, this.id);
@@ -109,6 +112,7 @@ class SQLiteAction implements Action {
         }
 
         public void commit() {
+            checkDb(db);
             db.beginTransaction();
             try {
                 ActionDao.updateAction(db, SQLiteAction.this, this.head, this.body);
