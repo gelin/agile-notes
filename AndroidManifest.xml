@@ -16,15 +16,18 @@
         </activity>
         
         <activity android:name=".AddFolderActivity"
-                  android:theme="@android:style/Theme.NoTitleBar">
+                  android:theme="@android:style/Theme.NoTitleBar"
+                  android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         
         <activity android:name=".EditFolderActivity"
-                  android:theme="@android:style/Theme.NoTitleBar">
+                  android:theme="@android:style/Theme.NoTitleBar"
+                  android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         
         <activity android:name=".AddActionActivity"
-                  android:theme="@android:style/Theme.NoTitleBar">
+                  android:theme="@android:style/Theme.NoTitleBar"
+                  android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
 
     </application>
