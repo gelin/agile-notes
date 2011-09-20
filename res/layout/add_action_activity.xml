@@ -14,14 +14,19 @@
                 android:src="@drawable/ok"/>
     </LinearLayout>
     
-    <EditText android:id="@+id/action_body"
+    <com.lendamage.agilegtd.android.ResizableFrameLayout
+        android:id="@+id/action_body_frame"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="@string/action_body_hint"
-        android:inputType="textMultiLine"
-        android:gravity="top"
-        android:scrollbars="vertical"/>
+        android:layout_weight="1">
+        <EditText android:id="@+id/action_body"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:hint="@string/action_body_hint"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:scrollbars="vertical"/>
+    </com.lendamage.agilegtd.android.ResizableFrameLayout>
     <Button android:id="@+id/ok_big_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -1,7 +1,10 @@
 package com.lendamage.agilegtd.android;
 
 import android.os.Bundle;
-import android.view.WindowManager.LayoutParams;
+import android.view.View;
+
+import com.lendamage.agilegtd.android.ResizableFrameLayout.OnMeasureListener;
+import com.lendamage.agilegtd.android.ResizableFrameLayout.OnSizeChangedListener;
 
 /**
  *  Activity to add a new action.
@@ -14,24 +17,20 @@ public class AddActionActivity extends AbstractFolderActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_action_activity);
-    }
-    
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        System.out.println(this.getClass().getName() + ".onWindowFocusChanged(): " + hasFocus);
-    }
-    
-    @Override
-    public void onWindowAttributesChanged(LayoutParams params) {
-        super.onWindowAttributesChanged(params);
-        System.out.println(this.getClass().getName() + ".onWindowAttributesChanged(): " + params);
-    }
-    
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        System.out.println(this.getClass().getName() + ".onAttachedToWindow()");
+        
+        final int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
+        final View button = findViewById(R.id.ok_big_button);
+        final ResizableFrameLayout bodyFrame = (ResizableFrameLayout)findViewById(R.id.action_body_frame);
+        bodyFrame.setOnMeasureListener(new OnMeasureListener() {
+            public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+                int height = View.MeasureSpec.getSize(heightMeasureSpec);
+                if (((float)height / screenHeight) < 0.7) {  //height is less than 70%
+                    button.setVisibility(View.GONE);
+                } else {
+                    button.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
 }
