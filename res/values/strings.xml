@@ -35,4 +35,5 @@
     <string name="add_action_title">Add action</string>
     <string name="action_body_hint">Type action description here</string>
     <string name="create_action">Create action</string>
+    <string name="enter_action_body_error">Please enter the action body.</string>
 </resources>

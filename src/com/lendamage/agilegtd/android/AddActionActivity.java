@@ -2,9 +2,11 @@ package com.lendamage.agilegtd.android;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.lendamage.agilegtd.android.ResizableFrameLayout.OnMeasureListener;
-import com.lendamage.agilegtd.android.ResizableFrameLayout.OnSizeChangedListener;
 
 /**
  *  Activity to add a new action.
@@ -31,6 +33,35 @@ public class AddActionActivity extends AbstractFolderActivity {
                 }
             }
         });
+        
+        OnClickListener okListener = new OnClickListener() {
+            public void onClick(View v) {
+                if (!validate()) {
+                    return;
+                }
+                onOkClick();
+            }
+        };
+        findViewById(R.id.ok_button).setOnClickListener(okListener);
+        findViewById(R.id.ok_big_button).setOnClickListener(okListener);
     }
-
+    
+    boolean validate() {
+        EditText body = (EditText)findViewById(R.id.action_body);
+        if (body.length() == 0) {
+            Toast.makeText(this, R.string.enter_action_body_error, Toast.LENGTH_LONG).show();
+            body.requestFocus();
+            return false;
+        }
+        return true;
+    }
+    
+    void onOkClick() {
+        EditText body = (EditText)findViewById(R.id.action_body);
+        String actionBody = body.getText().toString();
+        String actionHead = ActionHelper.getHeadFromBody(actionBody);
+        this.folder.newAction(actionHead, actionBody);
+        finish();
+    }
+    
 }
