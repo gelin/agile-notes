@@ -67,5 +67,31 @@ ActionHelper.getHeadFromBody(
 ActionHelper.getHeadFromBody(
 "AbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghij"));
     }
+    
+    @Test
+    public void testSentenceWithExclamation() {
+        assertEquals("Abc def!", ActionHelper.getHeadFromBody("Abc def! Igk lmn?"));
+    }
+    
+    @Test
+    public void testLongSentenceWithExclamation() {
+        assertEquals(
+"Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def", 
+ActionHelper.getHeadFromBody(
+"Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def! Igk lmn!"));
+    }
+    
+    @Test
+    public void testSentenceWithQuery() {
+        assertEquals("Abc def?", ActionHelper.getHeadFromBody("Abc def? Igk lmn!"));
+    }
+    
+    @Test
+    public void testLongSentenceWithQuery() {
+        assertEquals(
+"Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def", 
+ActionHelper.getHeadFromBody(
+"Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def Abc def? Igk lmn!?"));
+    }
 
 }
