@@ -159,5 +159,19 @@ public class FolderListAdapter extends BaseAdapter {
     boolean isLastFolder(int position) {
         return isFolder(position) && position == this.folders.size() - 1;
     }
+    
+    /**
+     *  Checks that the specified position is the position of the first action.
+     */
+    boolean isFirstAction(int position) {
+        return !isFolder(position) && position == this.folders.size();
+    }
+    
+    /**
+     *  Checks that the specified position is the position of the last action.
+     */
+    boolean isLastAction(int position) {
+        return !isFolder(position) && position == this.folders.size() + this.actions.size();
+    }
 
 }

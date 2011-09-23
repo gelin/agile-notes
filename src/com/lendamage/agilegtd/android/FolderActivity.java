@@ -4,6 +4,7 @@ import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
 
 import java.util.List;
 
+import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 
 import android.app.AlertDialog;
@@ -63,8 +64,12 @@ public class FolderActivity extends AbstractFolderActivity {
         registerForContextMenu(foldersActions);
         foldersActions.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: add action
-                openFolder((Folder)parent.getItemAtPosition(position));
+                FolderListAdapter adapter = (FolderListAdapter)parent.getAdapter();
+                if (adapter.isFolder(position)) {
+                    openFolder((Folder)parent.getItemAtPosition(position));
+                } else {
+                    openAction((Action)parent.getItemAtPosition(position));
+                }
             }
         });
     }
@@ -83,41 +88,59 @@ public class FolderActivity extends AbstractFolderActivity {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.folder_menu, menu);
-        
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
         ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
         FolderListAdapter adapter = (FolderListAdapter)foldersActions.getAdapter();
-        if (adapter.isFirstFolder(info.position)) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo)menuInfo;
+        if (adapter.isFolder(info.position)) {
+            createFolderContextMenu(adapter, info.position, menu);
+        } else {
+            createActionContextMenu(adapter, info.position, menu);
+        }
+    }
+    
+    void createFolderContextMenu(FolderListAdapter adapter, int position, ContextMenu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.folder_menu, menu);
+        if (adapter.isFirstFolder(position)) {
             menu.findItem(R.id.move_up_folder).setEnabled(false);
         }
-        if (adapter.isLastFolder(info.position)) {
+        if (adapter.isLastFolder(position)) {
             menu.findItem(R.id.move_down_folder).setEnabled(false);
         }
-        
-        //TODO: add action
-        Folder folder = (Folder)foldersActions.getItemAtPosition(info.position);
+        Folder folder = (Folder)adapter.getItem(position);
         menu.setHeaderTitle(folder.getName());
+    }
+    
+    void createActionContextMenu(FolderListAdapter adapter, int position, ContextMenu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_menu, menu);
+        if (adapter.isFirstAction(position)) {
+            menu.findItem(R.id.move_up_action).setEnabled(false);
+        }
+        if (adapter.isLastAction(position)) {
+            menu.findItem(R.id.move_down_action).setEnabled(false);
+        }
+        Action action = (Action)adapter.getItem(position);
+        menu.setHeaderTitle(action.getHead());
     }
     
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
-        Folder folder = (Folder)foldersActions.getItemAtPosition(info.position);
+        Object itemObject = foldersActions.getItemAtPosition(info.position);
         switch (item.getItemId()) {
         case R.id.open_folder:
-            openFolder(folder);
+            openFolder((Folder)itemObject);
             return true;
         case R.id.edit_folder:
-            editFolder(folder);
+            editFolder((Folder)itemObject);
             return true;
         case R.id.move_up_folder:
-            moveUpFolder(folder);
+            moveUpFolder((Folder)itemObject);
             return true;
         case R.id.move_down_folder:
-            moveDownFolder(folder);
+            moveDownFolder((Folder)itemObject);
             return true;
         case R.id.move_to_folder:
             //TODO
@@ -125,6 +148,21 @@ public class FolderActivity extends AbstractFolderActivity {
         case R.id.delete_folder:
             this.folderToDelete = folder;
             showDialog(DELETE_FOLDER_CONFIRM_DIALOG);
+            return true;
+        case R.id.open_action:
+            openAction((Action)itemObject);
+            return true;
+        case R.id.move_up_action:
+            //TODO
+            return true;
+        case R.id.move_down_action:
+            //TODO
+            return true;
+        case R.id.copy_to_action:
+            //TODO
+            return true;
+        case R.id.delete_action:
+            //TODO
             return true;
         default:
             return super.onContextItemSelected(item);
@@ -166,6 +204,13 @@ public class FolderActivity extends AbstractFolderActivity {
     void deleteFolder(Folder folder) {
         this.folder.getFolders().remove(folder);
         updateFoldersActions();
+    }
+    
+    void openAction(Action action) {
+        //TODO
+        //Intent intent = new Intent(this, ViewActionActivity.class);
+        //intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
+        //startActivity(intent);
     }
     
     @Override

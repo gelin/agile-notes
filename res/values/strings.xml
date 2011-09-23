@@ -36,4 +36,9 @@
     <string name="action_body_hint">Type action description here</string>
     <string name="create_action">Create action</string>
     <string name="enter_action_body_error">Please enter the action body.</string>
+    <string name="open_action">Open</string>
+    <string name="move_up_action">Move Up</string>
+    <string name="move_down_action">Move Down</string>
+    <string name="copy_to_action">Copy To...</string>
+    <string name="delete_action">Delete</string>
 </resources>
