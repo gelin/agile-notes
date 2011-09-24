@@ -1,7 +1,11 @@
 package com.lendamage.agilegtd.android;
 
+import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.Path;
+
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
@@ -37,6 +41,18 @@ public class ViewActionActivity extends AbstractActionActivity {
         titleView.setText(this.action.getHead());
         TextView bodyView = (TextView)findViewById(R.id.action_body);
         bodyView.setText(this.action.getBody());
+        
+        ViewGroup foldersView = (ViewGroup)findViewById(R.id.action_folders);
+        for (Folder folder : this.action.getFolders()) {
+            TextView folderView = new TextView(this);
+            Path path = folder.getPath();
+            if (path.isRoot()) {
+                folderView.setText(R.string.root_folder);
+            } else {
+                folderView.setText(path.toString());
+            }
+            foldersView.addView(folderView);
+        }
     }
 
 }

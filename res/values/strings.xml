@@ -43,4 +43,5 @@
     <string name="delete_action">Delete</string>
     <string name="view_action_title">Action</string>
     <string name="delete_action_confirm">Are you sure want to delete this action? The action will be permanently removed from this folder.</string>
+    <string name="root_folder">&lt;root&gt;</string>
 </resources>

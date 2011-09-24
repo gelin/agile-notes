@@ -14,7 +14,10 @@
                 android:src="@drawable/ok"/>
     </LinearLayout>
     
-    <!-- TODO: add folders -->
+    <LinearLayout android:id="@+id/action_folders"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+    </LinearLayout>
     
     <TextView android:id="@+id/action_body"
         android:layout_width="fill_parent"
