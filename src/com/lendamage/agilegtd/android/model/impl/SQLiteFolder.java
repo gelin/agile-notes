@@ -134,8 +134,7 @@ class SQLiteFolder implements Folder {
     }
     
     public FolderTree getFolderTree() {
-        //TODO
-        throw new UnsupportedOperationException();
+        return new SQLiteFolderTree(this);
     }
 
     //@Override
