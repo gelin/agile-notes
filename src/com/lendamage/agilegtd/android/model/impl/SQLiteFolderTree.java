@@ -91,6 +91,11 @@ class SQLiteFolderTree implements FolderTree {
         public boolean isLeaf() {
             return this.folders.isEmpty();
         }
+        
+        public int getDepth() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
 
         public void setExpanded(boolean expand) {
             if (this.expanded == expand) {

@@ -42,6 +42,12 @@ public interface FolderTree {
         void setExpanded(boolean expand);
         
         /**
+         *  Returns the depth of this node.
+         *  Root node has the depth = 0, it's subnodes had depth = 1, etc...
+         */
+        int getDepth();
+        
+        /**
          *  Returns the folder backed by this node.
          */
         Folder getFolder();
