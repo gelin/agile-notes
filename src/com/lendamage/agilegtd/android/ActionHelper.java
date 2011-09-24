@@ -9,10 +9,10 @@ public class ActionHelper {
     static final int MAX_HEAD_SIZE = 80;
     /** Regular expression to select the head */
     static final Pattern SENTENCE_PATTERN = Pattern.compile(
-            "\\s*(([\\w+],?[\\s&&[^\\n]]*)+?[\\.\\?\\!\\n])\\s*", 
+            "(([\\w,\\.\\?\\!][\\s&&[^\\n]]*)+?[\\.\\?\\!][\\s$])|(([\\w,\\.\\?\\!][\\s&&[^\\n]]*)+?\\n)",
             Pattern.CASE_INSENSITIVE|Pattern.UNIX_LINES);
     /** Head group number in the regexp */
-    static final int SENTENCE_GROUP = 1;
+    static final int SENTENCE_GROUP = 0;
     
     public static String getHeadFromBody(String body) {
         assert(body != null);
@@ -23,6 +23,7 @@ public class ActionHelper {
         } else {
             sentence = body.trim();
         }
+        //System.out.println(sentence);
         if (sentence.endsWith(".")) {
             sentence = sentence.substring(0, sentence.length() - 1);
         }

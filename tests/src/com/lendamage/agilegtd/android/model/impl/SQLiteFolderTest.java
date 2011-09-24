@@ -7,6 +7,7 @@ import android.test.AndroidTestCase;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
+import com.lendamage.agilegtd.model.FolderTree;
 import com.lendamage.agilegtd.model.FolderType;
 
 public class SQLiteFolderTest extends AndroidTestCase {
@@ -166,6 +167,14 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(action1, actions2.get(1));
         assertEquals(action3, actions2.get(2));
         assertEquals(action4, actions2.get(3));
+    }
+    
+    public void testGetFolderTree() {
+        FolderTree tree = model.getRootFolder().getFolderTree();
+        assertNotNull(tree);
+        assertEquals(1, tree.getCount());
+        assertNotNull(tree.getNodeByPosition(0));
+        assertTrue(tree.getNodeByPosition(0).isLeaf());
     }
 
 }
