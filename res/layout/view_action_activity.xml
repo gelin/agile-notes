@@ -9,20 +9,25 @@
         <TextView android:id="@+id/title"
                 style="@style/ActionBar.Title"
                 android:text="@string/view_action_title"/>
-        <ImageButton android:id="@+id/ok_button"
+        <ImageButton android:id="@+id/copy_button"
+                style="@style/ActionBar.Button"
+                android:src="@drawable/plus_folder"/>
+        <ImageButton android:id="@+id/edit_button"
                 style="@style/ActionBar.Button"
                 android:src="@drawable/ok"/>
+                <!-- TODO: edit icon -->
     </LinearLayout>
     
     <LinearLayout android:id="@+id/action_folders"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusable="true">
     </LinearLayout>
     
     <TextView android:id="@+id/action_body"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="top"
-        android:scrollbars="vertical"/>
+        android:focusable="true"/>
 
 </LinearLayout>

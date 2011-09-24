@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <LinearLayout android:id="@+id/action_bar"
+            style="@style/ActionBar">
+        <TextView android:id="@+id/title"
+                style="@style/ActionBar.Title"
+                android:text="@string/edit_action_title"/>
+        <ImageButton android:id="@+id/ok_button"
+                style="@style/ActionBar.Button"
+                android:src="@drawable/ok"/>
+    </LinearLayout>
+    
+    <com.lendamage.agilegtd.android.ResizableFrameLayout
+        android:id="@+id/action_body_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <EditText android:id="@+id/action_body"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:hint="@string/action_body_hint"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:scrollbars="vertical"/>
+    </com.lendamage.agilegtd.android.ResizableFrameLayout>
+    <Button android:id="@+id/ok_big_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_action"/>
+
+</LinearLayout>

@@ -1,8 +1,12 @@
 package com.lendamage.agilegtd.android;
 
+import static com.lendamage.agilegtd.android.IntentParams.ACTION_POSITION_EXTRA;
+import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
+
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.Path;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +16,7 @@ import android.widget.TextView;
 /**
  *  Activity to view the action.
  *  The path to the folder where the action is located
- *  and the position of the action withing the folder
+ *  and the position of the action within the folder
  *  are passed in extra.
  */
 public class ViewActionActivity extends AbstractActionActivity {
@@ -23,12 +27,21 @@ public class ViewActionActivity extends AbstractActionActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_action_activity);
         
-        OnClickListener okListener = new OnClickListener() {
+        OnClickListener copyListener = new OnClickListener() {
             public void onClick(View v) {
-                finish();
+                copyAction();
             }
         };
-        findViewById(R.id.ok_button).setOnClickListener(okListener);
+        findViewById(R.id.copy_button).setOnClickListener(copyListener);
+        findViewById(R.id.action_folders).setOnClickListener(copyListener);
+        
+        OnClickListener editListener = new OnClickListener() {
+            public void onClick(View v) {
+                editAction();
+            }
+        };
+        findViewById(R.id.edit_button).setOnClickListener(editListener);
+        findViewById(R.id.action_body).setOnClickListener(editListener);
     }
     
     @Override
@@ -53,6 +66,17 @@ public class ViewActionActivity extends AbstractActionActivity {
             }
             foldersView.addView(folderView);
         }
+    }
+    
+    void copyAction() {
+        //TODO
+    }
+    
+    void editAction() {
+        Intent intent = new Intent(this, EditActionActivity.class);
+        intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
+        intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(this.action));
+        startActivity(intent);
     }
 
 }

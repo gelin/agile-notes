@@ -44,4 +44,6 @@
     <string name="view_action_title">Action</string>
     <string name="delete_action_confirm">Are you sure want to delete this action? The action will be permanently removed from this folder.</string>
     <string name="root_folder">&lt;root&gt;</string>
+    <string name="edit_action_title">Edit action</string>
+    <string name="save_action">Save action</string>
 </resources>
