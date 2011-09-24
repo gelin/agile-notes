@@ -41,4 +41,5 @@
     <string name="move_down_action">Move Down</string>
     <string name="copy_to_action">Copy To...</string>
     <string name="delete_action">Delete</string>
+    <string name="view_action_title">Action</string>
 </resources>

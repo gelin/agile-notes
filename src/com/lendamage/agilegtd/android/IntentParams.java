@@ -6,6 +6,11 @@ package com.lendamage.agilegtd.android;
 public class IntentParams {
 
     /** Intent extra to pass folder path as a string to open specified folder */
-    public static final String FOLDER_PATH_EXTRA = IntentParams.class.getName() + ".FOLDER_PATH_EXTRA";
+    public static final String FOLDER_PATH_EXTRA = 
+            IntentParams.class.getName() + ".FOLDER_PATH_EXTRA";
+    
+    /** Intent extra to pass action position withing the folder */
+    public static final String ACTION_POSITION_EXTRA = 
+            IntentParams.class.getName() + ".ACTION_POSITION_EXTRA";
     
 }

@@ -29,6 +29,10 @@
                   android:theme="@android:style/Theme.NoTitleBar"
                   android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
+        
+        <activity android:name=".ViewActionActivity"
+                  android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
 
     </application>
 

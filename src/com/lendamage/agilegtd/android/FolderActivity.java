@@ -1,11 +1,9 @@
 package com.lendamage.agilegtd.android;
 
+import static com.lendamage.agilegtd.android.IntentParams.ACTION_POSITION_EXTRA;
 import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
 
 import java.util.List;
-
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,6 +21,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
 
 /**
  *  Activity which displays the folder content: subfolders and activities.
@@ -207,10 +208,10 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void openAction(Action action) {
-        //TODO
-        //Intent intent = new Intent(this, ViewActionActivity.class);
-        //intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
-        //startActivity(intent);
+        Intent intent = new Intent(this, ViewActionActivity.class);
+        intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
+        intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(action));
+        startActivity(intent);
     }
     
     @Override
