@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
+import com.lendamage.agilegtd.model.FolderTree;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Path;
 
@@ -130,6 +131,11 @@ class SQLiteFolder implements Folder {
             db.endTransaction();
         }
         return this.actions;
+    }
+    
+    public FolderTree getFolderTree() {
+        //TODO
+        throw new UnsupportedOperationException();
     }
 
     //@Override

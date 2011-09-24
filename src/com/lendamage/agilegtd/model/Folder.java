@@ -67,6 +67,12 @@ public interface Folder extends Entity<Folder.Editor> {
      */
     FolderType getType();
     
+    /**
+     *  Returns the folder tree starting from this folder.
+     *  The implementation can throw {@link UnsupportedOperationException}.
+     */
+    FolderTree getFolderTree();
+    
     public interface Editor extends Entity.Editor {
         
         /**
