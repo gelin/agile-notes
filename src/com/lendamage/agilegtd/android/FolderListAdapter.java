@@ -171,7 +171,7 @@ public class FolderListAdapter extends BaseAdapter {
      *  Checks that the specified position is the position of the last action.
      */
     boolean isLastAction(int position) {
-        return !isFolder(position) && position == this.folders.size() + this.actions.size();
+        return !isFolder(position) && position == this.folders.size() + this.actions.size() - 1;
     }
 
 }

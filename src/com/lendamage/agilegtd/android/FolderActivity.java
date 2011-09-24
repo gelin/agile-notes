@@ -154,10 +154,10 @@ public class FolderActivity extends AbstractFolderActivity {
             openAction((Action)itemObject);
             return true;
         case R.id.move_up_action:
-            //TODO
+            moveUpAction((Action)itemObject);
             return true;
         case R.id.move_down_action:
-            //TODO
+            moveDownAction((Action)itemObject);
             return true;
         case R.id.copy_to_action:
             //TODO
@@ -212,6 +212,26 @@ public class FolderActivity extends AbstractFolderActivity {
         intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
         intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(action));
         startActivity(intent);
+    }
+    
+    void moveUpAction(Action action) {
+        List<Action> actions = this.folder.getActions();
+        int position = actions.indexOf(action);
+        if (position <= 0) {
+            return;
+        }
+        actions.add(position - 1, action);
+        updateFoldersActions();
+    }
+    
+    void moveDownAction(Action action) {
+        List<Action> actions = this.folder.getActions();
+        int position = actions.indexOf(action);
+        if (position >= actions.size()) {
+            return;
+        }
+        actions.add(position + 1, action);
+        updateFoldersActions();
     }
     
     @Override
