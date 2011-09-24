@@ -10,16 +10,18 @@ import com.lendamage.agilegtd.model.FolderTree;
  */
 class SQLiteFolderTree implements FolderTree {
 
-    /** Root folder */
-    SQLiteFolder root;
+    /** Root node */
+    SQLiteTreeNode root;
+    /** Current count */
+    int count = 1;
     
     SQLiteFolderTree(SQLiteFolder root) {
-        this.root = root;
+        this.root = new SQLiteTreeNode(root);
+        this.root.setExpanded(true);
     }
 
     public int getCount() {
-        // TODO Auto-generated method stub
-        return 1;
+        return this.count;
     }
 
     public Node getNodeById(long id) {
@@ -28,13 +30,18 @@ class SQLiteFolderTree implements FolderTree {
     }
 
     public Node getNodeByPosition(int position) {
-        return new SQLiteTreeNode(this.root);
+        return this.root;
     }
     
-    static class SQLiteTreeNode implements FolderTree.Node {
+    void incrementCount(int inc) {
+        this.count += inc;
+    }
+    
+    class SQLiteTreeNode implements FolderTree.Node {
 
         SQLiteFolder folder;
         List<Folder> folders;
+        boolean expanded = false;
         
         public SQLiteTreeNode(SQLiteFolder folder) {
             this.folder = folder;
@@ -42,8 +49,7 @@ class SQLiteFolderTree implements FolderTree {
         }
         
         public Folder getFolder() {
-            // TODO Auto-generated method stub
-            return null;
+            return this.folder;
         }
 
         public int getId() {
@@ -52,8 +58,7 @@ class SQLiteFolderTree implements FolderTree {
         }
 
         public boolean isExpanded() {
-            // TODO Auto-generated method stub
-            return false;
+            return this.expanded;
         }
 
         public boolean isLeaf() {
@@ -61,8 +66,16 @@ class SQLiteFolderTree implements FolderTree {
         }
 
         public void setExpanded(boolean expand) {
-            // TODO Auto-generated method stub
-            
+            if (this.expanded == expand) {
+                return;
+            }
+            if (expand) {
+                this.expanded = true;
+                incrementCount(this.folders.size());
+            } else {
+                this.expanded = false;
+                incrementCount(-this.folders.size());
+            }
         }
         
     }
