@@ -14,8 +14,7 @@
                 android:src="@drawable/plus_folder"/>
         <ImageButton android:id="@+id/edit_button"
                 style="@style/ActionBar.Button"
-                android:src="@drawable/ok"/>
-                <!-- TODO: edit icon -->
+                android:src="@drawable/edit"/>
     </LinearLayout>
     
     <LinearLayout android:id="@+id/action_folders"

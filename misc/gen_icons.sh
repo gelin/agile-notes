@@ -29,3 +29,5 @@ gen_app_icon icon
 gen_action_bar_icon plus
 gen_action_bar_icon plus_folder
 gen_action_bar_icon ok
+gen_action_bar_icon edit
+
