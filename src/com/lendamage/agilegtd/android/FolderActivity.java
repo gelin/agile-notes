@@ -147,7 +147,7 @@ public class FolderActivity extends AbstractFolderActivity {
             //TODO
             return true;
         case R.id.delete_folder:
-            this.folderToDelete = folder;
+            this.folderToDelete = (Folder)itemObject;
             showDialog(DELETE_FOLDER_CONFIRM_DIALOG);
             return true;
         case R.id.open_action:
