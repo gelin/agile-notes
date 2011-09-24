@@ -31,9 +31,11 @@ abstract class AbstractFolderActivity extends Activity {
         if (intent.hasExtra(FOLDER_PATH_EXTRA)) {
             path = intent.getStringExtra(FOLDER_PATH_EXTRA);
             this.folder = this.model.getFolder(new SimplePath(path));
+            if (this.folder == null) {
+                Log.w(TAG, "folder " + path + " is not found");
+            }
         }
         if (this.folder == null) {
-            Log.w(TAG, "folder " + path + " is not found");
             this.folder = this.model.getRootFolder();
         }
         //Log.d(TAG, "AbstractFolderActivity.onResume() model=" + this.model + " folder=" + this.folder);

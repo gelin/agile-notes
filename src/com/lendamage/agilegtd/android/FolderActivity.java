@@ -35,9 +35,13 @@ public class FolderActivity extends AbstractFolderActivity {
 
     /** Delete folder confirmation dialog */
     static final int DELETE_FOLDER_CONFIRM_DIALOG = 0;
+    /** Delete action confirmation dialog */
+    static final int DELETE_ACTION_CONFIRM_DIALOG = 1;
     
     /** Folder to delete */
     Folder folderToDelete = null;
+    /** Action to delete */
+    Action actionToDelete = null;
     
     /** Called when the activity is first created. */
     @Override
@@ -163,7 +167,8 @@ public class FolderActivity extends AbstractFolderActivity {
             //TODO
             return true;
         case R.id.delete_action:
-            //TODO
+            this.actionToDelete = (Action)itemObject;
+            showDialog(DELETE_ACTION_CONFIRM_DIALOG);
             return true;
         default:
             return super.onContextItemSelected(item);
@@ -234,17 +239,33 @@ public class FolderActivity extends AbstractFolderActivity {
         updateFoldersActions();
     }
     
+    void deleteAction(Action action) {
+        this.folder.getActions().remove(action);
+        updateFoldersActions();
+    }
+    
     @Override
     protected Dialog onCreateDialog(int id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch (id) {
         case DELETE_FOLDER_CONFIRM_DIALOG:
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.delete_folder).
                     setCancelable(true).
                     setMessage(R.string.delete_folder_confirm).
                     setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             deleteFolder(FolderActivity.this.folderToDelete);
+                        }
+                    }).
+                    setNegativeButton(R.string.cancel_button, null);
+            return builder.create();
+        case DELETE_ACTION_CONFIRM_DIALOG:
+            builder.setTitle(R.string.delete_action).
+                    setCancelable(true).
+                    setMessage(R.string.delete_action_confirm).
+                    setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            deleteAction(FolderActivity.this.actionToDelete);
                         }
                     }).
                     setNegativeButton(R.string.cancel_button, null);
@@ -260,6 +281,9 @@ public class FolderActivity extends AbstractFolderActivity {
         switch (id) {
         case DELETE_FOLDER_CONFIRM_DIALOG:
             dialog.setTitle(this.folderToDelete.getName());
+            return;
+        case DELETE_ACTION_CONFIRM_DIALOG:
+            dialog.setTitle(this.actionToDelete.getHead());
             return;
         }
     };
