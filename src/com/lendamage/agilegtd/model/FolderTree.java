@@ -22,7 +22,7 @@ public interface FolderTree {
         /**
          *  Returns the ID which identifies the node.
          */
-        int getId();
+        long getId();
         
         /**
          *  Returns true if this node has no subnodes.
