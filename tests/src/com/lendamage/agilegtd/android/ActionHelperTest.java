@@ -81,4 +81,15 @@ ActionHelper.getHeadFromBody(
                 "Version 1.2.3. Cool!"));
     }
 
+    public void testSentenceWithColons() {
+        assertEquals(
+                "Blabla: bla", 
+                ActionHelper.getHeadFromBody(
+                "Blabla: bla. Cool!"));
+        assertEquals(
+                "Blabla; bla", 
+                ActionHelper.getHeadFromBody(
+                "Blabla; bla. Cool!"));
+    }
+    
 }

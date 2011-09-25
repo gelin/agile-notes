@@ -9,7 +9,8 @@ public class ActionHelper {
     static final int MAX_HEAD_SIZE = 80;
     /** Regular expression to select the head */
     static final Pattern SENTENCE_PATTERN = Pattern.compile(
-            "(([\\w,\\.\\?\\!][\\s&&[^\\n]]*)+?[\\.\\?\\!][\\s$])|(([\\w,\\.\\?\\!][\\s&&[^\\n]]*)+?\\n)",
+            "(([\\S][\\s&&[^\\n]]*)+?[\\.\\?\\!][\\s$])|(([\\S][\\s&&[^\\n]]*)+?\\n)",
+            //"([\\S&&[^\\.\\?\\!]]+[\\s&&[^\\n]]*)+[\\.\\?\\!]",
             Pattern.CASE_INSENSITIVE|Pattern.UNIX_LINES);
     /** Head group number in the regexp */
     static final int SENTENCE_GROUP = 0;
