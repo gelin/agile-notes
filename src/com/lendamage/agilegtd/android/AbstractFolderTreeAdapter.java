@@ -3,10 +3,12 @@ package com.lendamage.agilegtd.android;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderTree;
 
 /**
@@ -76,11 +78,22 @@ public abstract class AbstractFolderTreeAdapter extends BaseAdapter {
     /**
      *  Binds common (for all subclasses) item view elements.
      */
-    void bindCommonView(View view, FolderTree.Node node) {
+    void bindCommonView(View view, final FolderTree.Node node) {
         ImageView expand = (ImageView)view.findViewById(R.id.expand);
         expand.setImageLevel(node.isLeaf() ? LEVEL_LEAF : node.isExpanded() ? LEVEL_EXPANDED : LEVEL_COLLAPSED);
+        expand.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                node.setExpanded(!node.isExpanded());
+                notifyDataSetChanged();
+            }
+        });
         TextView name = (TextView)view.findViewById(R.id.folder_name);
-        name.setText(node.getFolder().getName());
+        Folder folder = node.getFolder();
+        if (folder.getPath().isRoot()) {
+            name.setText(R.string.root_folder);
+        } else {
+            name.setText(folder.getName());
+        }
         name.setPadding(node.getDepth() * DEPTH_PADDING, 
                 name.getPaddingTop(), name.getPaddingRight(), name.getPaddingBottom());
     }

@@ -26,7 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp">
+        android:layout_marginRight="10sp"
+        android:focusable="false">
     </RadioButton>
     
 </LinearLayout>
