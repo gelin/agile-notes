@@ -6,7 +6,26 @@
     
     <ListView android:id="@+id/folder_tree"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        style="@android:style/Widget.ListView.White">
     </ListView>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <Button android:id="@+id/ok"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/ok_button">
+        </Button>
+        <Button android:id="@+id/cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="@string/cancel_button">
+        </Button>
+    </LinearLayout>
     
 </LinearLayout>

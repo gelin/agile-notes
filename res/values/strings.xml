@@ -46,4 +46,5 @@
     <string name="root_folder">&lt;root&gt;</string>
     <string name="edit_action_title">Edit action</string>
     <string name="save_action">Save action</string>
+    <string name="ok_button">OK</string>
 </resources>
