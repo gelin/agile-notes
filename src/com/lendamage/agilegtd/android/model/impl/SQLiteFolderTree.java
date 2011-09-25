@@ -21,7 +21,7 @@ class SQLiteFolderTree implements FolderTree {
     List<SQLiteTreeNode> nodeList = new ArrayList<SQLiteTreeNode>();
     
     SQLiteFolderTree(SQLiteFolder root) {
-        initNodeMap(root);
+        initNodeMap(root, 0);
         this.root = nodeMap.get(root.id);
         nodeList.add(this.root);
         this.root.setExpanded(true);
@@ -39,11 +39,11 @@ class SQLiteFolderTree implements FolderTree {
         return this.root;
     }
     
-    void initNodeMap(SQLiteFolder folder) {
-        SQLiteTreeNode node = new SQLiteTreeNode(folder);
+    void initNodeMap(SQLiteFolder folder, int depth) {
+        SQLiteTreeNode node = new SQLiteTreeNode(folder, depth);
         this.nodeMap.put(folder.id, node);
         for (SQLiteFolder subfolder : node.folders) {
-            initNodeMap(subfolder);
+            initNodeMap(subfolder, depth + 1);
         }
     }
     
@@ -70,9 +70,11 @@ class SQLiteFolderTree implements FolderTree {
         SQLiteFolder folder;
         List<SQLiteFolder> folders;
         boolean expanded = false;
+        int depth = 0;
         
-        public SQLiteTreeNode(SQLiteFolder folder) {
+        public SQLiteTreeNode(SQLiteFolder folder, int depth) {
             this.folder = folder;
+            this.depth = depth;
             this.folders = ((SQLiteFolderList)folder.getFolders()).folders;
         }
         
@@ -93,8 +95,7 @@ class SQLiteFolderTree implements FolderTree {
         }
         
         public int getDepth() {
-            // TODO Auto-generated method stub
-            return 0;
+            return this.depth;
         }
 
         public void setExpanded(boolean expand) {

@@ -62,5 +62,13 @@ public class SQLiteFolderTreeTest extends AndroidTestCase {
         tree.getNodeById(root.id).setExpanded(true);
         assertEquals(5, tree.getCount());
     }
+    
+    public void testDepth() {
+        assertEquals(0, tree.getNodeById(root.id).getDepth());
+        assertEquals(1, tree.getNodeById(folder1.id).getDepth());
+        assertEquals(2, tree.getNodeById(subfolder1.id).getDepth());
+        assertEquals(1, tree.getNodeById(folder2.id).getDepth());
+        assertEquals(2, tree.getNodeById(subfolder3.id).getDepth());
+    }
 
 }
