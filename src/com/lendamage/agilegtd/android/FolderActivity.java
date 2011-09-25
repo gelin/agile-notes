@@ -148,7 +148,7 @@ public class FolderActivity extends AbstractFolderActivity {
             moveDownFolder((Folder)itemObject);
             return true;
         case R.id.move_to_folder:
-            //TODO
+            moveFolder((Folder)itemObject);
             return true;
         case R.id.delete_folder:
             this.folderToDelete = (Folder)itemObject;
@@ -205,6 +205,12 @@ public class FolderActivity extends AbstractFolderActivity {
         }
         folders.add(position + 1, folder);
         updateFoldersActions();
+    }
+    
+    void moveFolder(Folder folder) {
+        Intent intent = new Intent(this, MoveFolderActivity.class);
+        intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
+        startActivity(intent);
     }
     
     void deleteFolder(Folder folder) {
