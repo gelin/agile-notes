@@ -70,5 +70,49 @@ public class SQLiteFolderTreeTest extends AndroidTestCase {
         assertEquals(1, tree.getNodeById(folder2.id).getDepth());
         assertEquals(2, tree.getNodeById(subfolder3.id).getDepth());
     }
+    
+    public void testInitialPosition() {
+        assertEquals(root, tree.getNodeByPosition(0).getFolder());
+        assertEquals(folder1, tree.getNodeByPosition(1).getFolder());
+        assertEquals(folder2, tree.getNodeByPosition(2).getFolder());
+    }
+    
+    public void testPositionExpand() {
+        tree.getNodeById(folder1.id).setExpanded(true);
+        assertEquals(root, tree.getNodeByPosition(0).getFolder());
+        assertEquals(folder1, tree.getNodeByPosition(1).getFolder());
+        assertEquals(subfolder1, tree.getNodeByPosition(2).getFolder());
+        assertEquals(subfolder2, tree.getNodeByPosition(3).getFolder());
+        assertEquals(folder2, tree.getNodeByPosition(4).getFolder());
+        tree.getNodeById(folder2.id).setExpanded(true);
+        assertEquals(subfolder3, tree.getNodeByPosition(5).getFolder());
+        assertEquals(subfolder4, tree.getNodeByPosition(6).getFolder());
+    }
+    
+    public void testPositionCollapse() {
+        tree.getNodeById(folder1.id).setExpanded(true);
+        tree.getNodeById(folder2.id).setExpanded(true);
+        assertEquals(root, tree.getNodeByPosition(0).getFolder());
+        assertEquals(folder1, tree.getNodeByPosition(1).getFolder());
+        assertEquals(subfolder1, tree.getNodeByPosition(2).getFolder());
+        assertEquals(subfolder2, tree.getNodeByPosition(3).getFolder());
+        assertEquals(folder2, tree.getNodeByPosition(4).getFolder());
+        assertEquals(subfolder3, tree.getNodeByPosition(5).getFolder());
+        assertEquals(subfolder4, tree.getNodeByPosition(6).getFolder());
+        tree.getNodeById(folder1.id).setExpanded(false);
+        assertEquals(root, tree.getNodeByPosition(0).getFolder());
+        assertEquals(folder1, tree.getNodeByPosition(1).getFolder());
+        assertEquals(folder2, tree.getNodeByPosition(2).getFolder());
+        assertEquals(subfolder3, tree.getNodeByPosition(3).getFolder());
+        assertEquals(subfolder4, tree.getNodeByPosition(4).getFolder());
+        tree.getNodeById(root.id).setExpanded(false);
+        assertEquals(root, tree.getNodeByPosition(0).getFolder());
+        tree.getNodeById(root.id).setExpanded(true);
+        assertEquals(root, tree.getNodeByPosition(0).getFolder());
+        assertEquals(folder1, tree.getNodeByPosition(1).getFolder());
+        assertEquals(folder2, tree.getNodeByPosition(2).getFolder());
+        assertEquals(subfolder3, tree.getNodeByPosition(3).getFolder());
+        assertEquals(subfolder4, tree.getNodeByPosition(4).getFolder());
+    }
 
 }

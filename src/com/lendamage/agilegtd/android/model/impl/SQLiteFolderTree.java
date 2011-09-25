@@ -3,6 +3,7 @@ package com.lendamage.agilegtd.android.model.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import com.lendamage.agilegtd.model.Folder;
@@ -36,7 +37,7 @@ class SQLiteFolderTree implements FolderTree {
     }
 
     public Node getNodeByPosition(int position) {
-        return this.root;
+        return this.nodeList.get(position);
     }
     
     void initNodeMap(SQLiteFolder folder, int depth) {
@@ -48,9 +49,16 @@ class SQLiteFolderTree implements FolderTree {
     }
     
     void expand(SQLiteTreeNode node) {
-        for (SQLiteFolder folder : node.folders) {
+        int position = this.nodeList.indexOf(node);
+        if (position < 0) {
+            return;
+        }
+        //inserting subnodes in reverse order after the current node 
+        ListIterator<SQLiteFolder> i = node.folders.listIterator(node.folders.size());
+        while (i.hasPrevious()) {
+            SQLiteFolder folder = i.previous();
             SQLiteTreeNode subnode = this.nodeMap.get(folder.id);
-            this.nodeList.add(subnode);
+            this.nodeList.add(position + 1, subnode);
             if (subnode.isExpanded()) {
                 expand(subnode);
             }
