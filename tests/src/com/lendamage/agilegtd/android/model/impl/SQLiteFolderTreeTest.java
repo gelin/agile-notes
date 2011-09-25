@@ -114,5 +114,44 @@ public class SQLiteFolderTreeTest extends AndroidTestCase {
         assertEquals(subfolder3, tree.getNodeByPosition(3).getFolder());
         assertEquals(subfolder4, tree.getNodeByPosition(4).getFolder());
     }
+    
+    public void testNodeId() {
+        assertEquals(root.id, tree.getNodeById(root.id).getId());
+        assertEquals(folder1.id, tree.getNodeById(folder1.id).getId());
+        assertEquals(folder2.id, tree.getNodeById(folder2.id).getId());
+    }
+    
+    public void testNodeExpanded() {
+        assertTrue(tree.getNodeById(root.id).isExpanded());
+        assertFalse(tree.getNodeById(folder1.id).isExpanded());
+        tree.getNodeById(root.id).setExpanded(false);
+        assertFalse(tree.getNodeById(root.id).isExpanded());
+        tree.getNodeById(folder1.id).setExpanded(true);
+        assertTrue(tree.getNodeById(folder1.id).isExpanded());
+    }
+    
+    public void testNodeLeaf() {
+        assertFalse(tree.getNodeById(root.id).isLeaf());
+        assertFalse(tree.getNodeById(folder1.id).isLeaf());
+        assertTrue(tree.getNodeById(subfolder1.id).isLeaf());
+    }
+    
+    public void testExpandHidden() {
+        tree.getNodeById(folder1.id).setExpanded(true);
+        assertEquals(5, tree.getCount());
+        tree.getNodeById(root.id).setExpanded(false);
+        assertEquals(1, tree.getCount());
+        tree.getNodeById(folder2.id).setExpanded(true);
+        assertEquals(1, tree.getCount());
+        tree.getNodeById(root.id).setExpanded(true);
+        assertEquals(7, tree.getCount());
+        assertEquals(root, tree.getNodeByPosition(0).getFolder());
+        assertEquals(folder1, tree.getNodeByPosition(1).getFolder());
+        assertEquals(subfolder1, tree.getNodeByPosition(2).getFolder());
+        assertEquals(subfolder2, tree.getNodeByPosition(3).getFolder());
+        assertEquals(folder2, tree.getNodeByPosition(4).getFolder());
+        assertEquals(subfolder3, tree.getNodeByPosition(5).getFolder());
+        assertEquals(subfolder4, tree.getNodeByPosition(6).getFolder());
+    }
 
 }
