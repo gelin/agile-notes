@@ -3,31 +3,19 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
     
-    <ImageView 
-        android:id="@+id/expand"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:src="@drawable/expand_icon"
-        android:scaleType="center">
+    <ImageView
+        android:id="@+id/expand_icon" 
+        style="@style/TreeExpandIcon">
     </ImageView>
     
     <TextView
         android:id="@+id/folder_name"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:textSize="16sp"
-        style="@android:style/Widget.TextView.SpinnerItem">
+        style="@style/TreeItemText">
     </TextView>
     
     <RadioButton
-        android:id="@+id/check"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:focusable="false">
+        android:id="@+id/check_button"
+        style="@style/TreeCheckButton">
     </RadioButton>
     
 </LinearLayout>

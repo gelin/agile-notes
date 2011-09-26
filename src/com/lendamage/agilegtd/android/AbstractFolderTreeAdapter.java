@@ -79,7 +79,7 @@ public abstract class AbstractFolderTreeAdapter extends BaseAdapter {
      *  Binds common (for all subclasses) item view elements.
      */
     void bindCommonView(View view, final FolderTree.Node node) {
-        ImageView expand = (ImageView)view.findViewById(R.id.expand);
+        ImageView expand = (ImageView)view.findViewById(R.id.expand_icon);
         expand.setImageLevel(node.isLeaf() ? LEVEL_LEAF : node.isExpanded() ? LEVEL_EXPANDED : LEVEL_COLLAPSED);
         expand.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {

@@ -28,7 +28,7 @@ public class MoveFolderActivity extends AbstractFolderActivity {
         tree.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MoveFolderTreeAdapter adapter = (MoveFolderTreeAdapter)parent.getAdapter();
-                adapter.select(id);
+                adapter.check(id);
             }
         });
         

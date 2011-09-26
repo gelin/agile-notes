@@ -33,4 +33,31 @@
         <item name="android:scaleType">fitCenter</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
+    
+    <style name="Tree"> 
+        <!-- parent="@android:style/Widget.ListView.White">  -->
+        <!-- <item name="android:background">@android:drawable/spinner_dropdown_background</item> -->
+        <item name="android:background">@android:color/white</item>
+        <item name="android:padding">0px</item>
+        <item name="android:layout_margin">0px</item>
+    </style>
+    <style name="TreeExpandIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:src">@drawable/expand_icon</item>
+        <item name="android:scaleType">center</item>
+    </style>
+    <style name="TreeItemText" parent="@android:style/Widget.TextView.SpinnerItem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="TreeCheckButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginLeft">10sp</item>
+        <item name="android:layout_marginRight">10sp</item>
+        <item name="android:focusable">false</item>
+    </style>
 </resources>

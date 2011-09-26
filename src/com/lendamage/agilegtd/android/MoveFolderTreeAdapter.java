@@ -34,11 +34,11 @@ public class MoveFolderTreeAdapter extends AbstractFolderTreeAdapter {
 
     @Override
     protected void bindView(View view, final Node node) {
-        RadioButton radio = (RadioButton)view.findViewById(R.id.check);
+        RadioButton radio = (RadioButton)view.findViewById(R.id.check_button);
         radio.setChecked(node.getFolder().equals(this.selected));
         radio.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                select(node.getId());
+                check(node.getId());
             }
         });
         boolean enable = !node.getFolder().equals(this.current);
@@ -48,7 +48,7 @@ public class MoveFolderTreeAdapter extends AbstractFolderTreeAdapter {
         radio.setEnabled(enable);
     }
     
-    void select(long id) {
+    void check(long id) {
         this.selected = this.tree.getNodeById(id).getFolder();
         //TODO: optimize
         notifyDataSetChanged();
