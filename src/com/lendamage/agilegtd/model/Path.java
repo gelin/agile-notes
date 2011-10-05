@@ -43,6 +43,12 @@ public interface Path {
     boolean isRoot();
     
     /**
+     *  Returns true if this path is a child (or subchild) of the specified path,
+     *  i.e. it starts with the specified path.
+     */
+    boolean startsWith(Path parent);
+    
+    /**
      *  Converts path to string.
      */
     String toString();

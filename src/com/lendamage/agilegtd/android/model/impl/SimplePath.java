@@ -105,6 +105,25 @@ public class SimplePath implements Path {
     public boolean isRoot() {
         return segments.size() == 0;
     }
+    
+    //@Override
+    public boolean startsWith(Path parent) {
+        if (parent == null) {
+            return false;
+        }
+        List<String> segments = parent.getSegments();
+        if (segments.size() > this.segments.size()) {
+            return false;
+        }
+        int i = 0;
+        for (String segment : segments) {
+            if (!this.segments.get(i).equals(segment)) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
 
     @Override
     public String toString() {

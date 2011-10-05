@@ -6,6 +6,8 @@ import java.util.List;
 import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.ModelException;
+import com.lendamage.agilegtd.model.OuroborosException;
 
 public class SQLiteFolderListTest extends AndroidTestCase {
     
@@ -278,6 +280,32 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         assertEquals(child1, children2.get(0));
         assertEquals(child3, children2.get(1));
         assertNull(model.getFolder(new SimplePath("parent/child2")));
+    }
+    
+    public void testMoveToSelf() {
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        try {
+            parent.getFolders().add(parent);
+            fail();
+        } catch (OuroborosException e) {
+            assertTrue(e.getMessage().contains("cannot move"));
+        }
+        assertEquals(parent, model.getFolder(new SimplePath("parent")));
+        assertEquals(0, parent.getFolders().size());
+    }
+    
+    public void testMoveToSubSelf() {
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Folder child = parent.newFolder("child", null);
+        try {
+            child.getFolders().add(parent);
+            fail();
+        } catch (OuroborosException e) {
+            assertTrue(e.getMessage().contains("cannot move"));
+        }
+        assertEquals(parent, model.getFolder(new SimplePath("parent")));
+        assertEquals(child, model.getFolder(new SimplePath("parent/child")));
+        assertEquals(1, parent.getFolders().size());
     }
     
 }

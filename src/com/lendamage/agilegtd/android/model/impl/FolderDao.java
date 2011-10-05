@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.lendamage.agilegtd.model.FolderType;
+import com.lendamage.agilegtd.model.OuroborosException;
 import com.lendamage.agilegtd.model.Path;
 
 /**
@@ -197,6 +198,9 @@ class FolderDao {
             parent = selectRootFolder(db);
         }
         assert(parent != null);
+        if (parent.getPath().startsWith(folder.getPath())) {
+            throw new OuroborosException("cannot move '" + folder + "' to a subfolder of itself");
+        }
         Path path = parent.getPath().addSegment(folder.getName());
         ContentValues values = new ContentValues();
         values.put(FULL_NAME_COLUMN, String.valueOf(path));

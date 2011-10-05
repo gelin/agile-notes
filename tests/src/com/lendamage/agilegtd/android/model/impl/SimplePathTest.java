@@ -69,5 +69,33 @@ public class SimplePathTest extends AndroidTestCase {
         assertEquals(path1, path2.getParent());
         assertEquals("folder", path2.toString());
     }
+    
+    public void testStartsWith0() {
+        Path path1 = new SimplePath("");
+        Path path2 = path1.addSegment("folder");
+        assertTrue(path2.startsWith(path1));
+        assertFalse(path1.startsWith(path2));
+    }
+    
+    public void testStartsWith1() {
+        Path path1 = new SimplePath("parent");
+        Path path2 = new SimplePath("parent/folder");
+        assertTrue(path2.startsWith(path1));
+        assertFalse(path1.startsWith(path2));
+    }
+    
+    public void testStartsWith2() {
+        Path path1 = new SimplePath("parent/parent");
+        Path path2 = new SimplePath("parent/parent/folder");
+        assertTrue(path2.startsWith(path1));
+        assertFalse(path1.startsWith(path2));
+    }
+    
+    public void testStartsWithSame() {
+        Path path1 = new SimplePath("parent/folder");
+        Path path2 = new SimplePath("parent/folder");
+        assertTrue(path2.startsWith(path1));
+        assertTrue(path1.startsWith(path2));
+    }
 
 }
