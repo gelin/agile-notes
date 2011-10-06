@@ -6,7 +6,6 @@ import java.util.List;
 import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.model.Folder;
-import com.lendamage.agilegtd.model.ModelException;
 import com.lendamage.agilegtd.model.OuroborosException;
 
 public class SQLiteFolderListTest extends AndroidTestCase {

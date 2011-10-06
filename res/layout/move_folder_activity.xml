@@ -4,12 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     
-    <ListView android:id="@+id/folder_tree"
+    <com.lendamage.agilegtd.android.SelectFolderTreeView 
+        android:id="@+id/folder_tree"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         style="@style/Tree">
-    </ListView>
+    </com.lendamage.agilegtd.android.SelectFolderTreeView>
     
     <LinearLayout
         android:layout_width="fill_parent"

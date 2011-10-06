@@ -1,13 +1,10 @@
 package com.lendamage.agilegtd.android;
 
-import com.lendamage.agilegtd.model.Folder;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.lendamage.agilegtd.model.Folder;
 
 /**
  *  Activity which displays the tree of folders
@@ -23,14 +20,6 @@ public class MoveFolderActivity extends AbstractFolderActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.move_folder_activity);
-        
-        ListView tree = (ListView)findViewById(R.id.folder_tree);
-        tree.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MoveFolderTreeAdapter adapter = (MoveFolderTreeAdapter)parent.getAdapter();
-                adapter.check(id);
-            }
-        });
         
         View okButton = findViewById(R.id.ok_button);
         okButton.setOnClickListener(new OnClickListener() {
@@ -55,15 +44,13 @@ public class MoveFolderActivity extends AbstractFolderActivity {
             this.parent = this.model.getFolder(this.folder.getPath().getParent());
         }
         setTitle(this.folder.getName());
-        ListView treeView = (ListView)findViewById(R.id.folder_tree);
-        treeView.setAdapter(new MoveFolderTreeAdapter(
-                this, this.model.getRootFolder().getFolderTree(), this.folder, this.parent));
+        SelectFolderTreeView treeView = (SelectFolderTreeView)findViewById(R.id.folder_tree);
+        treeView.setTree(this.model.getRootFolder().getFolderTree(), this.folder, this.parent);
     }
     
     void moveFolder() {
-        ListView tree = (ListView)findViewById(R.id.folder_tree);
-        MoveFolderTreeAdapter adapter = (MoveFolderTreeAdapter)tree.getAdapter();
-        Folder moveTo = adapter.getSelected();
+        SelectFolderTreeView tree = (SelectFolderTreeView)findViewById(R.id.folder_tree);
+        Folder moveTo = tree.getSelected();
         moveTo.getFolders().add(this.folder);
     }
 

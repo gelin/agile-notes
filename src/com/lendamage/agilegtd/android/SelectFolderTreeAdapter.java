@@ -11,14 +11,14 @@ import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderTree;
 import com.lendamage.agilegtd.model.FolderTree.Node;
 
-public class MoveFolderTreeAdapter extends AbstractFolderTreeAdapter {
+public class SelectFolderTreeAdapter extends AbstractFolderTreeAdapter {
 
     /** Selected folder */
     Folder selected;
     /** Current folder */
     Folder current;
     
-    public MoveFolderTreeAdapter(Context context, FolderTree tree, 
+    public SelectFolderTreeAdapter(Context context, FolderTree tree, 
             Folder current, Folder selected) {
         super(context, tree);
         this.current = current;
@@ -29,7 +29,7 @@ public class MoveFolderTreeAdapter extends AbstractFolderTreeAdapter {
     @Override
     protected View inflateView(ViewGroup parent) {
         return LayoutInflater.from(this.context).inflate(
-                R.layout.move_folder_tree_item, parent, false);
+                R.layout.select_folder_tree_item, parent, false);
     }
 
     @Override
