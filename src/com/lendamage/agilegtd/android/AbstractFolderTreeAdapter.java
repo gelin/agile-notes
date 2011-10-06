@@ -44,6 +44,11 @@ public abstract class AbstractFolderTreeAdapter extends BaseAdapter {
         return true;
     }
     
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    };
+    
     public int getCount() {;
         return this.tree.getCount();
     }

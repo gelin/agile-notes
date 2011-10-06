@@ -15,14 +15,17 @@ public class SelectFolderTreeView extends ListView {
     public SelectFolderTreeView(Context context, AttributeSet attrs,
             int defStyle) {
         super(context, attrs, defStyle);
+        init();
     }
 
     public SelectFolderTreeView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public SelectFolderTreeView(Context context) {
         super(context);
+        init();
     }
     
     /**

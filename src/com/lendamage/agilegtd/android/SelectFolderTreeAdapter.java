@@ -41,15 +41,18 @@ public class SelectFolderTreeAdapter extends AbstractFolderTreeAdapter {
                 check(node.getId());
             }
         });
-        boolean enable = !node.getFolder().equals(this.current);
-        //TODO: improve and fix
+        boolean enable = !node.getFolder().getPath().startsWith(this.current.getPath());
         view.setEnabled(enable);
-        //view.setClickable(enable);
+        //view.setClickable(enable);    //WTF?
         radio.setEnabled(enable);
     }
     
     void check(long id) {
-        this.selected = this.tree.getNodeById(id).getFolder();
+        Folder checking = this.tree.getNodeById(id).getFolder();
+        if (checking.getPath().startsWith(this.current.getPath())) {
+            return; //avoid illegal checks
+        }
+        this.selected = checking;
         //TODO: optimize
         notifyDataSetChanged();
     }
