@@ -52,6 +52,11 @@ public interface FolderTree {
          */
         Folder getFolder();
         
+        /** 
+         *  Returns the parent node of this node or null.
+         */
+        Node getParent();
+        
     }
     
     /**
@@ -69,5 +74,11 @@ public interface FolderTree {
      *  Returns the node by position in the nodelist.
      */
     Node getNodeByPosition(int position);
+    
+    /**
+     *  Returns the node for the folder.
+     *  @return node or null if the folder is outside of the tree.
+     */
+    Node getNodeByFolder(Folder folder);
 
 }

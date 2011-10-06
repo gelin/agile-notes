@@ -153,5 +153,15 @@ public class SQLiteFolderTreeTest extends AndroidTestCase {
         assertEquals(subfolder3, tree.getNodeByPosition(5).getFolder());
         assertEquals(subfolder4, tree.getNodeByPosition(6).getFolder());
     }
+    
+    public void testNodeParent() {
+        assertEquals(tree.getNodeById(root.id), tree.getNodeById(folder1.id).getParent());
+        assertEquals(tree.getNodeById(folder1.id), tree.getNodeById(subfolder1.id).getParent());
+    }
+    
+    public void testGetNodeByFolder() {
+        assertEquals(tree.getNodeById(root.id), tree.getNodeByFolder(root));
+        assertEquals(tree.getNodeById(folder1.id), tree.getNodeByFolder(folder1));
+    }
 
 }

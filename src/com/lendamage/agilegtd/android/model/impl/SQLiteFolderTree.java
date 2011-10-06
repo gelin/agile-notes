@@ -14,6 +14,8 @@ import com.lendamage.agilegtd.model.FolderTree;
  */
 class SQLiteFolderTree implements FolderTree {
 
+    static final long NONEXISTED_ID = -1;
+    
     /** Root node */
     SQLiteTreeNode root;
     /** ID to Node map */
@@ -22,7 +24,7 @@ class SQLiteFolderTree implements FolderTree {
     List<SQLiteTreeNode> nodeList = new ArrayList<SQLiteTreeNode>();
     
     SQLiteFolderTree(SQLiteFolder root) {
-        initNodeMap(root, 0);
+        initNodeMap(root, 0, NONEXISTED_ID);
         this.root = nodeMap.get(root.id);
         nodeList.add(this.root);
         this.root.setExpanded(true);
@@ -40,11 +42,19 @@ class SQLiteFolderTree implements FolderTree {
         return this.nodeList.get(position);
     }
     
-    void initNodeMap(SQLiteFolder folder, int depth) {
-        SQLiteTreeNode node = new SQLiteTreeNode(folder, depth);
+    public Node getNodeByFolder(Folder folder) {
+        if (!(folder instanceof SQLiteFolder)) {
+            throw new IllegalArgumentException("cannot operate with not-SQLite folder");
+        }
+        SQLiteFolder sqlFolder = (SQLiteFolder)folder;
+        return getNodeById(sqlFolder.id);
+    }
+    
+    void initNodeMap(SQLiteFolder folder, int depth, long parentId) {
+        SQLiteTreeNode node = new SQLiteTreeNode(folder, depth, parentId);
         this.nodeMap.put(folder.id, node);
         for (SQLiteFolder subfolder : node.folders) {
-            initNodeMap(subfolder, depth + 1);
+            initNodeMap(subfolder, depth + 1, folder.id);
         }
     }
     
@@ -79,11 +89,13 @@ class SQLiteFolderTree implements FolderTree {
         List<SQLiteFolder> folders;
         boolean expanded = false;
         int depth = 0;
+        long parentId = NONEXISTED_ID;
         
-        public SQLiteTreeNode(SQLiteFolder folder, int depth) {
+        public SQLiteTreeNode(SQLiteFolder folder, int depth, long parentId) {
             this.folder = folder;
             this.depth = depth;
             this.folders = ((SQLiteFolderList)folder.getFolders()).folders;
+            this.parentId = parentId;
         }
         
         public Folder getFolder() {
@@ -117,6 +129,13 @@ class SQLiteFolderTree implements FolderTree {
                 this.expanded = false;
                 collapse(this);
             }
+        }
+        
+        public Node getParent() {
+            if (parentId == NONEXISTED_ID) {
+                return null;
+            }
+            return getNodeById(this.parentId);
         }
 
         @Override

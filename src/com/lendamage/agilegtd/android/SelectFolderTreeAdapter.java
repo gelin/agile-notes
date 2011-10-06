@@ -23,7 +23,7 @@ public class SelectFolderTreeAdapter extends AbstractFolderTreeAdapter {
         super(context, tree);
         this.current = current;
         this.selected = selected;
-        //TODO: expand to selected
+        expandTo(this.selected);
     }
     
     @Override

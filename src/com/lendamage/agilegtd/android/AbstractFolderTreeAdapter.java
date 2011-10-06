@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderTree;
+import com.lendamage.agilegtd.model.FolderTree.Node;
 
 /**
  *  Adapter which represents the tree of folders.
@@ -107,5 +108,20 @@ public abstract class AbstractFolderTreeAdapter extends BaseAdapter {
      *  Binds specific item view elements.
      */
     protected abstract void bindView(View view, FolderTree.Node node);
+    
+    /**
+     *  Expands the tree to the specified folder.
+     */
+    protected void expandTo(Folder folder) {
+        Node node = this.tree.getNodeByFolder(folder);
+        if (node == null) {
+            return;
+        }
+        Node parent = node.getParent();
+        while (parent != null) {
+            parent.setExpanded(true);
+            parent = parent.getParent();
+        }
+    }
 
 }
