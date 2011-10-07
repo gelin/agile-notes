@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:a="http://lendamage.com/agilegtd/xml/model/1"
+    xmlns="http://lendamage.com/agilegtd/xml/model/1"
+    targetNamespace="http://lendamage.com/agilegtd/xml/model/1"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+
+<xs:element name="agilegtd" type="a:AgileGtdType"/>
+
+<xs:complexType name="AgileGtdType">
+    <xs:sequence>
+        <xs:element name="folder" type="a:RootFolderType"/>
+    </xs:sequence>
+    <xs:attribute name="version" use="required" fixed="1"/>
+</xs:complexType>
+
+<xs:complexType name="FolderType">
+    <xs:sequence>
+        <xs:sequence>
+            <xs:element name="folder" type="a:FolderType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="action" type="a:ActionType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="type" type="a:FolderTypeType" use="optional"/>
+</xs:complexType>
+
+<xs:complexType name="RootFolderType">
+    <xs:sequence>
+        <xs:sequence>
+            <xs:element name="folder" type="a:FolderType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="action" type="a:ActionType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" fixed=""/>
+    <xs:attribute name="type" type="xs:NMTOKEN" use="required" fixed="ROOT"/>
+</xs:complexType>
+
+<xs:complexType name="ActionType">
+    <xs:simpleContent>
+        <xs:extension base="xs:string">
+            <xs:attribute name="id" type="xs:ID" use="optional"/>
+            <xs:attribute name="head" type="xs:string" use="optional"/>
+            <xs:attribute name="ref" type="xs:IDREF" use="optional"/>
+        </xs:extension>
+    </xs:simpleContent>
+</xs:complexType>
+
+<xs:complexType name="ActionRefType">
+    <xs:attribute name="ref" type="xs:IDREF" use="required"/>
+</xs:complexType>
+
+<xs:simpleType name="FolderTypeType">
+    <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="INBOX"/>
+        <xs:enumeration value="TRASH"/>
+        <xs:enumeration value="COMPLETED"/>
+        <xs:enumeration value="PROJECTS"/>
+        <xs:enumeration value="PROJECT"/>
+        <xs:enumeration value="CONTEXTS"/>
+        <xs:enumeration value="CONTEXT"/>
+        <xs:enumeration value="PRIORITIES"/>
+        <xs:enumeration value="PRIORITY"/>
+        <xs:enumeration value="PERSONS"/>
+        <xs:enumeration value="PERSON"/>
+    </xs:restriction>
+</xs:simpleType>
+
+</xs:schema>
