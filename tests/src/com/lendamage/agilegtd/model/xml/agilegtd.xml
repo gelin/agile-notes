@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<agilegtd xmlns="http://lendamage.com/agilegtd/xml/model/1" version="1">
+    <folder name="" type="ROOT">
+        <folder name="folder1" type="PROJECTS">
+            <folder name="subfolder1" type="PROJECT">
+                <action id="a1" head="action1">action1 line1
+action1 line2</action>
+                <action id="a2" head="action2">action2</action>
+            </folder>
+            <folder name="subfolder2" type="PROJECT">
+                <action id="a3" head="action3">action3</action>
+            </folder>
+        </folder>
+        <folder name="folder2">
+            <action ref="a1"/>
+        </folder>
+        <folder name="folder3">
+            <action ref="a2"/>
+            <action ref="a3"/>
+        </folder>
+    </folder>
+</agilegtd>
