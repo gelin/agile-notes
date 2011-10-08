@@ -5,6 +5,9 @@ class XmlNames {
     /** Namespace */
     static final String NS = "http://lendamage.com/agilegtd/xml/model/1";
     
+    /** Root element */
+    static final String AGILEGTD_ELEMENT = "agilegtd";
+    
     /** Folder element */
     static final String FOLDER_ELEMENT = "folder";
     
@@ -13,6 +16,18 @@ class XmlNames {
     
     /** Folder type attribute */
     static final String FOLDER_TYPE_ATTRIBUTE = "type";
+    
+    /** Action element */
+    static final String ACTION_ELEMENT = "action";
+    
+    /** Action id attribute */
+    static final String ACTION_ID_ATTRIBUTE = "id";
+    
+    /** Action ref attribute */
+    static final String ACTION_REF_ATTRIBUTE = "ref";
+    
+    /** Action head attribute */
+    static final String ACTION_HEAD_ATTRIBUTE = "head";
     
     private XmlNames() {
         //avoid instantiation

@@ -1,5 +1,9 @@
 package com.lendamage.agilegtd.model.xml;
 
+import static com.lendamage.agilegtd.model.xml.XmlNames.ACTION_ELEMENT;
+import static com.lendamage.agilegtd.model.xml.XmlNames.ACTION_HEAD_ATTRIBUTE;
+import static com.lendamage.agilegtd.model.xml.XmlNames.ACTION_ID_ATTRIBUTE;
+import static com.lendamage.agilegtd.model.xml.XmlNames.ACTION_REF_ATTRIBUTE;
 import static com.lendamage.agilegtd.model.xml.XmlNames.FOLDER_ELEMENT;
 import static com.lendamage.agilegtd.model.xml.XmlNames.FOLDER_NAME_ATTRIBUTE;
 import static com.lendamage.agilegtd.model.xml.XmlNames.FOLDER_TYPE_ATTRIBUTE;
@@ -7,11 +11,14 @@ import static com.lendamage.agilegtd.model.xml.XmlNames.NS;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
@@ -25,9 +32,13 @@ public class XmlImporter {
     
     /** The model where to import */
     Model model;
-    
     /** Current folder */
     Folder folder;
+    /** Current action */
+    Action action;
+    
+    /** Action IDs map */
+    Map<String, Action> actions = new HashMap<String, Action>();
     
     public static void importModel(Model model, Reader input) throws ModelException {
         XmlPullParserFactory factory;
@@ -82,6 +93,8 @@ public class XmlImporter {
         String name = this.parser.getName();
         if (FOLDER_ELEMENT.equals(name)) {
             startFolder();
+        } else if (ACTION_ELEMENT.equals(name)) {
+            startAction();
         }
     }
     
@@ -92,11 +105,17 @@ public class XmlImporter {
         String name = this.parser.getName();
         if (FOLDER_ELEMENT.equals(name)) {
             endFolder();
+        } else if (ACTION_ELEMENT.equals(name)) {
+            endAction();
         }
     }
     
     void processText() {
-        
+        if (this.action == null) {
+            return;
+            //throw new XmlImportException("unexpected content", this.parser.getPositionDescription());
+        }
+        textAction();
     }
     
     void startFolder() {
@@ -113,7 +132,7 @@ public class XmlImporter {
         }
         if (FolderType.ROOT.equals(type)) {
             if (!FolderType.ROOT.equals(this.folder.getType())) {
-                throw new XmlImportException("ROOT folder should be root and only one",
+                throw new XmlImportException("ROOT folder must be root and only one",
                         this.parser.getPositionDescription());
             }
             return; //root folder already exists in the model
@@ -125,6 +144,40 @@ public class XmlImporter {
     void endFolder() {
         Path path = this.folder.getPath();
         this.folder = this.model.getFolder(path.getParent());
+    }
+    
+    void startAction() {
+        String id = this.parser.getAttributeValue(null, ACTION_ID_ATTRIBUTE);
+        String ref = this.parser.getAttributeValue(null, ACTION_REF_ATTRIBUTE);
+        String head = this.parser.getAttributeValue(null, ACTION_HEAD_ATTRIBUTE);
+        if (id != null) {
+            if (head == null) {
+                throw new XmlImportException("action must have a head", this.parser.getPositionDescription());
+            }
+            this.action = this.folder.newAction(head, null);
+            if (this.actions.containsKey(id)) {
+                throw new XmlImportException("duplicated action ID: " + id, this.parser.getPositionDescription());
+            }
+            this.actions.put(id, this.action);
+        } else {
+            if (ref == null) {
+                throw new XmlImportException("action must have id or ref", this.parser.getPositionDescription());
+            }
+            Action action = this.actions.get(ref);
+            if (action == null) {
+                throw new XmlImportException("action must have id or ref", this.parser.getPositionDescription());
+            }
+            this.folder.getActions().add(action);
+        }
+    }
+    
+    void textAction() {
+        String body = this.parser.getText();
+        this.action.edit().setBody(body).commit();
+    }
+    
+    void endAction() {
+        this.action = null;
     }
 
 }
