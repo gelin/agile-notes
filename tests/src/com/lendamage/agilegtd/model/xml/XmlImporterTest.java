@@ -1,5 +1,7 @@
 package com.lendamage.agilegtd.model.xml;
 
+import java.io.InputStreamReader;
+
 import com.lendamage.agilegtd.android.model.impl.SQLiteModel;
 import com.lendamage.agilegtd.android.model.impl.SimplePath;
 import com.lendamage.agilegtd.model.Action;
@@ -18,7 +20,7 @@ public class XmlImporterTest extends AndroidTestCase {
     }
     
     public void testImport() {
-        XmlImporter.importModel(model, getClass().getResourceAsStream("agilegtd.xml"));
+        XmlImporter.importModel(model, new InputStreamReader(getClass().getResourceAsStream(("agilegtd.xml"))));
         
         Folder folder1 = model.getFolder(new SimplePath("folder1"));
         assertNotNull(folder1);
