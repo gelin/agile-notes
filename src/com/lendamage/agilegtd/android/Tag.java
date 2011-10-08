@@ -7,5 +7,9 @@ public class Tag {
     
     /** Tag for logging */
     public static final String TAG = Tag.class.getPackage().getName();
+    
+    private Tag() {
+        //avoid instantiation
+    }
 
 }

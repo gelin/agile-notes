@@ -39,4 +39,8 @@ public class ActionHelper {
         return sentence;
     }
     
+    private ActionHelper() {
+        //avoid instantiation
+    }
+    
 }

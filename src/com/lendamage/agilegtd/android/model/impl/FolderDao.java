@@ -273,5 +273,9 @@ class FolderDao {
         assert(parentId != 0);
         db.delete(FOLDER_TABLE, FOLDER_ID_COLUMN + " = ?", new String[] { String.valueOf(parentId) });
     }
+    
+    private FolderDao() {
+        //avoid instantiation
+    }
 
 }

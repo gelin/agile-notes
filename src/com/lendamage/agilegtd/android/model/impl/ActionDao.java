@@ -192,5 +192,9 @@ class ActionDao {
             throw new IllegalStateException("no action with id = " + action.id + ", update failed");
         }
     }
+    
+    private ActionDao() {
+        //avoid instantiation
+    }
 
 }

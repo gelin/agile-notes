@@ -20,5 +20,9 @@ class ModelAccessor {
     public static Model openModel(Context context) {
         return new SQLiteModel(context, DATABASE_NAME);
     }
+    
+    private ModelAccessor() {
+        //avoid instantiation
+    }
 
 }

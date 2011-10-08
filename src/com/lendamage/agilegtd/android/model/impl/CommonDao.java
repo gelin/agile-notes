@@ -17,5 +17,9 @@ class CommonDao {
             throw new IllegalStateException("database is read-only");
         }
     }
+    
+    private CommonDao() {
+        //avoid instantiation
+    }
 
 }

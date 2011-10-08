@@ -13,4 +13,8 @@ public class IntentParams {
     public static final String ACTION_POSITION_EXTRA = 
             IntentParams.class.getName() + ".ACTION_POSITION_EXTRA";
     
+    private IntentParams() {
+        //avoid instantiation
+    }
+    
 }
