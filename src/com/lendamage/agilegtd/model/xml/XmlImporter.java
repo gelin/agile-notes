@@ -4,10 +4,13 @@ import static com.lendamage.agilegtd.model.xml.XmlNames.ACTION_ELEMENT;
 import static com.lendamage.agilegtd.model.xml.XmlNames.ACTION_HEAD_ATTRIBUTE;
 import static com.lendamage.agilegtd.model.xml.XmlNames.ACTION_ID_ATTRIBUTE;
 import static com.lendamage.agilegtd.model.xml.XmlNames.ACTION_REF_ATTRIBUTE;
+import static com.lendamage.agilegtd.model.xml.XmlNames.AGILEGTD_ELEMENT;
 import static com.lendamage.agilegtd.model.xml.XmlNames.FOLDER_ELEMENT;
 import static com.lendamage.agilegtd.model.xml.XmlNames.FOLDER_NAME_ATTRIBUTE;
 import static com.lendamage.agilegtd.model.xml.XmlNames.FOLDER_TYPE_ATTRIBUTE;
 import static com.lendamage.agilegtd.model.xml.XmlNames.NS;
+import static com.lendamage.agilegtd.model.xml.XmlNames.VERSION;
+import static com.lendamage.agilegtd.model.xml.XmlNames.VERSION_ATTRIBUTE;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -91,10 +94,14 @@ public class XmlImporter {
             return;
         }
         String name = this.parser.getName();
-        if (FOLDER_ELEMENT.equals(name)) {
+        if (AGILEGTD_ELEMENT.equals(name)) {
+            startRoot();
+        } else if (FOLDER_ELEMENT.equals(name)) {
             startFolder();
         } else if (ACTION_ELEMENT.equals(name)) {
             startAction();
+        } else {
+            throw new XmlImportException("uknown start tag: " + name, this.parser.getPositionDescription());
         }
     }
     
@@ -103,19 +110,34 @@ public class XmlImporter {
             return;
         }
         String name = this.parser.getName();
-        if (FOLDER_ELEMENT.equals(name)) {
+        if (AGILEGTD_ELEMENT.equals(name)) {
+            //nothing to do
+        } else if (FOLDER_ELEMENT.equals(name)) {
             endFolder();
         } else if (ACTION_ELEMENT.equals(name)) {
             endAction();
+        } else {
+            throw new XmlImportException("uknown end tag: " + name, this.parser.getPositionDescription());
         }
     }
     
-    void processText() {
+    void processText() throws XmlPullParserException {
+        if (this.parser.isWhitespace()) {
+            return; //ignoring whitespaces
+        }
         if (this.action == null) {
-            return;
-            //throw new XmlImportException("unexpected content", this.parser.getPositionDescription());
+            if (this.parser.getText().trim().length() > 0) {
+                throw new XmlImportException("unexpected content", this.parser.getPositionDescription());
+            }
         }
         textAction();
+    }
+    
+    void startRoot() {
+        String version = this.parser.getAttributeValue(null, VERSION_ATTRIBUTE);
+        if (!VERSION.equals(version)) {
+            throw new XmlImportException("unknown version: " + version, this.parser.getPositionDescription());
+        }
     }
     
     void startFolder() {
@@ -132,7 +154,7 @@ public class XmlImporter {
         }
         if (FolderType.ROOT.equals(type)) {
             if (!FolderType.ROOT.equals(this.folder.getType())) {
-                throw new XmlImportException("ROOT folder must be root and only one",
+                throw new XmlImportException("ROOT folder must be root and appear only once",
                         this.parser.getPositionDescription());
             }
             return; //root folder already exists in the model
@@ -156,7 +178,7 @@ public class XmlImporter {
             }
             this.action = this.folder.newAction(head, null);
             if (this.actions.containsKey(id)) {
-                throw new XmlImportException("duplicated action ID: " + id, this.parser.getPositionDescription());
+                throw new XmlImportException("duplicated action id: " + id, this.parser.getPositionDescription());
             }
             this.actions.put(id, this.action);
         } else {
@@ -165,7 +187,7 @@ public class XmlImporter {
             }
             Action action = this.actions.get(ref);
             if (action == null) {
-                throw new XmlImportException("action must have id or ref", this.parser.getPositionDescription());
+                throw new XmlImportException("wrong action ref, no such action is defined before", this.parser.getPositionDescription());
             }
             this.folder.getActions().add(action);
         }

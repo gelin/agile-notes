@@ -5,8 +5,14 @@ class XmlNames {
     /** Namespace */
     static final String NS = "http://lendamage.com/agilegtd/xml/model/1";
     
+    /** Supported version */
+    static final String VERSION = "1";
+    
     /** Root element */
     static final String AGILEGTD_ELEMENT = "agilegtd";
+    
+    /** Version attribute */
+    static final String VERSION_ATTRIBUTE = "version";
     
     /** Folder element */
     static final String FOLDER_ELEMENT = "folder";
