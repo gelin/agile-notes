@@ -1,13 +1,23 @@
 package com.lendamage.agilegtd.android;
 
+import static com.lendamage.agilegtd.android.Tag.TAG;
+
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
-import android.widget.ListView;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
+
+import com.lendamage.agilegtd.model.Model;
+import com.lendamage.agilegtd.model.xml.XmlExporter;
 
 /**
  *  Activity to backup and restore the model.
@@ -16,6 +26,8 @@ public class BackupActivity extends Activity {
 
     /** Backup folder name */
     static final String BACKUP_FOLDER = "agilegtd";
+    /** Date format for backup file name */
+    static final SimpleDateFormat FILE_FORMAT = new SimpleDateFormat("yyyy-MM-dd-HH.mm.ss.SSSZ.'xml'");
 
     /** Backup folder */
     File backupFolder;
@@ -28,6 +40,13 @@ public class BackupActivity extends Activity {
         this.backupFolder = getBackupFolder();
         TextView backupFolderView = (TextView)findViewById(R.id.backup_folder);
         backupFolderView.setText(this.backupFolder.toString());
+        
+        View backupButton = findViewById(R.id.backup_button);
+        backupButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                backup();
+            }
+        });
     }
     
     @Override
@@ -60,6 +79,32 @@ public class BackupActivity extends Activity {
     File getBackupFolder() {
         File storage = Environment.getExternalStorageDirectory();
         return new File(storage, BACKUP_FOLDER);
+    }
+    
+    File newBackupFile() throws IOException {
+        File folder = getBackupFolder();
+        folder.mkdirs();
+        if (!folder.isDirectory()) {
+            Log.w(TAG, "folder " + folder + " is not created");
+        }
+        String name = FILE_FORMAT.format(new Date());
+        File file = new File(folder, name);
+        file.createNewFile();
+        return file;
+    }
+    
+    void backup() {
+        //TODO: in a thread
+        try {
+            File file = newBackupFile();
+            Model model = ModelAccessor.openModel(this);
+            XmlExporter.exportModel(model, new FileWriter(file));
+            model.close();
+            Log.i(TAG, "backup created " + file);
+        } catch (Exception e) {
+            Log.w(TAG, "backup failed", e);
+            //TODO: toast
+        }
     }
 
 }
