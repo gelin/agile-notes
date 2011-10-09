@@ -48,4 +48,10 @@
     <string name="save_action">Save action</string>
     <string name="ok_button">OK</string>
     <string name="move_folder">Move folder</string>
+    <string name="backup_restore">Backup/Restore</string>
+    <string name="backup_title">Backup/Restore</string>
+    <string name="backup_folder">Backup to</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="storage_mount_warning">Not mounted! Please insert and mount SD card.</string>
 </resources>

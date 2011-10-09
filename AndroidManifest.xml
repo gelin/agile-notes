@@ -42,6 +42,10 @@
         <activity android:name=".MoveFolderActivity"
                   android:theme="@android:style/Theme.Dialog">
         </activity>
+        
+        <activity android:name=".BackupActivity"
+                  android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
 
     </application>
 

@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -293,6 +294,24 @@ public class FolderActivity extends AbstractFolderActivity {
             return;
         }
     };
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.backup_menu:
+            startActivity(new Intent(this, BackupActivity.class));
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 
     void setTitle(String title) {
         TextView titleView = (TextView)findViewById(R.id.title);
