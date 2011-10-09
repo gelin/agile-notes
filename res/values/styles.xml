@@ -71,4 +71,19 @@
         <item name="android:textStyle">bold</item>
         <item name="android:padding">5sp</item>
     </style>
+    
+    <style name="ListItemText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="ListCheckButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_marginLeft">10sp</item>
+        <item name="android:layout_marginRight">10sp</item>
+        <item name="android:focusable">false</item>
+    </style>
+    
 </resources>

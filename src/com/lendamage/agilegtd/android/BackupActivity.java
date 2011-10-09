@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -33,6 +34,7 @@ public class BackupActivity extends Activity {
     protected void onResume() {
         super.onResume();
         checkStorageState();
+        checkRestoreList();
     }
     
     void checkStorageState() {
@@ -43,6 +45,14 @@ public class BackupActivity extends Activity {
         } else {
             findViewById(R.id.storage_mount_warning).setVisibility(View.VISIBLE);
             findViewById(R.id.backup_button).setEnabled(false);
+            findViewById(R.id.restore_button).setEnabled(false);
+        }
+    }
+    
+    void checkRestoreList() {
+        FileListView files = (FileListView)findViewById(R.id.backups_list);
+        files.setFolder(this.backupFolder);
+        if (files.getCount() == 0) {
             findViewById(R.id.restore_button).setEnabled(false);
         }
     }

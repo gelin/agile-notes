@@ -35,7 +35,7 @@
     <TextView android:text="@string/restore"
         style="@style/GroupTitle"/>
         
-    <ListView android:id="@+id/backups_list"
+    <com.lendamage.agilegtd.android.FileListView android:id="@+id/backups_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
         
