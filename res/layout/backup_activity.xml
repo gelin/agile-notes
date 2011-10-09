@@ -11,6 +11,9 @@
                 android:text="@string/backup_title"/>
     </LinearLayout>
     
+    <TextView android:text="@string/backup"
+        style="@style/GroupTitle"/>
+    
     <TextView android:text="@string/backup_folder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
@@ -28,6 +31,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/backup"/>
+        
+    <TextView android:text="@string/restore"
+        style="@style/GroupTitle"/>
         
     <ListView android:id="@+id/backups_list"
         android:layout_width="fill_parent"
