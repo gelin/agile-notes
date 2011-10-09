@@ -13,22 +13,17 @@ import static com.lendamage.agilegtd.model.xml.XmlNames.VERSION;
 import static com.lendamage.agilegtd.model.xml.XmlNames.VERSION_ATTRIBUTE;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
-import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
 import com.lendamage.agilegtd.model.ModelException;
-import com.lendamage.agilegtd.model.Path;
 
 public class XmlExporter {
     
@@ -39,7 +34,9 @@ public class XmlExporter {
     Model model;
     
     /** Action IDs map */
-    Map<String, Action> actions = new HashMap<String, Action>();
+    Map<Action, String> actions = new HashMap<Action, String>();
+    /** Current action ID counter */
+    int actionId = 0;
     
     public static void exportModel(Model model, Writer output) throws ModelException {
         XmlPullParserFactory factory;
@@ -67,7 +64,8 @@ public class XmlExporter {
     }
     
     void writeModel() throws IOException {
-        this.serializer.startDocument(null, false);
+        this.serializer.startDocument(null, null);
+        this.serializer.setPrefix("", NS);
         this.serializer.startTag(NS, AGILEGTD_ELEMENT);
         this.serializer.attribute(null, VERSION_ATTRIBUTE, VERSION);
         writeFolder(this.model.getRootFolder());
@@ -84,7 +82,33 @@ public class XmlExporter {
         for (Folder subfolder : folder.getFolders()) {
             writeFolder(subfolder);
         }
+        for (Action action : folder.getActions()) {
+            writeAction(action);
+        }
         this.serializer.endTag(NS, FOLDER_ELEMENT);
+    }
+    
+    void writeAction(Action action) throws IOException {
+        this.serializer.startTag(NS, ACTION_ELEMENT);
+        String id = this.actions.get(action);
+        if (id == null) {
+            id = nextActionId();
+            this.serializer.attribute(null, ACTION_ID_ATTRIBUTE, id);
+            this.serializer.attribute(null, ACTION_HEAD_ATTRIBUTE, action.getHead());
+            if (action.getBody() != null) {
+                this.serializer.text(action.getBody());
+            }
+            this.actions.put(action, id);
+        } else {
+            this.serializer.attribute(null, ACTION_REF_ATTRIBUTE, id);
+        }
+        this.serializer.endTag(NS, ACTION_ELEMENT);
+    }
+    
+    String nextActionId() {
+        String result = "a" + this.actionId;
+        this.actionId++;
+        return result;
     }
 
 }

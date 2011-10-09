@@ -1,12 +1,12 @@
 package com.lendamage.agilegtd.model.xml;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Writer;
+
+import android.os.Environment;
+import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.android.model.impl.SQLiteModel;
 import com.lendamage.agilegtd.android.model.impl.SimplePath;
@@ -14,9 +14,6 @@ import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.ModelException;
-
-import android.os.Environment;
-import android.test.AndroidTestCase;
 
 public class XmlExporterTest extends AndroidTestCase {
     
@@ -40,8 +37,8 @@ public class XmlExporterTest extends AndroidTestCase {
         Folder folder1 = model.getRootFolder().newFolder("folder1", FolderType.PROJECTS);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
         Folder folder3 = model.getRootFolder().newFolder("folder3", null);
-        Folder subfolder1 = folder1.newFolder("subfolder1", null);
-        Folder subfolder2 = folder1.newFolder("subfolder2", null);
+        Folder subfolder1 = folder1.newFolder("subfolder1", FolderType.PROJECT);
+        Folder subfolder2 = folder1.newFolder("subfolder2", FolderType.PROJECT);
         Action action1 = subfolder1.newAction("action1", "action1 line1\naction1 line2");
         Action action2 = subfolder1.newAction("action2", "action2");
         Action action3 = subfolder2.newAction("action3", "action3");
@@ -93,7 +90,6 @@ public class XmlExporterTest extends AndroidTestCase {
         Action action1 = subfolder1.getActions().get(0);
         assertEquals("action1", action1.getHead());
         assertEquals("action1 line1\naction1 line2", action1.getBody());
-        assertEquals(action1, folder2.getActions().get(0));
         assertEquals(2, action1.getFolders().size());
         
         Action action2 = subfolder1.getActions().get(1);
