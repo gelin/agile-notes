@@ -9,7 +9,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 /**
@@ -49,9 +51,9 @@ public class FileListAdapter extends BaseAdapter {
                 long time1 = file1.lastModified();
                 long time2 = file2.lastModified();
                 if (time1 < time2) {
-                    return -1;
-                } else if (time1 > time2) {
                     return 1;
+                } else if (time1 > time2) {
+                    return -1;
                 }
                 return 0;
             }
@@ -75,14 +77,24 @@ public class FileListAdapter extends BaseAdapter {
         return 0;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             view = LayoutInflater.from(this.context).inflate(
                     R.layout.file_list_item, parent, false); 
         }
+        
         TextView name = (TextView)view.findViewById(R.id.name);
         name.setText(this.files[position].getName());
+        
+        RadioButton button = (RadioButton)view.findViewById(R.id.check_button);
+        button.setChecked(this.files[position].equals(this.selected));
+        button.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                check(position);
+            }
+        });
+        
         return view;
     }
 

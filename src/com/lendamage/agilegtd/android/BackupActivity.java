@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lendamage.agilegtd.model.Model;
 import com.lendamage.agilegtd.model.xml.XmlExporter;
@@ -70,7 +71,7 @@ public class BackupActivity extends Activity {
     
     void checkRestoreList() {
         FileListView files = (FileListView)findViewById(R.id.backups_list);
-        files.setFolder(this.backupFolder);
+        files.setFolder(this.backupFolder); //TODO: in a thread
         if (files.getCount() == 0) {
             findViewById(R.id.restore_button).setEnabled(false);
         }
@@ -94,17 +95,21 @@ public class BackupActivity extends Activity {
     }
     
     void backup() {
-        //TODO: in a thread
+        //TODO: in a thread, progress indicator
+        findViewById(R.id.backup_button).setEnabled(false);
         try {
             File file = newBackupFile();
             Model model = ModelAccessor.openModel(this);
             XmlExporter.exportModel(model, new FileWriter(file));
             model.close();
             Log.i(TAG, "backup created " + file);
+            Toast.makeText(this, getString(R.string.backup_created, file), Toast.LENGTH_LONG).show();
+            checkRestoreList();
         } catch (Exception e) {
             Log.w(TAG, "backup failed", e);
-            //TODO: toast
+            Toast.makeText(this, R.string.backup_failed, Toast.LENGTH_LONG).show();
         }
+        checkStorageState();
     }
 
 }

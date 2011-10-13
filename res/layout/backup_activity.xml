@@ -37,7 +37,8 @@
         
     <com.lendamage.agilegtd.android.FileListView android:id="@+id/backups_list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
         
     <Button android:id="@+id/restore_button"
         android:layout_width="fill_parent"

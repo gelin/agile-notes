@@ -8,7 +8,7 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@drawable/action_bar_bg</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:minHeight">32sp</item>
+        <item name="android:minHeight">35sp</item>
     </style>
     <style name="ActionBar.Title">
         <item name="android:layout_width">wrap_content</item>
@@ -69,7 +69,10 @@
         <item name="android:textColor">#bdbebd</item>
         <item name="android:background">#525152</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:padding">5sp</item>
+        <item name="android:paddingLeft">5sp</item>
+        <item name="android:paddingRight">5sp</item>
+        <item name="android:paddingTop">5sp</item>
+        <item name="android:paddingBottom">5sp</item>
     </style>
     
     <style name="ListItemText">
