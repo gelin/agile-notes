@@ -51,8 +51,6 @@ public class BackupActivity extends Activity {
                 backup();
             }
         });
-        
-        startProgress();
     }
     
     @Override
@@ -75,11 +73,8 @@ public class BackupActivity extends Activity {
     }
     
     void checkRestoreList() {
-        FileListView files = (FileListView)findViewById(R.id.backups_list);
-        files.setFolder(this.backupFolder); //TODO: in a thread
-        if (files.getCount() == 0) {
-            findViewById(R.id.restore_button).setEnabled(false);
-        }
+        new UpdateRestoreList((FileListView)findViewById(R.id.backups_list)).
+                execute(this.backupFolder);
     }
     
     File getBackupFolder() {
@@ -126,24 +121,32 @@ public class BackupActivity extends Activity {
     void stopProgress() {
         ImageView icon = (ImageView)findViewById(R.id.progress_icon);
         icon.setVisibility(View.INVISIBLE);
-        ((AnimationDrawable)icon.getBackground()).stop();
+        ((AnimationDrawable)icon.getDrawable()).stop();
     }
     
-    class UpdateRestoreList extends AsyncTask<Void, Void, Void> {
+    class UpdateRestoreList extends AsyncTask<File, Void, FileListAdapter> {
+        FileListView view;
+        public UpdateRestoreList(FileListView view) {
+            this.view = view;
+        }
         @Override
         protected void onPreExecute() {
+            findViewById(R.id.restore_button).setEnabled(false);
             startProgress();
         }
         @Override
-        protected Void doInBackground(Void... params) {
-            // TODO Auto-generated method stub
-            return null;
+        protected FileListAdapter doInBackground(File... params) {
+            return new FileListAdapter(this.view.getContext(), params[0]);
         }
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(FileListAdapter adapter) {
+            this.view.setAdapter(adapter);
+            //Log.d(TAG, adapter.folder + " contains files " + Arrays.toString(adapter.files));
             stopProgress();
+            if (this.view.getCount() == 0) {
+                findViewById(R.id.restore_button).setEnabled(false);
+            }
         }
-        
     }
 
 }

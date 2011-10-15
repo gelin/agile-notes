@@ -45,7 +45,10 @@ public class FileListView extends ListView {
      */
     @Override
     public void setAdapter(ListAdapter adapter) {
-        throw new IllegalStateException(FileListView.class + " uses predefined adapter");
+        if (!(adapter instanceof FileListAdapter)) {
+            throw new IllegalArgumentException("only FileListAdapter is accepted");
+        }
+        super.setAdapter(adapter);
     }
     
     /**
