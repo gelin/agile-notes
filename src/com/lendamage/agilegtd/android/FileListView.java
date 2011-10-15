@@ -2,6 +2,8 @@ package com.lendamage.agilegtd.android;
 
 import java.io.File;
 
+import com.lendamage.agilegtd.android.FileListAdapter.OnCheckListener;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,7 +12,10 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class FileListView extends ListView {
-
+    
+    /** External on check listener */
+    OnCheckListener onCheckListener;
+    
     public FileListView(Context context, AttributeSet attrs,
             int defStyle) {
         super(context, attrs, defStyle);
@@ -49,14 +54,14 @@ public class FileListView extends ListView {
             throw new IllegalArgumentException("only FileListAdapter is accepted");
         }
         super.setAdapter(adapter);
+        ((FileListAdapter)adapter).setOnCheckListener(this.internalOnCheckListener);
     }
     
     /**
      *  Sets the folder for files.
      */
     public void setFolder(File folder) {
-        super.setAdapter(new FileListAdapter(
-                getContext(), folder));
+        setAdapter(new FileListAdapter(getContext(), folder));
     }
     
     /**
@@ -69,5 +74,22 @@ public class FileListView extends ListView {
         }
         return adapter.getSelected();
     }
+    
+    /**
+     *  Sets the listener which receives the events when the list item is checked/clicked.
+     */
+    void setOnCheckListener(OnCheckListener listener) {
+        this.onCheckListener = listener;
+    }
+    
+    /** Internal on check listener */
+    OnCheckListener internalOnCheckListener = new OnCheckListener() {
+        public void onCheck(File selected) {
+            if (FileListView.this.onCheckListener == null) {
+                return;
+            }
+            FileListView.this.onCheckListener.onCheck(selected);
+        }
+    };
 
 }

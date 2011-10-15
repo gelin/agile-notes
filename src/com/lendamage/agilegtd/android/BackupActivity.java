@@ -3,6 +3,7 @@ package com.lendamage.agilegtd.android;
 import static com.lendamage.agilegtd.android.Tag.TAG;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -21,8 +22,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lendamage.agilegtd.android.FileListAdapter.OnCheckListener;
 import com.lendamage.agilegtd.model.Model;
+import com.lendamage.agilegtd.model.xml.XmlExportException;
 import com.lendamage.agilegtd.model.xml.XmlExporter;
+import com.lendamage.agilegtd.model.xml.XmlImporter;
 
 /**
  *  Activity to backup and restore the model.
@@ -50,6 +54,19 @@ public class BackupActivity extends Activity {
         backupButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 backup();
+            }
+        });
+        
+        final View restoreButton = findViewById(R.id.restore_button);
+        final FileListView backupsList = (FileListView)findViewById(R.id.backups_list);
+        backupsList.setOnCheckListener(new OnCheckListener() {
+            public void onCheck(File file) {
+                restoreButton.setEnabled(file != null);
+            }
+        });
+        restoreButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                restore(backupsList.getSelected());
             }
         });
     }
@@ -99,6 +116,10 @@ public class BackupActivity extends Activity {
         new Backup(this).execute();
     }
     
+    void restore(File backupFile) {
+        new Restore(this).execute(backupFile);
+    }
+    
     void startProgress() {
         ImageView icon = (ImageView)findViewById(R.id.progress_icon);
         icon.setVisibility(View.VISIBLE);
@@ -136,9 +157,8 @@ public class BackupActivity extends Activity {
         }
     }
     
-    class Backup extends AsyncTask<Void, Void, Boolean> {
+    class Backup extends AsyncTask<Void, Void, String> {
         Context context;
-        File file;
         public Backup(Context context) {
             this.context = context;
         }
@@ -148,29 +168,68 @@ public class BackupActivity extends Activity {
             startProgress();
         }
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected String doInBackground(Void... params) {
             try {
-                this.file = newBackupFile();
+                File file = newBackupFile();
                 Model model = ModelAccessor.openModel(this.context);
-                XmlExporter.exportModel(model, new FileWriter(this.file));
+                XmlExporter.exportModel(model, new FileWriter(file));
                 model.close();
-                Log.i(TAG, "backup created " + this.file);
-                return true;
+                Log.i(TAG, "backup created " + file);
+                return getString(R.string.backup_created, file);
             } catch (Exception e) {
                 Log.w(TAG, "backup failed", e);
-                return false;
+                return getString(R.string.backup_failed);
             }
             
         }
         @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
-                Toast.makeText(this.context, getString(R.string.backup_created, this.file), 
-                        Toast.LENGTH_LONG).show();
-                checkRestoreList();
-            } else {
-                Toast.makeText(this.context, R.string.backup_failed, Toast.LENGTH_LONG).show();
+        protected void onPostExecute(String result) {
+            Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
+            checkRestoreList();
+            checkStorageState();
+        }
+    }
+    
+    class Restore extends AsyncTask<File, Void, String> {
+        Context context;
+        public Restore(Context context) {
+            this.context = context;
+        }
+        @Override
+        protected void onPreExecute() {
+            findViewById(R.id.restore_button).setEnabled(false);
+            startProgress();
+        }
+        @Override
+        protected String doInBackground(File... params) {
+            File restoreFile = params[0];
+            StringBuilder result = new StringBuilder();
+            try {
+                File backupFile = newBackupFile();
+                Model model = ModelAccessor.openModel(this.context);
+                XmlExporter.exportModel(model, new FileWriter(backupFile));
+                Log.i(TAG, "backup created " + backupFile);
+                result.append(getString(R.string.backup_created, backupFile));
+                XmlImporter.importModel(model, new FileReader(restoreFile));
+                Log.i(TAG, "restore successed " + restoreFile);
+                result.append("\n");
+                result.append(getString(R.string.restore_successed, restoreFile));
+                model.close();
+                return result.toString();
+            } catch (XmlExportException e) {
+                Log.w(TAG, "backup failed", e);
+                result.append(getString(R.string.backup_failed));
+                return result.toString();
+            } catch (Exception e) {
+                Log.w(TAG, "restore failed", e);
+                result.append(getString(R.string.restore_failed, restoreFile));
+                return result.toString();
             }
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
+            checkRestoreList();
             checkStorageState();
         }
     }

@@ -27,6 +27,8 @@ public class FileListAdapter extends BaseAdapter {
     File[] files;
     /** Selected file */
     File selected;
+    /** Listener for check events */
+    OnCheckListener onCheckListener;
     
     public FileListAdapter(Context context, File folder) {
         this.context = context;
@@ -100,12 +102,34 @@ public class FileListAdapter extends BaseAdapter {
 
     public void check(int position) {
         this.selected = this.files[position];
+        fireOnCheckListener();
         //TODO: optimize
         notifyDataSetChanged();
     }
     
     File getSelected() {
         return this.selected;
+    }
+    
+    void fireOnCheckListener() {
+        if (this.onCheckListener == null) {
+            return;
+        }
+        onCheckListener.onCheck(getSelected());
+    }
+    
+    /**
+     *  Sets the listener which receives the events when the list item is checked/clicked.
+     */
+    public void setOnCheckListener(OnCheckListener listener) {
+        this.onCheckListener = listener;
+    }
+    
+    /**
+     *  Listener for the check change.
+     */
+    public interface OnCheckListener {
+        void onCheck(File selected);
     }
 
 }
