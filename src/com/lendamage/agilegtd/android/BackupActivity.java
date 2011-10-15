@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -64,7 +65,7 @@ public class BackupActivity extends Activity {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             findViewById(R.id.storage_mount_warning).setVisibility(View.GONE);
             findViewById(R.id.backup_button).setEnabled(true);
-            findViewById(R.id.restore_button).setEnabled(true);
+            //findViewById(R.id.restore_button).setEnabled(true);
         } else {
             findViewById(R.id.storage_mount_warning).setVisibility(View.VISIBLE);
             findViewById(R.id.backup_button).setEnabled(false);
@@ -95,21 +96,7 @@ public class BackupActivity extends Activity {
     }
     
     void backup() {
-        //TODO: in a thread, progress indicator
-        findViewById(R.id.backup_button).setEnabled(false);
-        try {
-            File file = newBackupFile();
-            Model model = ModelAccessor.openModel(this);
-            XmlExporter.exportModel(model, new FileWriter(file));
-            model.close();
-            Log.i(TAG, "backup created " + file);
-            Toast.makeText(this, getString(R.string.backup_created, file), Toast.LENGTH_LONG).show();
-            checkRestoreList();
-        } catch (Exception e) {
-            Log.w(TAG, "backup failed", e);
-            Toast.makeText(this, R.string.backup_failed, Toast.LENGTH_LONG).show();
-        }
-        checkStorageState();
+        new Backup(this).execute();
     }
     
     void startProgress() {
@@ -146,6 +133,45 @@ public class BackupActivity extends Activity {
             if (this.view.getCount() == 0) {
                 findViewById(R.id.restore_button).setEnabled(false);
             }
+        }
+    }
+    
+    class Backup extends AsyncTask<Void, Void, Boolean> {
+        Context context;
+        File file;
+        public Backup(Context context) {
+            this.context = context;
+        }
+        @Override
+        protected void onPreExecute() {
+            findViewById(R.id.backup_button).setEnabled(false);
+            startProgress();
+        }
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                this.file = newBackupFile();
+                Model model = ModelAccessor.openModel(this.context);
+                XmlExporter.exportModel(model, new FileWriter(this.file));
+                model.close();
+                Log.i(TAG, "backup created " + this.file);
+                return true;
+            } catch (Exception e) {
+                Log.w(TAG, "backup failed", e);
+                return false;
+            }
+            
+        }
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                Toast.makeText(this.context, getString(R.string.backup_created, this.file), 
+                        Toast.LENGTH_LONG).show();
+                checkRestoreList();
+            } else {
+                Toast.makeText(this.context, R.string.backup_failed, Toast.LENGTH_LONG).show();
+            }
+            checkStorageState();
         }
     }
 
