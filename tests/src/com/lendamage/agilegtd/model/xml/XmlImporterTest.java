@@ -76,4 +76,28 @@ public class XmlImporterTest extends AndroidTestCase {
         assertEquals(2, action3.getFolders().size());
     }
     
+    public void testImport2() {
+        XmlImporter.importModel(model, new InputStreamReader(getClass().getResourceAsStream(("agilegtd2.xml"))));
+        
+        assertNotNull(model.getFolder(new SimplePath("Persons")));
+        assertNotNull(model.getFolder(new SimplePath("Persons/Svetik")));
+        assertNotNull(model.getFolder(new SimplePath("Test")));
+        assertNotNull(model.getFolder(new SimplePath("Test/SubTest")));
+        assertNotNull(model.getFolder(new SimplePath("Test/Subtest2")));
+        assertNotNull(model.getFolder(new SimplePath("Test/Subtest3")));
+        assertNotNull(model.getFolder(new SimplePath("Test/Subtest3/Subsub")));
+        assertNotNull(model.getFolder(new SimplePath("Restore test")));
+        
+        XmlImporter.importModel(model, new InputStreamReader(getClass().getResourceAsStream(("agilegtd2.xml"))));
+        
+        assertNotNull(model.getFolder(new SimplePath("Persons")));
+        assertNotNull(model.getFolder(new SimplePath("Persons/Svetik")));
+        assertNotNull(model.getFolder(new SimplePath("Test")));
+        assertNotNull(model.getFolder(new SimplePath("Test/SubTest")));
+        assertNotNull(model.getFolder(new SimplePath("Test/Subtest2")));
+        assertNotNull(model.getFolder(new SimplePath("Test/Subtest3")));
+        assertNotNull(model.getFolder(new SimplePath("Test/Subtest3/Subsub")));
+        assertNotNull(model.getFolder(new SimplePath("Restore test")));
+    }
+    
 }

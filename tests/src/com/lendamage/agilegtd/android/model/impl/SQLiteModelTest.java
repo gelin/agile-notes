@@ -176,5 +176,22 @@ public class SQLiteModelTest extends AndroidTestCase {
             assertTrue(e.getMessage().contains("closed"));
         }
     }
+    
+    public void testClear() {
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        folder.newFolder("subfolder", null);
+        assertEquals(2, model.findFolders(null).size());
+        model.getRootFolder().getFolders().clear();
+        assertEquals(0, model.findFolders(null).size());
+    }
+    
+    public void testDeepClear() {
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Folder subfolder = folder.newFolder("subfolder", null);
+        subfolder.newFolder("subsubfolder", null);
+        assertEquals(3, model.findFolders(null).size());
+        model.getRootFolder().getFolders().clear();
+        assertEquals(0, model.findFolders(null).size());
+    }
 
 }
