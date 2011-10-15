@@ -9,11 +9,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +51,8 @@ public class BackupActivity extends Activity {
                 backup();
             }
         });
+        
+        startProgress();
     }
     
     @Override
@@ -110,6 +115,35 @@ public class BackupActivity extends Activity {
             Toast.makeText(this, R.string.backup_failed, Toast.LENGTH_LONG).show();
         }
         checkStorageState();
+    }
+    
+    void startProgress() {
+        ImageView icon = (ImageView)findViewById(R.id.progress_icon);
+        icon.setVisibility(View.VISIBLE);
+        ((AnimationDrawable)icon.getDrawable()).start();
+    }
+    
+    void stopProgress() {
+        ImageView icon = (ImageView)findViewById(R.id.progress_icon);
+        icon.setVisibility(View.INVISIBLE);
+        ((AnimationDrawable)icon.getBackground()).stop();
+    }
+    
+    class UpdateRestoreList extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            startProgress();
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            stopProgress();
+        }
+        
     }
 
 }

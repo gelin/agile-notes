@@ -41,3 +41,11 @@ gen_action_bar_icon edit
 gen_list_icon collapsed
 gen_list_icon expanded
 gen_list_icon empty
+gen_action_bar_icon progress0
+gen_action_bar_icon progress1
+gen_action_bar_icon progress2
+gen_action_bar_icon progress3
+gen_action_bar_icon progress4
+gen_action_bar_icon progress5
+gen_action_bar_icon progress6
+gen_action_bar_icon progress7
