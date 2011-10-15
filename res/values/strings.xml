@@ -53,9 +53,10 @@
     <string name="backup_folder">Backup to</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
+    <string name="backup_and_restore">Backup and Restore</string>
     <string name="storage_mount_warning">Not mounted! Please insert and mount SD card.</string>
     <string name="backup_created">The backup is saved to %s</string>
-    <string name="backup_failed">The backup is failed!</string>
+    <string name="backup_failed">The backup is FAILED!</string>
     <string name="restore_successed">Folder and actions are restored from %s</string>
-    <string name="restore_failed">The restore from %s is failed!</string>
+    <string name="restore_failed">The restore from %s is FAILED!</string>
 </resources>

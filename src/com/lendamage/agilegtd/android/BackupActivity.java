@@ -209,20 +209,19 @@ public class BackupActivity extends Activity {
                 Model model = ModelAccessor.openModel(this.context);
                 XmlExporter.exportModel(model, new FileWriter(backupFile));
                 Log.i(TAG, "backup created " + backupFile);
-                result.append(getString(R.string.backup_created, backupFile));
+                append(result, getString(R.string.backup_created, backupFile));
                 XmlImporter.importModel(model, new FileReader(restoreFile));
-                Log.i(TAG, "restore successed " + restoreFile);
-                result.append("\n");
-                result.append(getString(R.string.restore_successed, restoreFile));
+                Log.i(TAG, "restore successed from " + restoreFile);
+                append(result, getString(R.string.restore_successed, restoreFile));
                 model.close();
                 return result.toString();
             } catch (XmlExportException e) {
                 Log.w(TAG, "backup failed", e);
-                result.append(getString(R.string.backup_failed));
+                append(result, getString(R.string.backup_failed));
                 return result.toString();
             } catch (Exception e) {
-                Log.w(TAG, "restore failed", e);
-                result.append(getString(R.string.restore_failed, restoreFile));
+                Log.w(TAG, "restore failed from " + restoreFile, e);
+                append(result, getString(R.string.restore_failed, restoreFile));
                 return result.toString();
             }
         }
@@ -231,6 +230,12 @@ public class BackupActivity extends Activity {
             Toast.makeText(this.context, result, Toast.LENGTH_LONG).show();
             checkRestoreList();
             checkStorageState();
+        }
+        void append(StringBuilder builder, String string) {
+            if (builder.length() != 0) {
+                builder.append("\n");
+            }
+            builder.append(string);
         }
     }
 
