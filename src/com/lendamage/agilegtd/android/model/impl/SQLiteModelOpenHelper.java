@@ -14,7 +14,7 @@ import com.lendamage.agilegtd.model.FolderType;
 class SQLiteModelOpenHelper extends SQLiteOpenHelper {
 
     /** Version of database schema */
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     
     /** Folder table name */
     static final String FOLDER_TABLE = "folder";
@@ -70,13 +70,18 @@ class SQLiteModelOpenHelper extends SQLiteOpenHelper {
                 SORT_ORDER_COLUMN + " INTEGER DEFAULT " + Long.MAX_VALUE + ", " +
                 "PRIMARY KEY (" + FOLDER_ID_COLUMN + ", "+ ACTION_ID_COLUMN + ") " +
                 ")");
-        //foreign keys are supported from SQLite v. 3.5.19 ( http://www.sqlite.org/foreignkeys.html )
+        //foreign keys are supported from SQLite v. 3.6.19 ( http://www.sqlite.org/foreignkeys.html )
         //adding triggers to emulate ON DELETE CASCADE
+        //IMPORTANT: this trigger is not actually cascade, 
+        //because recursive triggers appears only in SQLite v.3.6.18
+        //( http://www.sqlite.org/pragma.html#pragma_recursive_triggers )
+        /*  The trigger removed in DB v.2, the cascade deletion is moved to Java code
         db.execSQL("CREATE TRIGGER " + FOLDER_TABLE + "_AFTER_DELETE AFTER DELETE ON " + FOLDER_TABLE + 
                 " BEGIN " +
                 "DELETE FROM " + FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
                 "DELETE FROM " + ACTION_IN_FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
                 " END");
+        */
         db.execSQL("CREATE TRIGGER " + ACTION_TABLE + "_AFTER_DELETE AFTER DELETE ON " + ACTION_TABLE + 
                 " BEGIN " +
                 "DELETE FROM " + ACTION_IN_FOLDER_TABLE + " WHERE " + ACTION_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
@@ -101,7 +106,13 @@ class SQLiteModelOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // nothing to do, only one version
+        if (oldVersion == 1 && newVersion == 2) {
+            upgrade1to2(db);
+        }
+    }
+    
+    void upgrade1to2(SQLiteDatabase db) {
+        db.execSQL("DROP TRIGGER IF EXISTS " + FOLDER_TABLE + "_AFTER_DELETE");
     }
 
 }

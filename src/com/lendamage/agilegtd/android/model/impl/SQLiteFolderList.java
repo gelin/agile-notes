@@ -150,7 +150,9 @@ class SQLiteFolderList implements List<Folder> {
         checkDb(db);
         db.beginTransaction();
         try {
-            FolderDao.deleteChildFolders(db, this.id);
+            for (SQLiteFolder child : this.folders) {
+                FolderDao.deleteFolder(db, child.id);
+            }
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();

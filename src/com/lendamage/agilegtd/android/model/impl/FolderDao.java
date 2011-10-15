@@ -263,15 +263,12 @@ class FolderDao {
         checkDb(db);
         assert(id != 0);
         db.delete(FOLDER_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(id) });
-    }
-    
-    /**
-     *  Deletes all child folder.
-     */
-    static void deleteChildFolders(SQLiteDatabase db, long parentId) {
-        checkDb(db);
-        assert(parentId != 0);
-        db.delete(FOLDER_TABLE, FOLDER_ID_COLUMN + " = ?", new String[] { String.valueOf(parentId) });
+        Cursor cursor = selectFolders(db, id);
+        while (cursor.moveToNext()) {
+            SQLiteFolder folder = getFolder(db, cursor);
+            deleteFolder(db, folder.id);
+        }
+        cursor.close();
     }
     
     private FolderDao() {
