@@ -193,5 +193,12 @@ public class SQLiteModelTest extends AndroidTestCase {
         model.getRootFolder().getFolders().clear();
         assertEquals(0, model.findFolders(null).size());
     }
+    
+    public void testActionDeletion() {
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        SQLiteAction action = (SQLiteAction)folder.newAction("action", null);
+        model.getRootFolder().getFolders().clear();
+        assertNull(ActionDao.selectAction(model.db, action.id));
+    }
 
 }

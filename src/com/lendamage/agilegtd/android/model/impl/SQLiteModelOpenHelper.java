@@ -70,23 +70,24 @@ class SQLiteModelOpenHelper extends SQLiteOpenHelper {
                 SORT_ORDER_COLUMN + " INTEGER DEFAULT " + Long.MAX_VALUE + ", " +
                 "PRIMARY KEY (" + FOLDER_ID_COLUMN + ", "+ ACTION_ID_COLUMN + ") " +
                 ")");
-        //foreign keys are supported from SQLite v. 3.6.19 ( http://www.sqlite.org/foreignkeys.html )
+        
         //adding triggers to emulate ON DELETE CASCADE
-        //IMPORTANT: this trigger is not actually cascade, 
-        //because recursive triggers appears only in SQLite v.3.6.18
+        //foreign keys are supported from SQLite v. 3.6.19 ( http://www.sqlite.org/foreignkeys.html )
+        //recursive triggers appears only in SQLite v.3.6.18
         //( http://www.sqlite.org/pragma.html#pragma_recursive_triggers )
-        /*  The trigger removed in DB v.2, the cascade deletion is moved to Java code
+        
+        //this trigger doesn't removes the folders recursively, but removes actions 
         db.execSQL("CREATE TRIGGER " + FOLDER_TABLE + "_AFTER_DELETE AFTER DELETE ON " + FOLDER_TABLE + 
                 " BEGIN " +
-                "DELETE FROM " + FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
                 "DELETE FROM " + ACTION_IN_FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
+                "DELETE FROM " + ACTION_TABLE + " WHERE NOT EXISTS " +
+                "( SELECT * FROM " + ACTION_IN_FOLDER_TABLE +" WHERE " + ACTION_ID_COLUMN + " = " + ID_COLUMN + " ) ;" +
                 " END");
-        */
         db.execSQL("CREATE TRIGGER " + ACTION_TABLE + "_AFTER_DELETE AFTER DELETE ON " + ACTION_TABLE + 
                 " BEGIN " +
                 "DELETE FROM " + ACTION_IN_FOLDER_TABLE + " WHERE " + ACTION_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
                 " END");
-        //when the last folder for the action is deleted
+        //when the last folder for the action is deleted (looks like never called because triggers are not recursive)
         db.execSQL("CREATE TRIGGER " + ACTION_IN_FOLDER_TABLE + "_AFTER_DELETE AFTER DELETE ON " + ACTION_IN_FOLDER_TABLE +
                 " WHEN NOT EXISTS " +   
                 "( SELECT * FROM " + ACTION_IN_FOLDER_TABLE +" WHERE " + ACTION_ID_COLUMN + " = OLD." + ACTION_ID_COLUMN + " )" +
@@ -113,6 +114,12 @@ class SQLiteModelOpenHelper extends SQLiteOpenHelper {
     
     void upgrade1to2(SQLiteDatabase db) {
         db.execSQL("DROP TRIGGER IF EXISTS " + FOLDER_TABLE + "_AFTER_DELETE");
+        db.execSQL("CREATE TRIGGER " + FOLDER_TABLE + "_AFTER_DELETE AFTER DELETE ON " + FOLDER_TABLE + 
+                " BEGIN " +
+                "DELETE FROM " + ACTION_IN_FOLDER_TABLE + " WHERE " + FOLDER_ID_COLUMN + " = OLD." + ID_COLUMN + "; " +
+                "DELETE FROM " + ACTION_TABLE + " WHERE NOT EXISTS " +
+                "( SELECT * FROM " + ACTION_IN_FOLDER_TABLE +" WHERE " + ACTION_ID_COLUMN + " = " + ID_COLUMN + " ) ;" +
+                " END");
     }
 
 }
