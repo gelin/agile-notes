@@ -158,6 +158,9 @@ public class FolderActivity extends AbstractFolderActivity {
         case R.id.open_action:
             openAction((Action)itemObject);
             return true;
+        case R.id.edit_action:
+            editAction((Action)itemObject);
+            return true;
         case R.id.move_up_action:
             moveUpAction((Action)itemObject);
             return true;
@@ -221,6 +224,13 @@ public class FolderActivity extends AbstractFolderActivity {
     
     void openAction(Action action) {
         Intent intent = new Intent(this, ViewActionActivity.class);
+        intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
+        intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(action));
+        startActivity(intent);
+    }
+    
+    void editAction(Action action) {
+        Intent intent = new Intent(this, EditActionActivity.class);
         intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
         intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(action));
         startActivity(intent);
