@@ -60,7 +60,7 @@ public class FolderListAdapter extends BaseAdapter {
     }
     
     public int getCount() {;
-        update();
+        //update();     //avoid unnesessary access to DB
         return this.folders.size() + this.actions.size();
     }
 
