@@ -60,4 +60,5 @@
     <string name="backup_failed">The backup is FAILED!</string>
     <string name="restore_successed">Folder and actions are restored from %s</string>
     <string name="restore_failed">The restore from %s is FAILED!</string>
+    <string name="copy_action">Copy action</string>
 </resources>

@@ -10,8 +10,7 @@
     <item android:id="@+id/move_down_action"
         android:title="@string/move_down_action"/>
     <item android:id="@+id/copy_to_action"
-        android:title="@string/copy_to_action"
-        android:enabled="false"/>
+        android:title="@string/copy_to_action"/>
     <item android:id="@+id/delete_action"
         android:title="@string/delete_action"/>
 

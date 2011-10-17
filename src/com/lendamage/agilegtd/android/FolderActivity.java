@@ -5,6 +5,7 @@ import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -168,7 +169,7 @@ public class FolderActivity extends AbstractFolderActivity {
             moveDownAction((Action)itemObject);
             return true;
         case R.id.copy_to_action:
-            //TODO
+            copyAction((Action)itemObject);
             return true;
         case R.id.delete_action:
             this.actionToDelete = (Action)itemObject;
@@ -179,16 +180,18 @@ public class FolderActivity extends AbstractFolderActivity {
         }
     }
     
-    void openFolder(Folder folder) {
-        Intent intent = new Intent(this, FolderActivity.class);
+    void startFolderActivity(Class<? extends Activity> activity, Folder folder) {
+        Intent intent = new Intent(this, activity);
         intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
         startActivity(intent);
     }
     
+    void openFolder(Folder folder) {
+        startFolderActivity(FolderActivity.class, folder);
+    }
+    
     void editFolder(Folder folder) {
-        Intent intent = new Intent(this, EditFolderActivity.class);
-        intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
-        startActivity(intent);
+        startFolderActivity(EditFolderActivity.class, folder);
     }
     
     void moveUpFolder(Folder folder) {
@@ -212,9 +215,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void moveFolder(Folder folder) {
-        Intent intent = new Intent(this, MoveFolderActivity.class);
-        intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
-        startActivity(intent);
+        startFolderActivity(MoveFolderActivity.class, folder);
     }
     
     void deleteFolder(Folder folder) {
@@ -222,18 +223,19 @@ public class FolderActivity extends AbstractFolderActivity {
         updateFoldersActions();
     }
     
-    void openAction(Action action) {
-        Intent intent = new Intent(this, ViewActionActivity.class);
+    void startActionActivity(Class<? extends Activity> activity, Action action) {
+        Intent intent = new Intent(this, activity);
         intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
         intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(action));
         startActivity(intent);
     }
     
+    void openAction(Action action) {
+        startActionActivity(ViewActionActivity.class, action);
+    }
+    
     void editAction(Action action) {
-        Intent intent = new Intent(this, EditActionActivity.class);
-        intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
-        intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(action));
-        startActivity(intent);
+        startActionActivity(EditActionActivity.class, action);
     }
     
     void moveUpAction(Action action) {
@@ -254,6 +256,10 @@ public class FolderActivity extends AbstractFolderActivity {
         }
         actions.add(position + 1, action);
         updateFoldersActions();
+    }
+    
+    void copyAction(Action action) {
+        startActionActivity(CopyActionActivity.class, action);
     }
     
     void deleteAction(Action action) {

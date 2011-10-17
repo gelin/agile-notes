@@ -43,6 +43,10 @@
                   android:theme="@android:style/Theme.Dialog">
         </activity>
         
+        <activity android:name=".CopyActionActivity"
+                  android:theme="@android:style/Theme.Dialog">
+        </activity>
+        
         <activity android:name=".BackupActivity"
                   android:theme="@android:style/Theme.NoTitleBar">
         </activity>
