@@ -1,11 +1,9 @@
 package com.lendamage.agilegtd.android;
 
-import static com.lendamage.agilegtd.android.IntentParams.ACTION_POSITION_EXTRA;
 import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -180,12 +178,6 @@ public class FolderActivity extends AbstractFolderActivity {
         }
     }
     
-    void startFolderActivity(Class<? extends Activity> activity, Folder folder) {
-        Intent intent = new Intent(this, activity);
-        intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
-        startActivity(intent);
-    }
-    
     void openFolder(Folder folder) {
         startFolderActivity(FolderActivity.class, folder);
     }
@@ -221,13 +213,6 @@ public class FolderActivity extends AbstractFolderActivity {
     void deleteFolder(Folder folder) {
         this.folder.getFolders().remove(folder);
         updateFoldersActions();
-    }
-    
-    void startActionActivity(Class<? extends Activity> activity, Action action) {
-        Intent intent = new Intent(this, activity);
-        intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
-        intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(action));
-        startActivity(intent);
     }
     
     void openAction(Action action) {

@@ -1,17 +1,20 @@
 package com.lendamage.agilegtd.android;
 
-import static com.lendamage.agilegtd.android.IntentParams.ACTION_POSITION_EXTRA;
-import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
-
-import com.lendamage.agilegtd.model.Folder;
-import com.lendamage.agilegtd.model.Path;
-
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.Path;
 
 /**
  *  Activity to view the action.
@@ -21,27 +24,39 @@ import android.widget.TextView;
  */
 public class ViewActionActivity extends AbstractActionActivity {
     
+    static final String FOLDERS_SEPARATOR = "   ";
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_action_activity);
         
-        OnClickListener copyListener = new OnClickListener() {
+        findViewById(R.id.copy_button).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 copyAction();
             }
-        };
-        findViewById(R.id.copy_button).setOnClickListener(copyListener);
-        findViewById(R.id.action_folders).setOnClickListener(copyListener);
+        });
         
-        OnClickListener editListener = new OnClickListener() {
+        findViewById(R.id.edit_button).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 editAction();
             }
-        };
-        findViewById(R.id.edit_button).setOnClickListener(editListener);
-        findViewById(R.id.action_body).setOnClickListener(editListener);
+        });
+        
+        ListView actionView = (ListView)findViewById(R.id.action_view);
+        actionView.setOnItemClickListener(new OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch ((int)id) {
+                case ActionViewAdapter.FOLDERS_VIEW_TYPE:
+                    copyAction();
+                    break;
+                case ActionViewAdapter.BODY_VIEW_TYPE:
+                    editAction();
+                    break;
+                }
+            }
+        });
     }
     
     @Override
@@ -52,31 +67,91 @@ public class ViewActionActivity extends AbstractActionActivity {
         }
         TextView titleView = (TextView)findViewById(R.id.title);
         titleView.setText(this.action.getHead());
-        TextView bodyView = (TextView)findViewById(R.id.action_body);
-        bodyView.setText(this.action.getBody());
         
-        ViewGroup foldersView = (ViewGroup)findViewById(R.id.action_folders);
-        for (Folder folder : this.action.getFolders()) {
-            TextView folderView = new TextView(this);
-            Path path = folder.getPath();
-            if (path.isRoot()) {
-                folderView.setText(R.string.root_folder);
-            } else {
-                folderView.setText(path.toString());
-            }
-            foldersView.addView(folderView);
-        }
+        ListView actionView = (ListView)findViewById(R.id.action_view);
+        actionView.setAdapter(new ActionViewAdapter(this, this.action));
     }
     
     void copyAction() {
-        //TODO
+        startActionActivity(CopyActionActivity.class, this.action);
     }
     
     void editAction() {
-        Intent intent = new Intent(this, EditActionActivity.class);
-        intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
-        intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(this.action));
-        startActivity(intent);
+        startActionActivity(EditActionActivity.class, this.action);
+    }
+    
+    static class ActionViewAdapter extends BaseAdapter {
+        //TODO: remove this adapter, it's crazy
+
+        public static final int FOLDERS_VIEW_TYPE = 0;
+        public static final int BODY_VIEW_TYPE = 1;
+        static final int[] VIEW_TYPES = {FOLDERS_VIEW_TYPE, BODY_VIEW_TYPE};
+        
+        Context context;
+        Action action;
+        
+        ActionViewAdapter(Context context, Action action) {
+            this.context = context;
+            this.action = action;
+        }
+        
+        public int getCount() {
+            return VIEW_TYPES.length;
+        }
+        
+        @Override
+        public int getViewTypeCount() {
+            return VIEW_TYPES.length;
+        }
+        
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
+        public Object getItem(int position) {
+            return null;
+        }
+
+        public long getItemId(int position) {
+            return VIEW_TYPES[position];
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            switch (VIEW_TYPES[position]) {
+            case FOLDERS_VIEW_TYPE:
+                if (view == null) {
+                    view = LayoutInflater.from(this.context).inflate(
+                                R.layout.action_folders_item, parent, false); 
+                }
+                TextView foldersView = (TextView)view.findViewById(R.id.action_folders_text);
+                StringBuilder folders = new StringBuilder();
+                for (Folder folder : this.action.getFolders()) {
+                    Path path = folder.getPath();
+                    if (folders.length() > 0) {
+                        folders.append(FOLDERS_SEPARATOR);
+                    }
+                    if (path.isRoot()) {
+                        folders.append(this.context.getString(R.string.root_folder));
+                    } else {
+                        folders.append(path.toString());
+                    }
+                }
+                foldersView.setText(folders);
+                break;
+            case BODY_VIEW_TYPE:
+                if (view == null) {
+                    view = LayoutInflater.from(this.context).inflate(
+                            R.layout.action_body_item, parent, false);; 
+                }
+                TextView bodyView = (TextView)view.findViewById(R.id.action_body);
+                bodyView.setText(this.action.getBody());
+                break;
+            }
+            return view;
+        }
+
     }
 
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/action_folders"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:background="@android:drawable/list_selector_background">
+    <ImageView 
+        android:src="@drawable/folder"
+        style="@style/TreeExpandIcon"/>
+    <TextView 
+        android:id="@+id/action_folders_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10sp"/>
+</LinearLayout>
