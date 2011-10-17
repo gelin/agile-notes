@@ -12,12 +12,24 @@ import android.widget.Toast;
  */
 abstract class AbstractEditFolderActivity extends AbstractFolderActivity {
     
+    /** bind view flag */
+    boolean binded = false;
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView();
         initViews();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!this.binded) {
+            bindViews();
+            this.binded = true;
+        }
     }
     
     abstract protected void setContentView();
@@ -36,6 +48,10 @@ abstract class AbstractEditFolderActivity extends AbstractFolderActivity {
         
         Spinner type = (Spinner)findViewById(R.id.folder_type);
         type.setAdapter(new FolderTypeAdapter(this));
+    }
+    
+    protected void bindViews() {
+        //empty implementation
     }
     
     protected boolean validate() {

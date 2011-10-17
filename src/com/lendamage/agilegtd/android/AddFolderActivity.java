@@ -19,6 +19,17 @@ public class AddFolderActivity extends AbstractEditFolderActivity {
     }
 
     @Override
+    protected void bindViews() {
+        Spinner typeView = (Spinner)findViewById(R.id.folder_type);
+        FolderTypeAdapter adapter = (FolderTypeAdapter)typeView.getAdapter();
+        FolderType type = null;
+        if (this.folder.getType() != null) {
+            type = this.folder.getType().getChildType();
+        }
+        typeView.setSelection(adapter.getPosition(type));
+    }
+    
+    @Override
     protected void onOkClick() {
         EditText name = (EditText)findViewById(R.id.folder_name);
         Spinner type = (Spinner)findViewById(R.id.folder_type);

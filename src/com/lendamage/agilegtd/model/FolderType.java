@@ -17,5 +17,24 @@ public enum FolderType {
     PRIORITY,
     PERSONS,
     PERSON;
+    
+    /**
+     *  Returns the recommended child folder type for this parent folder type
+     *  @return recommended type or null 
+     */
+    public FolderType getChildType() {
+        switch (this) {
+        case PROJECTS:
+            return PROJECT;
+        case CONTEXTS:
+            return CONTEXT;
+        case PRIORITIES:
+            return PRIORITY;
+        case PERSONS:
+            return PERSON;
+        default:
+            return null;
+        }
+    }
 
 }

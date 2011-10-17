@@ -13,29 +13,18 @@ import com.lendamage.agilegtd.model.FolderType;
  */
 public class EditFolderActivity extends AbstractEditFolderActivity {
     
-    boolean binded = false;
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bindViews();
-    }
-    
     @Override
     protected void setContentView() {
         setContentView(R.layout.edit_folder_activity);
     }
     
-    void bindViews() {
-        if (this.binded) {
-            return;
-        }
+    @Override
+    protected void bindViews() {
         EditText name = (EditText)findViewById(R.id.folder_name);
         Spinner type = (Spinner)findViewById(R.id.folder_type);
         name.setText(this.folder.getName());
         FolderTypeAdapter adapter = (FolderTypeAdapter)type.getAdapter();
         type.setSelection(adapter.getPosition(this.folder.getType()));
-        this.binded = true;
     }
     
     protected void onOkClick() {
