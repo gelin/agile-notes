@@ -20,14 +20,20 @@
     
     <TextView android:text="@string/backup_folder"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingLeft="5sp"
+        android:paddingRight="5sp"/>
     <TextView android:id="@+id/backup_folder"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingLeft="5sp"
+        android:paddingRight="5sp"/>
     <TextView android:id="@+id/storage_mount_warning"
         android:text="@string/storage_mount_warning"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="5sp"
+        android:paddingRight="5sp"
         android:textColor="#ff0000"
         android:visibility="gone"/>
     

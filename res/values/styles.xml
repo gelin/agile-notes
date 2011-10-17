@@ -95,6 +95,10 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">5sp</item>
+        <item name="android:paddingRight">5sp</item>
+        <item name="android:paddingTop">10sp</item>
+        <item name="android:paddingBottom">10sp</item>
     </style>
     <style name="ListCheckButton">
         <item name="android:layout_width">wrap_content</item>

@@ -2,15 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/action_folders"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:focusable="true"
-    android:background="@android:drawable/list_selector_background">
+    android:layout_height="wrap_content">
     <ImageView 
         android:src="@drawable/folder"
         style="@style/TreeExpandIcon"/>
     <TextView 
         android:id="@+id/action_folders_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10sp"/>
+        style="@style/ListItemText"/>
 </LinearLayout>

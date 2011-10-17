@@ -7,9 +7,6 @@
         style="@style/TreeExpandIcon"/>
     <TextView 
         android:id="@+id/folder_name"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="10sp"
-        android:textSize="16sp" >
-    </TextView>
+        style="@style/ListItemText"
+        android:textSize="16sp"/>
 </LinearLayout>
