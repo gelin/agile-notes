@@ -49,3 +49,4 @@ gen_action_bar_icon progress4
 gen_action_bar_icon progress5
 gen_action_bar_icon progress6
 gen_action_bar_icon progress7
+gen_list_icon folder
