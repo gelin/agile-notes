@@ -317,6 +317,11 @@ public class FolderActivity extends AbstractFolderActivity {
     void setTitle(String title) {
         TextView titleView = (TextView)findViewById(R.id.title);
         titleView.setText(title);
+        titleView.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     
     void updateFoldersActions() {
