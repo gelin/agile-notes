@@ -1,5 +1,6 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -142,6 +143,34 @@ public class SQLiteFolderSetTest extends AndroidTestCase {
         action.getFolders().remove(folder);
         assertEquals(1, action.getFolders().size());
         assertTrue(action.getFolders().contains(model.getRootFolder()));
+    }
+    
+    public void testAddAllAnotherSet() {
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        Set<Folder> toAdd = new HashSet<Folder>();
+        toAdd.add(folder);
+        action.getFolders().addAll(toAdd);
+        
+        assertEquals(2, action.getFolders().size());
+        assertTrue(action.getFolders().contains(model.getRootFolder()));
+        assertTrue(action.getFolders().contains(folder));
+    }
+    
+    public void testRetainAll() {
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        action.getFolders().add(folder);
+        action.getFolders().add(folder2);
+        assertEquals(3, action.getFolders().size());
+        
+        Set<Folder> toRetain = new HashSet<Folder>();
+        toRetain.add(folder);
+        action.getFolders().retainAll(toRetain);
+        
+        assertEquals(1, action.getFolders().size());
+        assertTrue(action.getFolders().contains(folder));
     }
 
 }

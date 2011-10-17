@@ -62,7 +62,6 @@ class SQLiteFolderSet implements Set<Folder> {
     /**
      *  Assigns the folders to the action.
      */
-    @SuppressWarnings("unchecked")
     public boolean addAll(Collection<? extends Folder> folders) {
         if (folders == null || folders.isEmpty()) {
             return false;
@@ -72,18 +71,15 @@ class SQLiteFolderSet implements Set<Folder> {
             if (sqlFolders.id == this.id) {
                 return false;   //no need to insert into self
             }
-        } else if (folders instanceof SQLiteFolderList) {
-            //just accepting this type of collection
-        } else {
-            throw new UnsupportedOperationException("cannot add collection of not-SQLiteFolders");
         }
-        Iterator<SQLiteFolder> i = (Iterator<SQLiteFolder>)folders.iterator();
         checkDb(db);
         db.beginTransaction();
         try {
-            while (i.hasNext()) {
-                SQLiteFolder folder = i.next();
-                addFolder(folder);
+            for (Folder folder : folders) {
+                if (!(folder instanceof SQLiteFolder)) {
+                    continue;
+                }
+                addFolder((SQLiteFolder)folder);
             }
             updateOrder();
             db.setTransactionSuccessful();
@@ -131,26 +127,47 @@ class SQLiteFolderSet implements Set<Folder> {
         db.beginTransaction();
         try {
             ActionDao.deleteActionFromFolder(db, folder.id, this.id);
-            this.folders.remove(object);
+            this.folders.remove(folder);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
         return true;
     }
+    
     /**
-     *  Throws UnsupportedOpeartionException.
-     *  Different folders collections are never intersect. 
+     *  Throws UnsupportedOperationException.
      */
     public boolean removeAll(Collection<?> folders) {
         throw new UnsupportedOperationException("removeAll() is not supported");
     }
-    /**
-     *  Throws UnsupportedOpeartionException.
-     *  Different folders collections are never intersect.
-     */
+    
     public boolean retainAll(Collection<?> folders) {
-        throw new UnsupportedOperationException("retainAll() is not supported");
+        if (folders == null || folders.isEmpty()) {
+            return false;
+        }
+        if (folders instanceof SQLiteFolderSet) {
+            SQLiteFolderSet sqlFolders = (SQLiteFolderSet)folders;
+            if (sqlFolders.id == this.id) {
+                return false;   //no need to retain into self
+            }
+        }
+        checkDb(db);
+        db.beginTransaction();
+        try {
+            Iterator<SQLiteFolder> i = this.folders.iterator();
+            while (i.hasNext()) {
+                SQLiteFolder folder = i.next();
+                if (!folders.contains(folder)) {
+                    ActionDao.deleteActionFromFolder(db, folder.id, this.id);
+                    i.remove();
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return true;
     }
     public int size() {
         return this.folders.size();
