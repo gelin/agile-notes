@@ -61,4 +61,9 @@
     <string name="restore_successed">Folder and actions are restored from %s</string>
     <string name="restore_failed">The restore from %s is FAILED!</string>
     <string name="copy_action">Copy action</string>
+    <string name="at_work_context_folder">At Work</string>
+    <string name="at_home_context_folder">At Home</string>
+    <string name="low_priority_folder">Low</string>
+    <string name="normal_priority_folder">Normal</string>
+    <string name="high_priority_folder">High</string>
 </resources>
