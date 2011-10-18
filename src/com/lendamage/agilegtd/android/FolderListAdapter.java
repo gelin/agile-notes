@@ -152,7 +152,7 @@ public class FolderListAdapter extends BaseAdapter {
         final TextView actionHead = (TextView)view.findViewById(R.id.action_head);
         boolean completed = false;
         if (this.completedFolders.size() == 0) {
-            actionCheck.setVisibility(View.INVISIBLE);
+            actionCheck.setVisibility(View.GONE);
             actionCheck.setOnCheckedChangeListener(null);
         } else {
             completed = isCompleted(action);
