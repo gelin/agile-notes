@@ -43,7 +43,7 @@ class SQLiteFolderList implements List<Folder> {
         checkDb(db);
         db.beginTransaction();
         try {
-            addFolder(this.folders.size(), sqlFolder);
+            addFolder(sqlFolder);
             updateOrder();
             db.setTransactionSuccessful();
         } finally {
@@ -69,6 +69,14 @@ class SQLiteFolderList implements List<Folder> {
             db.endTransaction();
         }
     }
+    
+    void addFolder(SQLiteFolder folder) {
+        if (this.folders.contains(folder)) {
+            return;
+        }
+        addFolder(this.folders.size(), folder);
+    }
+    
     void addFolder(int location, SQLiteFolder folder) {
         FolderDao.updateFolderParent(this.db, folder, this.id);
         this.folders.remove(folder);
@@ -77,6 +85,7 @@ class SQLiteFolderList implements List<Folder> {
         }
         this.folders.add(location, folder);
     }
+    
     /**
      *  Inserts the folders as subfolders.
      */
@@ -101,7 +110,7 @@ class SQLiteFolderList implements List<Folder> {
                     continue;
                 }
                 i.remove();
-                addFolder(this.folders.size(), folder);
+                addFolder(folder);
             }
             updateOrder();
             db.setTransactionSuccessful();

@@ -74,7 +74,7 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action1, actions.get(0));
         assertEquals(action2, actions.get(1));
         
-        actions.add(action1);    //add to the end
+        actions.add(actions.size(), action1);    //add to the end
         assertEquals("the size should not increase", 2, actions.size());
         List<Action> actions2 = folder.getActions();
         assertEquals(2, actions2.size());
@@ -272,6 +272,57 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(2, actions2.size());
         assertEquals(action1, actions2.get(0));
         assertEquals(action3, actions2.get(1));
+    }
+    
+    public void testOrderingOnFolderSetChange() {
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        
+        List<Action> actions = model.getRootFolder().getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
+        
+        action1.getFolders().add(folder);
+        
+        actions = model.getRootFolder().getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
+        
+        actions = folder.getActions();
+        assertEquals(action1, actions.get(0));
+    }
+    
+    public void testAddOfExisted() {
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        
+        List<Action> actions = model.getRootFolder().getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
+        
+        model.getRootFolder().getActions().add(action1);
+        
+        actions = model.getRootFolder().getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
+    }
+    
+    public void testAddAllOfExisted() {
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        
+        List<Action> actions = model.getRootFolder().getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
+        
+        action1.getFolders().add(folder);
+        model.getRootFolder().getActions().addAll(folder.getActions());
+        
+        actions = model.getRootFolder().getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
     }
 
 }

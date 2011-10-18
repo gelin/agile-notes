@@ -63,7 +63,7 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         assertEquals(child1, children.get(0));
         assertEquals(child2, children.get(1));
         
-        children.add(child1);    //add to the end
+        children.add(children.size(), child1);    //add to the end
         assertEquals("the size should not increase", 2, children.size());
         List<Folder> children2 = parent.getFolders();
         assertEquals(2, children2.size());
@@ -307,4 +307,19 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         assertEquals(1, parent.getFolders().size());
     }
     
+    public void testAddOfExisted() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        
+        List<Folder> folders = model.getRootFolder().getFolders();
+        assertEquals(folder1, folders.get(0));
+        assertEquals(folder2, folders.get(1));
+        
+        model.getRootFolder().getFolders().add(folder1);
+        
+        folders = model.getRootFolder().getFolders();
+        assertEquals(folder1, folders.get(0));
+        assertEquals(folder2, folders.get(1));
+    }
+
 }

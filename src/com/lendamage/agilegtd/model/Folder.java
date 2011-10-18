@@ -36,6 +36,8 @@ public interface Folder extends Entity<Folder.Editor> {
      *  new folder is assigned as a subfolder of this folder.<br>
      *  The list doesn't contain duplicates, if you add a folder which already exists in the list, 
      *  the order of elements will be changed, but not the list length.<br>
+     *  The addition of the already existed folder without explicit specifying of the folder location
+     *  doesn't changes the order of the folders.<br>
      *  The list operations can throw FolderAlreadyExistsException if the folder with the same name already exists.
      */
     List<Folder> getFolders();
@@ -46,7 +48,9 @@ public interface Folder extends Entity<Folder.Editor> {
      *  If the action is deleted from the list, the assignment of the action to this folder is removed.<br>
      *  If the action is added to the list, the new assignment of the action to this folder is added.<br>
      *  The list doesn't contain duplicates, if you add an action which already exists in the list, 
-     *  the order of elements will be changed, but not the list length.
+     *  the order of elements will be changed, but not the list length.<br>
+     *  The addition of the already existed action without explicit specifying of the action location
+     *  doesn't changes the order of the actions.<br>
      */
     List<Action> getActions();
     

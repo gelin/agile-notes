@@ -158,6 +158,7 @@ public class FolderListAdapter extends BaseAdapter {
             completed = isCompleted(action);
             actionCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    //TODO: check that this doesn't call in unnecessary cases
                     completeAction(action, isChecked);
                     strikeOut(actionHead, isChecked);
                 }

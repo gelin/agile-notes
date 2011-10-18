@@ -43,7 +43,7 @@ class SQLiteActionList implements List<Action> {
         checkDb(db);
         db.beginTransaction();
         try {
-            addAction(this.actions.size(), sqlAction);
+            addAction(sqlAction);
             updateOrder();
             db.setTransactionSuccessful();
         } finally {
@@ -69,6 +69,14 @@ class SQLiteActionList implements List<Action> {
             db.endTransaction();
         }
     }
+    
+    void addAction(SQLiteAction action) {
+        if (this.actions.contains(action)) {
+            return;
+        }
+        addAction(this.actions.size(), action);
+    }
+    
     void addAction(int location, SQLiteAction action) {
         ActionDao.replaceActionInFolder(this.db, this.id, action.id);
         this.actions.remove(action);
@@ -77,6 +85,7 @@ class SQLiteActionList implements List<Action> {
         }
         this.actions.add(location, action);
     }
+    
     /**
      *  Assigns all actions from the collection to the folder.
      */
@@ -97,7 +106,7 @@ class SQLiteActionList implements List<Action> {
         try {
             while (i.hasNext()) {
                 SQLiteAction action = i.next();
-                addAction(this.actions.size(), action);
+                addAction(action);
             }
             updateOrder();
             db.setTransactionSuccessful();
