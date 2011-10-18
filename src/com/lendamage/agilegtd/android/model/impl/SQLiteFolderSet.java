@@ -66,12 +66,6 @@ class SQLiteFolderSet implements Set<Folder> {
         if (folders == null || folders.isEmpty()) {
             return false;
         }
-        if (folders instanceof SQLiteFolderSet) {
-            SQLiteFolderSet sqlFolders = (SQLiteFolderSet)folders;
-            if (sqlFolders.id == this.id) {
-                return false;   //no need to insert into self
-            }
-        }
         checkDb(db);
         db.beginTransaction();
         try {
@@ -126,8 +120,7 @@ class SQLiteFolderSet implements Set<Folder> {
         checkDb(db);
         db.beginTransaction();
         try {
-            ActionDao.deleteActionFromFolder(db, folder.id, this.id);
-            this.folders.remove(folder);
+            removeFolder(folder);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -135,22 +128,34 @@ class SQLiteFolderSet implements Set<Folder> {
         return true;
     }
     
-    /**
-     *  Throws UnsupportedOperationException.
-     */
+    void removeFolder(SQLiteFolder folder) {
+        ActionDao.deleteActionFromFolder(db, folder.id, this.id);
+        this.folders.remove(folder);
+    }
+    
     public boolean removeAll(Collection<?> folders) {
-        throw new UnsupportedOperationException("removeAll() is not supported");
+        if (folders == null || folders.isEmpty()) {
+            return false;
+        }
+        checkDb(db);
+        db.beginTransaction();
+        try {
+            for (Object folder : folders) {
+                if (!(folder instanceof SQLiteFolder)) {
+                    continue;
+                }
+                removeFolder((SQLiteFolder)folder);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return true;
     }
     
     public boolean retainAll(Collection<?> folders) {
         if (folders == null || folders.isEmpty()) {
             return false;
-        }
-        if (folders instanceof SQLiteFolderSet) {
-            SQLiteFolderSet sqlFolders = (SQLiteFolderSet)folders;
-            if (sqlFolders.id == this.id) {
-                return false;   //no need to retain into self
-            }
         }
         checkDb(db);
         db.beginTransaction();

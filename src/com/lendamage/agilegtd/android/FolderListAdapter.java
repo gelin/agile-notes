@@ -1,16 +1,23 @@
 package com.lendamage.agilegtd.android;
 
 import java.util.List;
+import java.util.Set;
 
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderType;
+import com.lendamage.agilegtd.model.Model;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
  *  Adapter which represents the list of subfolders and actions within the
@@ -27,15 +34,20 @@ public class FolderListAdapter extends BaseAdapter {
     
     /** Current context */
     Context context;
+    /** Current model */
+    Model model;
     /** Folder over which the adapter works */
     Folder folder;
     /** List of folders */
     List<Folder> folders;
     /** List of actions */
     List<Action> actions;
+    /** Set of completed folders */
+    List<Folder> completedFolders;
     
-    public FolderListAdapter(Context context, Folder folder) {
+    public FolderListAdapter(Context context, Model model, Folder folder) {
         this.context = context;
+        this.model = model;
         this.folder = folder;
         update();
     }
@@ -98,6 +110,7 @@ public class FolderListAdapter extends BaseAdapter {
     void update() {
         this.folders = this.folder.getFolders();
         this.actions = this.folder.getActions();
+        this.completedFolders = this.model.findFolders(FolderType.COMPLETED);
     }
     
     /**
@@ -134,9 +147,26 @@ public class FolderListAdapter extends BaseAdapter {
     /**
      *  Binds action to view.
      */
-    void bindActionView(View view, Action action) {
-        TextView actionHead = (TextView)view.findViewById(R.id.action_head);
+    void bindActionView(View view, final Action action) {
+        CheckBox actionCheck = (CheckBox)view.findViewById(R.id.check_button);
+        final TextView actionHead = (TextView)view.findViewById(R.id.action_head);
+        boolean completed = false;
+        if (this.completedFolders.size() == 0) {
+            actionCheck.setVisibility(View.INVISIBLE);
+            actionCheck.setOnCheckedChangeListener(null);
+        } else {
+            completed = isCompleted(action);
+            actionCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    completeAction(action, isChecked);
+                    strikeOut(actionHead, isChecked);
+                }
+            });
+            actionCheck.setVisibility(View.VISIBLE);
+            actionCheck.setChecked(completed);
+        }
         actionHead.setText(action.getHead());
+        strikeOut(actionHead, completed);
     }
     
     /**
@@ -172,6 +202,36 @@ public class FolderListAdapter extends BaseAdapter {
      */
     boolean isLastAction(int position) {
         return !isFolder(position) && position == this.folders.size() + this.actions.size() - 1;
+    }
+    
+    boolean isCompleted(Action action) {
+        Set<Folder> actionFolders = action.getFolders();
+        for (Folder completed : this.completedFolders) {
+            if (actionFolders.contains(completed)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    void strikeOut(TextView view, boolean strike) {
+        if (strike) {
+            view.setPaintFlags(view.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            view.setPaintFlags(view.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
+    }
+    
+    void completeAction(Action action, boolean completed) {
+        if (completed) {
+            action.getFolders().addAll(this.completedFolders);
+        } else {
+            action.getFolders().removeAll(this.completedFolders);
+        }
+        if (FolderType.COMPLETED.equals(this.folder.getType())) {
+            update();
+            notifyDataSetChanged();
+        }
     }
 
 }

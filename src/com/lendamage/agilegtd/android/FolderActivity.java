@@ -86,7 +86,7 @@ public class FolderActivity extends AbstractFolderActivity {
             setTitle(this.folder.getPath().toString());
         }
         ListView foldersActionsList = (ListView)findViewById(R.id.folders_actions);
-        foldersActionsList.setAdapter(new FolderListAdapter(this, this.folder));
+        foldersActionsList.setAdapter(new FolderListAdapter(this, this.model, this.folder));
     }
     
     @Override

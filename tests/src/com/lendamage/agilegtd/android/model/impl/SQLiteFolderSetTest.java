@@ -172,5 +172,22 @@ public class SQLiteFolderSetTest extends AndroidTestCase {
         assertEquals(1, action.getFolders().size());
         assertTrue(action.getFolders().contains(folder));
     }
+    
+    public void testRemoveAll() {
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        action.getFolders().add(folder);
+        action.getFolders().add(folder2);
+        assertEquals(3, action.getFolders().size());
+        
+        Set<Folder> toRemove = new HashSet<Folder>();
+        toRemove.add(folder);
+        toRemove.add(model.getRootFolder());
+        action.getFolders().removeAll(toRemove);
+        
+        assertEquals(1, action.getFolders().size());
+        assertTrue(action.getFolders().contains(folder2));
+    }
 
 }
