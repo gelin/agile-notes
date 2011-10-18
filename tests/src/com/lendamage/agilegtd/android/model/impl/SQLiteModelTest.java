@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.test.AndroidTestCase;
 
+import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
@@ -199,6 +200,15 @@ public class SQLiteModelTest extends AndroidTestCase {
         SQLiteAction action = (SQLiteAction)folder.newAction("action", null);
         model.getRootFolder().getFolders().clear();
         assertNull(ActionDao.selectAction(model.db, action.id));
+    }
+    
+    public void testFindAction() {
+        Action action = model.getRootFolder().newAction("action", null);
+        model.close();
+        SQLiteModel model2 = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        Action action2 = model2.findAction(action);
+        assertNotNull(action2);
+        assertEquals(action, action2);
     }
 
 }

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
@@ -82,6 +83,21 @@ public class SQLiteModel implements Model {
         List<Folder> typedResult = new ArrayList<Folder>();
         typedResult.addAll(result);
         return Collections.unmodifiableList(typedResult);
+    }
+    
+    //@Override
+    public Action findAction(Action action) {
+        if (!(action instanceof SQLiteAction)) {
+            return null;
+        }
+        db.beginTransaction();
+        try {
+            Action result = ActionDao.selectAction(db, ((SQLiteAction)action).id);
+            db.setTransactionSuccessful();
+            return result;
+        } finally {
+            db.endTransaction();
+        }
     }
     
     public void close() {
