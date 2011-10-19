@@ -41,7 +41,7 @@ public class LaunchActivity extends Activity {
         priorities.newFolder(getString(R.string.low_priority_folder), FolderType.PRIORITY);
         root.newFolder(getString(R.string.persons_folder), FolderType.PERSONS);
         root.newFolder(getString(R.string.completed_folder), FolderType.COMPLETED);
-        //root.newFolder(getString(R.string.trash_folder), FolderType.TRASH);
+        root.newFolder(getString(R.string.trash_folder), FolderType.TRASH);
     }
 
 }

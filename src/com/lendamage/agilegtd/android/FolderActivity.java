@@ -2,7 +2,9 @@ package com.lendamage.agilegtd.android;
 
 import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderType;
 
 /**
  *  Activity which displays the folder content: subfolders and activities.
@@ -42,6 +45,8 @@ public class FolderActivity extends AbstractFolderActivity {
     Folder folderToDelete = null;
     /** Action to delete */
     Action actionToDelete = null;
+    /** Trash folders */
+    List<Folder> trashFolders = Collections.emptyList();
     
     /** Called when the activity is first created. */
     @Override
@@ -85,6 +90,7 @@ public class FolderActivity extends AbstractFolderActivity {
         if (!this.folder.getPath().isRoot()) {
             setTitle(this.folder.getPath().toString());
         }
+        this.trashFolders = this.model.findFolders(FolderType.TRASH);
         ListView foldersActionsList = (ListView)findViewById(R.id.folders_actions);
         foldersActionsList.setAdapter(new FolderListAdapter(this, this.model, this.folder));
     }
@@ -151,8 +157,7 @@ public class FolderActivity extends AbstractFolderActivity {
             moveFolder((Folder)itemObject);
             return true;
         case R.id.delete_folder:
-            this.folderToDelete = (Folder)itemObject;
-            showDialog(DELETE_FOLDER_CONFIRM_DIALOG);
+            deleteFolder((Folder)itemObject);
             return true;
         case R.id.open_action:
             openAction((Action)itemObject);
@@ -170,8 +175,7 @@ public class FolderActivity extends AbstractFolderActivity {
             copyAction((Action)itemObject);
             return true;
         case R.id.delete_action:
-            this.actionToDelete = (Action)itemObject;
-            showDialog(DELETE_ACTION_CONFIRM_DIALOG);
+            deleteAction((Action)itemObject);
             return true;
         default:
             return super.onContextItemSelected(item);
@@ -211,8 +215,22 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteFolder(Folder folder) {
+        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(this.folder.getType())) {
+            this.folderToDelete = folder;
+            showDialog(DELETE_FOLDER_CONFIRM_DIALOG);
+        } else {
+            deleteFolderToTrash(folder);
+        }
+    }
+    
+    void deleteFolderFromModel(Folder folder) {
         this.folder.getFolders().remove(folder);
         updateFoldersActions();
+    }
+    
+    void deleteFolderToTrash(Folder folder) {
+        this.trashFolders.get(0).getFolders().add(folder);
+        updateFoldersActions(true); //this folder is not updated directly, need to reread
     }
     
     void openAction(Action action) {
@@ -248,8 +266,24 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteAction(Action action) {
+        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(this.folder.getType())) {
+            this.actionToDelete = action;
+            showDialog(DELETE_ACTION_CONFIRM_DIALOG);
+        } else {
+            deleteActionToTrash(action);
+        }
+    }
+    
+    void deleteActionFromFolder(Action action) {
         this.folder.getActions().remove(action);
         updateFoldersActions();
+    }
+    
+    void deleteActionToTrash(Action action) {
+        Set<Folder> folders = action.getFolders();
+        folders.addAll(this.trashFolders);
+        folders.remove(this.folder);
+        updateFoldersActions(true);     //this folder is not updated directly, need to reread
     }
     
     @Override
@@ -262,7 +296,7 @@ public class FolderActivity extends AbstractFolderActivity {
                     setMessage(R.string.delete_folder_confirm).
                     setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            deleteFolder(FolderActivity.this.folderToDelete);
+                            deleteFolderFromModel(FolderActivity.this.folderToDelete);
                         }
                     }).
                     setNegativeButton(R.string.cancel_button, null);
@@ -273,7 +307,7 @@ public class FolderActivity extends AbstractFolderActivity {
                     setMessage(R.string.delete_action_confirm).
                     setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            deleteAction(FolderActivity.this.actionToDelete);
+                            deleteActionFromFolder(FolderActivity.this.actionToDelete);
                         }
                     }).
                     setNegativeButton(R.string.cancel_button, null);
@@ -325,8 +359,15 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void updateFoldersActions() {
+        updateFoldersActions(false);
+    }
+    
+    void updateFoldersActions(boolean reread) {
         ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
         FolderListAdapter adapter = (FolderListAdapter)foldersActions.getAdapter();
+        if (reread) {
+            adapter.update();
+        }
         adapter.notifyDataSetChanged();
     }
 
