@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ActionBar" parent="@android:style/TextAppearance.WindowTitle">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">0px</item>
+        <item name="android:layout_margin">0dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@drawable/action_bar_bg</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:minHeight">35sp</item>
+        <item name="android:minHeight">35dp</item>
     </style>
     <style name="ActionBar.Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">left|center_vertical</item>
-        <item name="android:paddingLeft">10sp</item>
-        <item name="android:paddingRight">10sp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
     <style name="ActionBar.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">0px</item>
+        <item name="android:layout_margin">0dp</item>
         <item name="android:gravity">top</item>
-        <item name="android:padding">4sp</item>
+        <item name="android:padding">4dp</item>
         <!-- 
-        <item name="android:paddingLeft">2sp</item>
-        <item name="android:paddingRight">2sp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
         -->
         <item name="android:background">@drawable/action_bar_button_bg</item>
         <item name="android:scaleType">fitCenter</item>
@@ -38,12 +38,12 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">0px</item>
+        <item name="android:layout_margin">0dp</item>
         <item name="android:gravity">top</item>
-        <item name="android:padding">4sp</item>
+        <item name="android:padding">4dp</item>
         <!-- 
-        <item name="android:paddingLeft">2sp</item>
-        <item name="android:paddingRight">2sp</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
         -->
         <item name="android:scaleType">fitCenter</item>
         <item name="android:adjustViewBounds">true</item>
@@ -53,15 +53,15 @@
         <!-- parent="@android:style/Widget.ListView.White">  -->
         <!-- <item name="android:background">@android:drawable/spinner_dropdown_background</item> -->
         <item name="android:background">@android:color/white</item>
-        <item name="android:padding">0px</item>
-        <item name="android:layout_margin">0px</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
     </style>
     <style name="TreeExpandIcon">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:src">@drawable/expand_icon</item>
         <item name="android:scaleType">center</item>
-        <item name="android:padding">2sp</item>
+        <item name="android:padding">2dp</item>
     </style>
     <style name="TreeItemText" parent="@android:style/Widget.TextView.SpinnerItem">
         <item name="android:layout_width">wrap_content</item>
@@ -72,8 +72,8 @@
     <style name="TreeCheckButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_marginLeft">10sp</item>
-        <item name="android:layout_marginRight">10sp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
         <item name="android:focusable">false</item>
     </style>
     
@@ -85,10 +85,10 @@
         <item name="android:textColor">#bdbebd</item>
         <item name="android:background">#525152</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:paddingLeft">5sp</item>
-        <item name="android:paddingRight">5sp</item>
-        <item name="android:paddingTop">5sp</item>
-        <item name="android:paddingBottom">5sp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
     </style>
     
     <style name="ListItemText">
@@ -96,15 +96,15 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">5sp</item>
-        <item name="android:paddingRight">5sp</item>
-        <item name="android:paddingTop">10sp</item>
-        <item name="android:paddingBottom">10sp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
     </style>
     <style name="ListCheckButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:layout_marginLeft">10sp</item>
+        <item name="android:layout_marginLeft">10dp</item>
         <item name="android:focusable">false</item>
     </style>
     

@@ -33,34 +33,38 @@ public class FolderListView extends ListView {
     int startPosition;
     int endPosition;
     int dragPointOffset;       //Used to adjust drag view location
+    int dragArea;
     
     ImageView dragView;
     GestureDetector gestureDetector;
     
     DropListener dropListener;
-    RemoveListener removeListener;
     DragListener dragListener;
 
     public FolderListView(Context context) {
         super(context);
+        init();
     }
 
     public FolderListView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public FolderListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
+    }
+    
+    void init() {
+        this.dragArea = (int)(40.0f * getResources().getDisplayMetrics().density + 0.5f);   //40dp
+        this.dragListener = this.defaultDragListener;
     }
     
     public void setDropListener(DropListener listener) {
         this.dropListener = listener;
     }
 
-    public void setRemoveListener(RemoveListener listener) {
-        this.removeListener = listener;
-    }
-    
     public void setDragListener(DragListener listener) {
         this.dragListener = listener;
     }
@@ -69,9 +73,6 @@ public class FolderListView extends ListView {
     public void setAdapter(ListAdapter adapter) {
         if (adapter instanceof DropListener) {
             this.dropListener = (DropListener)adapter;
-        }
-        if (adapter instanceof RemoveListener) {
-            this.removeListener = (RemoveListener)adapter;
         }
         if (adapter instanceof DragListener) {
             this.dragListener = (DragListener)adapter;
@@ -85,7 +86,7 @@ public class FolderListView extends ListView {
         final int x = (int) ev.getX();
         final int y = (int) ev.getY();  
         
-        if (action == MotionEvent.ACTION_DOWN && x < this.getWidth()/4) {
+        if (action == MotionEvent.ACTION_DOWN && x > (this.getWidth() - this.dragArea)) {
             this.dragMode = true;
         }
 
@@ -200,5 +201,27 @@ public class FolderListView extends ListView {
         this.dragView.setImageDrawable(null);
         this.dragView = null;
     }
+    
+    private DragListener defaultDragListener = new DragListener() {
+
+        int backgroundColor = 0x22ffffff;
+        int defaultBackgroundColor;
+        
+            public void onDrag(int x, int y, ListView listView) {
+                //nothing to do
+            }
+
+            public void onStartDrag(View itemView) {
+                itemView.setVisibility(View.INVISIBLE);
+                defaultBackgroundColor = itemView.getDrawingCacheBackgroundColor();
+                itemView.setBackgroundColor(backgroundColor);
+            }
+
+            public void onStopDrag(View itemView) {
+                itemView.setVisibility(View.VISIBLE);
+                itemView.setBackgroundColor(defaultBackgroundColor);
+            }
+        
+    };
 
 }

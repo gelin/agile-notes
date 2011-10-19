@@ -5,7 +5,7 @@
     <CheckBox 
         android:id="@+id/check_button"
         style="@style/ListCheckButton"
-        android:layout_margin="0sp"/>
+        android:layout_margin="0dp"/>
     <TextView 
         android:id="@+id/action_head"
         style="@style/ListItemText"
