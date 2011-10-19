@@ -28,6 +28,9 @@ import android.widget.ListView;
 
 public class FolderListView extends ListView {
     
+    static final int BEFORE_LIST = Integer.MIN_VALUE;
+    static final int AFTER_LIST = Integer.MAX_VALUE;
+    
     boolean dragMode;
 
     int startPosition;
@@ -113,6 +116,13 @@ public class FolderListView extends ListView {
             default:
                 this.dragMode = false;
                 this.endPosition = pointToPosition(x, y);
+                if (this.endPosition == INVALID_POSITION) {
+                    if (y < this.dragPointOffset) {
+                        this.endPosition = BEFORE_LIST;
+                    } else {
+                        this.endPosition = AFTER_LIST;
+                    }
+                }
                 stopDrag(this.startPosition - getFirstVisiblePosition());
                 if (this.dropListener != null && 
                         this.startPosition != INVALID_POSITION && this.endPosition != INVALID_POSITION) { 
