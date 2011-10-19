@@ -10,4 +10,7 @@
         android:id="@+id/action_head"
         style="@style/ListItemText"
         android:textSize="16sp"/>
+    <ImageView 
+        android:src="@drawable/drag_handle"
+        style="@style/TreeExpandIcon"/>
 </LinearLayout>

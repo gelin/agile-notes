@@ -95,7 +95,7 @@ public class FolderListView extends ListView {
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                this.startPosition = pointToPosition(x,y);
+                this.startPosition = pointToPosition(x, y);
                 if (this.startPosition != INVALID_POSITION) {
                     int itemPosition = this.startPosition - getFirstVisiblePosition();
                     this.dragPointOffset = y - getChildAt(itemPosition).getTop();
@@ -111,7 +111,7 @@ public class FolderListView extends ListView {
             case MotionEvent.ACTION_UP:
             default:
                 this.dragMode = false;
-                this.endPosition = pointToPosition(x,y);
+                this.endPosition = pointToPosition(x, y);
                 stopDrag(this.startPosition - getFirstVisiblePosition());
                 if (this.dropListener != null && 
                         this.startPosition != INVALID_POSITION && this.endPosition != INVALID_POSITION) { 
