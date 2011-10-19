@@ -17,9 +17,10 @@
                 android:src="@drawable/plus"/>
     </LinearLayout>
     
-    <ListView android:id="@+id/folders_actions"
+    <com.lendamage.agilegtd.android.FolderListView 
+        android:id="@+id/folders_actions"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-    </ListView>
+    </com.lendamage.agilegtd.android.FolderListView>
     
 </LinearLayout>

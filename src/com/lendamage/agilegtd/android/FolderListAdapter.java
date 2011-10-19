@@ -23,7 +23,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
  *  Adapter which represents the list of subfolders and actions within the
  *  specified folder.
  */
-public class FolderListAdapter extends BaseAdapter {
+public class FolderListAdapter extends BaseAdapter implements DropListener {
 
     /** View type of folder */
     static final int FOLDER_VIEW_TYPE = 0;
@@ -233,6 +233,30 @@ public class FolderListAdapter extends BaseAdapter {
             update();
             notifyDataSetChanged();
         }
+    }
+
+    public void onDrop(int from, int to) {
+        if (to < 0) {
+            to = 0;
+        }
+        if (to > getCount()) {
+            to = getCount();
+        }
+        if (isFolder(from)) {
+            if (to > this.folders.size()) {
+                to = this.folders.size();
+            }
+            this.folders.add(to, this.folders.get(from));
+        } else {
+            int fromAction = toActionPosition(from);
+            int toAction = toActionPosition(to);
+            if (toAction < 0) {
+                toAction = 0;
+            }
+            this.actions.add(toAction, this.actions.get(fromAction));
+        }
+        //update();
+        notifyDataSetChanged();
     }
 
 }
