@@ -3,21 +3,20 @@ package com.lendamage.agilegtd.android;
 import java.util.List;
 import java.util.Set;
 
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
-import com.lendamage.agilegtd.model.FolderType;
-import com.lendamage.agilegtd.model.Model;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderType;
+import com.lendamage.agilegtd.model.Model;
 
 /**
  *  Adapter which represents the list of subfolders and actions within the
@@ -156,15 +155,16 @@ public class FolderListAdapter extends BaseAdapter implements DropListener {
             actionCheck.setOnCheckedChangeListener(null);
         } else {
             completed = isCompleted(action);
-            actionCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    //TODO: check that this doesn't call in unnecessary cases
-                    completeAction(action, isChecked);
-                    strikeOut(actionHead, isChecked);
-                }
-            });
             actionCheck.setVisibility(View.VISIBLE);
             actionCheck.setChecked(completed);
+            actionCheck.setOnClickListener(new OnClickListener() {
+                public void onClick(View v) {
+                    boolean checked = ((CheckBox)v).isChecked();
+                    //Log.d(TAG, (checked ? "checked" : "unchecked") + " for " + action);
+                    completeAction(action, checked);
+                    strikeOut(actionHead, checked);
+                }
+            });
         }
         actionHead.setText(action.getHead());
         strikeOut(actionHead, completed);
