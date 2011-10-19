@@ -68,6 +68,8 @@
         <xs:enumeration value="PRIORITY"/>
         <xs:enumeration value="PERSONS"/>
         <xs:enumeration value="PERSON"/>
+        <xs:enumeration value="STATUSES"/>
+        <xs:enumeration value="STATUS"/>
     </xs:restriction>
 </xs:simpleType>
 

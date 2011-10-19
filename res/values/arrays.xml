@@ -6,13 +6,15 @@
         <item>@string/context_folder</item>
         <item>@string/priority_folder</item>
         <item>@string/person_folder</item>
+        <item>@string/status_folder</item>
         <item>@string/projects_folder</item>
         <item>@string/contexts_folder</item>
         <item>@string/priorities_folder</item>
         <item>@string/persons_folder</item>
+        <item>@string/statuses_folder</item>
         <item>@string/inbox_folder</item>
-        <item>@string/trash_folder</item>
         <item>@string/completed_folder</item>
+        <item>@string/trash_folder</item>
     </string-array>
     <string-array name="folder_types_values">
         <item></item>
@@ -20,12 +22,14 @@
         <item>CONTEXT</item>
         <item>PRIORITY</item>
         <item>PERSON</item>
+        <item>STATUS</item>
         <item>PROJECTS</item>
         <item>CONTEXTS</item>
         <item>PRIORITIES</item>
         <item>PERSONS</item>
+        <item>STATUSES</item>
         <item>INBOX</item>
-        <item>TRASH</item>
         <item>COMPLETED</item>
+        <item>TRASH</item>
     </string-array>
 </resources>

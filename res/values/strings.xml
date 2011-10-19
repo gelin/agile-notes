@@ -11,10 +11,12 @@
     <string name="context_folder">Context</string>
     <string name="priority_folder">Priority</string>
     <string name="person_folder">Person</string>
+    <string name="status_folder">Status</string>
     <string name="projects_folder">Projects</string>
     <string name="contexts_folder">Contexts</string>
     <string name="priorities_folder">Priorities</string>
     <string name="persons_folder">Persons</string>
+    <string name="statuses_folder">Statuses</string>
     <string name="inbox_folder">Inbox</string>
     <string name="trash_folder">Trash</string>
     <string name="completed_folder">Completed</string>

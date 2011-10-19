@@ -16,7 +16,9 @@ public enum FolderType {
     PRIORITIES,
     PRIORITY,
     PERSONS,
-    PERSON;
+    PERSON,
+    STATUSES,
+    STATUS;
     
     /**
      *  Returns the recommended child folder type for this parent folder type
@@ -32,6 +34,8 @@ public enum FolderType {
             return PRIORITY;
         case PERSONS:
             return PERSON;
+        case STATUSES:
+            return STATUS;
         default:
             return null;
         }
