@@ -233,7 +233,8 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteFolder(Folder folder) {
-        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(this.folder.getType())) {
+        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(this.folder.getType()) ||
+                FolderType.TRASH.equals(folder.getType())) {
             this.folderToDelete = folder;
             showDialog(DELETE_FOLDER_CONFIRM_DIALOG);
         } else {
@@ -387,6 +388,7 @@ public class FolderActivity extends AbstractFolderActivity {
             adapter.update();
         }
         adapter.notifyDataSetChanged();
+        this.trashFolders = this.model.findFolders(FolderType.TRASH);
     }
 
 }
