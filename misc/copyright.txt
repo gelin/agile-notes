@@ -1,6 +1,21 @@
+collapsed.svg
+edit.svg
+empty.svg
+expanded.svg
+folder.svg
 icon.svg
-plus.svg
+ok.svg
 plus_folder.svg
+plus.svg
+progress.svg
+progress0.svg
+progress1.svg
+progress2.svg
+progress3.svg
+progress4.svg
+progress5.svg
+progress6.svg
+progress7.svg
 (c) Denis Nelubin
 CC BY-SA
 
