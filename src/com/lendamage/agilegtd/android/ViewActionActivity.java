@@ -123,6 +123,11 @@ public class ViewActionActivity extends AbstractActionActivity {
         }
         
         @Override
+        public int getItemViewType(int position) {
+            return VIEW_TYPES[position];
+        }
+        
+        @Override
         public boolean hasStableIds() {
             return true;
         }
