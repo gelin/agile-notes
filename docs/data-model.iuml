@@ -1,0 +1,33 @@
+@startuml
+
+class folder {
+    id
+    name
+    type
+    full_name
+    folder_id
+    sort_order
+}
+
+class action {
+    id
+    head
+    body
+}
+
+class action_in_folder {
+    folder_id
+    action_id
+    sort_order
+}
+
+class folder_type {
+}
+note right of folder_type : Enum: project, context, etc...
+
+folder "1" -r- "*" action_in_folder
+action "1" -l- "*" action_in_folder
+folder "1" -l- "*" folder
+folder_type "1" -u- "*" folder
+
+@enduml
