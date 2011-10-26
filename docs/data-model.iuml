@@ -2,6 +2,7 @@
 
 class folder {
     id
+    guid
     name
     type
     full_name
@@ -11,6 +12,7 @@ class folder {
 
 class action {
     id
+    guid
     head
     body
 }
@@ -23,11 +25,74 @@ class action_in_folder {
 
 class folder_type {
 }
-note right of folder_type : Enum: project, context, etc...
+note right of folder_type
+Enum: 
+project, 
+context, 
+etc...
+end note
 
 folder "1" -r- "*" action_in_folder
 action "1" -l- "*" action_in_folder
 folder "1" -l- "*" folder
-folder_type "1" -u- "*" folder
+folder "*" -u- "1" folder_type
+
+class event {
+    id
+    type
+    timestamp
+    author
+}
+
+class event_type {
+}
+note right of event_type
+Enum: 
+add_action, 
+add_folder, 
+change_action, 
+change_folder,
+delete_action,
+delete_folder,
+copy_action,
+move_folder,
+resorting_actions,
+resorting_folders,
+???
+end note
+
+class folder_history {
+    event_id
+    guid
+    name
+    type
+    full_name ??
+    folder_guid ??
+    sort_order ??
+}
+
+class action_history {
+    event_id
+    guid
+    head
+    body
+}
+
+class action_in_folder_history {
+    event_id
+    folder_guid
+    action_guid
+    sort_order ??
+}
+
+event "*" -r- "1" event_type
+folder "1" -d- "*" folder_history
+action "1" -d- "*" action_history
+action_in_folder "1" -d- "*" action_in_folder_history
+event "1" -u- "0..1" action_history
+event "1" -u- "0..1" folder_history
+event "1" -u- "0..1" action_in_folder_history
+folder_history "1" -r- "*" action_in_folder_history
+action_history "1" -l- "*" action_in_folder_history
 
 @enduml
