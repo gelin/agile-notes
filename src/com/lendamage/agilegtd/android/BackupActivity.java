@@ -21,8 +21,8 @@ package com.lendamage.agilegtd.android;
 import static com.lendamage.agilegtd.android.Tag.TAG;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -190,7 +190,7 @@ public class BackupActivity extends Activity {
             try {
                 File file = newBackupFile();
                 Model model = ModelAccessor.openModel(this.context);
-                XmlExporter.exportModel(model, new FileWriter(file));
+                XmlExporter.exportModel(model, new FileOutputStream(file));
                 model.close();
                 Log.i(TAG, "backup created " + file);
                 return getString(R.string.backup_created, file);
@@ -225,10 +225,10 @@ public class BackupActivity extends Activity {
             try {
                 File backupFile = newBackupFile();
                 Model model = ModelAccessor.openModel(this.context);
-                XmlExporter.exportModel(model, new FileWriter(backupFile));
+                XmlExporter.exportModel(model, new FileOutputStream(backupFile));
                 Log.i(TAG, "backup created " + backupFile);
                 append(result, getString(R.string.backup_created, backupFile));
-                XmlImporter.importModel(model, new FileReader(restoreFile));
+                XmlImporter.importModel(model, new FileInputStream(restoreFile));
                 Log.i(TAG, "restore successed from " + restoreFile);
                 append(result, getString(R.string.restore_successed, restoreFile));
                 model.close();

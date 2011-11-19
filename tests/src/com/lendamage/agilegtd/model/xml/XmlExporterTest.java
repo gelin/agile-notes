@@ -1,9 +1,11 @@
 package com.lendamage.agilegtd.model.xml;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import android.os.Environment;
 import android.test.AndroidTestCase;
@@ -47,9 +49,9 @@ public class XmlExporterTest extends AndroidTestCase {
         folder3.getActions().add(action3);
         }
         
-        XmlExporter.exportModel(model, new FileWriter(getBackupFile()));
+        XmlExporter.exportModel(model, new FileOutputStream(getBackupFile()));
         setUp();
-        XmlImporter.importModel(model, new FileReader(getBackupFile()));
+        XmlImporter.importModel(model, new FileInputStream(getBackupFile()));
         
         {
         Folder folder1 = model.getFolder(new SimplePath("folder1"));
@@ -104,6 +106,16 @@ public class XmlExporterTest extends AndroidTestCase {
         assertEquals(action3, folder3.getActions().get(1));
         assertEquals(2, action3.getFolders().size());
         }
+    }
+    
+    public void testEncoding() throws UnsupportedEncodingException {
+        model.getRootFolder().newFolder("абв", null);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        XmlExporter.exportModel(model, out);
+        String result = out.toString("utf8");
+        System.out.println(result);
+        assertTrue(result.startsWith("<?xml version='1.0' encoding='utf-8'"));
+        assertTrue(result.contains("абв"));
     }
     
 }

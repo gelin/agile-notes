@@ -31,10 +31,12 @@ import static com.lendamage.agilegtd.model.xml.XmlNames.VERSION;
 import static com.lendamage.agilegtd.model.xml.XmlNames.VERSION_ATTRIBUTE;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
@@ -44,6 +46,9 @@ import com.lendamage.agilegtd.model.Model;
 import com.lendamage.agilegtd.model.ModelException;
 
 public class XmlExporter {
+    
+    /** XML encoding */
+    static final String UTF8 = "utf-8";
     
     /** The XML serializer */
     XmlSerializer serializer;
@@ -57,23 +62,40 @@ public class XmlExporter {
     int actionId = 0;
     
     public static void exportModel(Model model, Writer output) throws ModelException {
-        XmlPullParserFactory factory;
-        XmlSerializer serializer;
         try {
-            factory = XmlPullParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            //factory.setValidating(true);
-            serializer = factory.newSerializer();
-            serializer.setOutput(output);
-        } catch (Exception e) {
-            throw new XmlExportException(e);
-        }
-        try {
-            XmlExporter exporter = new XmlExporter(model, serializer);
+            XmlExporter exporter = new XmlExporter(model, createSerializer(output));
             exporter.writeModel();
         } catch (Exception e) {
             throw new XmlExportException(e);
         }
+    }
+    
+    public static void exportModel(Model model, OutputStream output) throws ModelException {
+        try {
+            XmlExporter exporter = new XmlExporter(model, createSerializer(output));
+            exporter.writeModel();
+        } catch (Exception e) {
+            throw new XmlExportException(e);
+        }
+    }
+    
+    static XmlSerializer createSerializer(Writer output) throws XmlPullParserException, IOException {
+        XmlSerializer serializer = createSerializer();
+        serializer.setOutput(output);
+        return serializer;
+    }
+    
+    static XmlSerializer createSerializer(OutputStream output) throws XmlPullParserException, IOException {
+        XmlSerializer serializer = createSerializer();
+        serializer.setOutput(output, UTF8);
+        return serializer;
+    }
+    
+    static XmlSerializer createSerializer() throws XmlPullParserException {
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        //factory.setValidating(true);
+        return factory.newSerializer();
     }
     
     XmlExporter(Model model, XmlSerializer serializer) {

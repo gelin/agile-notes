@@ -31,6 +31,7 @@ import static com.lendamage.agilegtd.model.xml.XmlNames.VERSION;
 import static com.lendamage.agilegtd.model.xml.XmlNames.VERSION_ATTRIBUTE;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,14 +63,9 @@ public class XmlImporter {
     Map<String, Action> actions = new HashMap<String, Action>();
     
     public static void importModel(Model model, Reader input) throws ModelException {
-        XmlPullParserFactory factory;
         XmlPullParser parser;
         try {
-            factory = XmlPullParserFactory.newInstance();
-            factory.setNamespaceAware(true);
-            //factory.setValidating(true);
-            parser = factory.newPullParser();
-            parser.setInput(input);
+            parser = createParser(input);
         } catch (Exception e) {
             throw new XmlImportException(e);
         }
@@ -79,6 +75,40 @@ public class XmlImporter {
         } catch (Exception e) {
             throw new XmlImportException(e, parser.getPositionDescription());
         }
+    }
+    
+    public static void importModel(Model model, InputStream input) throws ModelException {
+        XmlPullParser parser;
+        try {
+            parser = createParser(input);
+        } catch (Exception e) {
+            throw new XmlImportException(e);
+        }
+        try {
+            XmlImporter importer = new XmlImporter(parser, model);
+            importer.parse();
+        } catch (Exception e) {
+            throw new XmlImportException(e, parser.getPositionDescription());
+        }
+    }
+    
+    static XmlPullParser createParser(Reader input) throws XmlPullParserException {
+        XmlPullParser parser = createParser();
+        parser.setInput(input);
+        return parser;
+    }
+    
+    static XmlPullParser createParser(InputStream input) throws XmlPullParserException {
+        XmlPullParser parser = createParser();
+        parser.setInput(input, null);   //autodetect encoding
+        return parser;
+    }
+    
+    static XmlPullParser createParser() throws XmlPullParserException {
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        //factory.setValidating(true);
+        return factory.newPullParser();
     }
     
     XmlImporter(XmlPullParser parser, Model model) {

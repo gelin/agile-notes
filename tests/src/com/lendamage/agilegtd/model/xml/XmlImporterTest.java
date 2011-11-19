@@ -1,14 +1,12 @@
 package com.lendamage.agilegtd.model.xml;
 
-import java.io.InputStreamReader;
+import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.android.model.impl.SQLiteModel;
 import com.lendamage.agilegtd.android.model.impl.SimplePath;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
-
-import android.test.AndroidTestCase;
 
 public class XmlImporterTest extends AndroidTestCase {
     
@@ -20,7 +18,7 @@ public class XmlImporterTest extends AndroidTestCase {
     }
     
     public void testImport() {
-        XmlImporter.importModel(model, new InputStreamReader(getClass().getResourceAsStream(("agilegtd.xml"))));
+        XmlImporter.importModel(model, getClass().getResourceAsStream(("agilegtd.xml")));
         
         Folder folder1 = model.getFolder(new SimplePath("folder1"));
         assertNotNull(folder1);
@@ -77,7 +75,7 @@ public class XmlImporterTest extends AndroidTestCase {
     }
     
     public void testImport2() {
-        XmlImporter.importModel(model, new InputStreamReader(getClass().getResourceAsStream(("agilegtd2.xml"))));
+        XmlImporter.importModel(model, getClass().getResourceAsStream(("agilegtd2.xml")));
         
         assertNotNull(model.getFolder(new SimplePath("Persons")));
         assertNotNull(model.getFolder(new SimplePath("Persons/Svetik")));
@@ -88,7 +86,7 @@ public class XmlImporterTest extends AndroidTestCase {
         assertNotNull(model.getFolder(new SimplePath("Test/Subtest3/Subsub")));
         assertNotNull(model.getFolder(new SimplePath("Restore test")));
         
-        XmlImporter.importModel(model, new InputStreamReader(getClass().getResourceAsStream(("agilegtd2.xml"))));
+        XmlImporter.importModel(model, getClass().getResourceAsStream(("agilegtd2.xml")));
         
         assertNotNull(model.getFolder(new SimplePath("Persons")));
         assertNotNull(model.getFolder(new SimplePath("Persons/Svetik")));
