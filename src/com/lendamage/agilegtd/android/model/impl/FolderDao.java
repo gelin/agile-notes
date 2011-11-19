@@ -229,6 +229,12 @@ class FolderDao {
             throw new IllegalStateException("no folder with id = " + folder.id + ", move failed");
         }
         folder.path = path;
+        Cursor cursor = selectFolders(db, folder.id);
+        while (cursor.moveToNext()) {   //update subfolders recursively
+            SQLiteFolder subfolder = getFolder(db, cursor);
+            updateFolderParent(db, subfolder, folder.id);
+        }
+        cursor.close();
     }
     
     /**
