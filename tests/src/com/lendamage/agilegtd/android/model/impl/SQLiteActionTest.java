@@ -7,6 +7,7 @@ import android.test.AndroidTestCase;
 
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderType;
 
 public class SQLiteActionTest extends AndroidTestCase {
     
@@ -153,6 +154,29 @@ public class SQLiteActionTest extends AndroidTestCase {
         assertEquals(action, action2);
         assertEquals("action", action2.getHead());
         assertEquals("body", action2.getBody());
+    }
+    
+    public void testGetFolders2() {
+        Folder toBuy = model.getRootFolder().newFolder("To Buy", FolderType.PROJECT);
+        Folder buyNow = toBuy.newFolder("Now", FolderType.PROJECT);
+        Action item = buyNow.newAction("item", null);
+        Folder completed = model.getRootFolder().newFolder("Completed", FolderType.COMPLETED);
+        completed.getActions().add(item);
+        Folder contexts = model.getRootFolder().newFolder("Contexts", FolderType.CONTEXTS);
+        Folder shops = contexts.newFolder("Shops", FolderType.CONTEXT);
+        Folder metro = shops.newFolder("Metro C&C", FolderType.CONTEXT);
+        metro.getActions().add(item);
+        
+        Folder plan = model.getRootFolder().newFolder("Plan", FolderType.PROJECT);
+        plan.getFolders().add(contexts);
+        model.getRootFolder().getFolders().add(0, plan);
+        model.getRootFolder().getFolders().add(1, toBuy);
+        
+        Set<Folder> folders = item.getFolders();
+        Iterator<Folder> i = folders.iterator();
+        assertEquals(metro, i.next());
+        assertEquals(buyNow, i.next());
+        assertEquals(completed, i.next());
     }
 
 }

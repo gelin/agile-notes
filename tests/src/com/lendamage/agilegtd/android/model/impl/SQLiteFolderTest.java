@@ -176,5 +176,15 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertNotNull(tree.getNodeByPosition(0));
         assertTrue(tree.getNodeByPosition(0).isLeaf());
     }
+    
+    public void testMoveFolder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Folder folder3 = folder2.newFolder("folder3", null);
+        folder1.getFolders().add(folder2);
+        assertEquals(folder1, model.getFolder(new SimplePath("folder1")));
+        assertEquals(folder2, model.getFolder(new SimplePath("folder1/folder2")));
+        assertEquals(folder3, model.getFolder(new SimplePath("folder1/folder2/folder3")));
+    }
 
 }

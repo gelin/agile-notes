@@ -77,6 +77,7 @@ class SQLiteFolderComparator implements Comparator<SQLiteFolder> {
         //finding the first differs part of the path
         List<String> segments1 = folder1.getPath().getSegments();
         List<String> segments2 = folder2.getPath().getSegments();
+        //System.out.println("finding the first differs part of the path: " + segments1 + " - " + segments2);
         int count = Math.min(segments1.size(), segments2.size());
         Path path1 = new SimplePath("");
         Path path2 = new SimplePath("");
