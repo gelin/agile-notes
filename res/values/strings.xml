@@ -66,6 +66,8 @@
     <string name="move_first_action">Move to Top</string>
     <string name="move_last_action">Move to Bottom</string>
     <string name="copy_to_action">Copy To...</string>
+    <string name="share_action">Send To...</string>
+    <string name="share_action_title">Send Action To</string>
     <string name="delete_action">Delete</string>
     <string name="view_action_title">Action</string>
     <string name="delete_action_confirm">Are you sure want to delete this action? The action will be permanently removed from this folder.</string>

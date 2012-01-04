@@ -18,6 +18,7 @@
 
 package com.lendamage.agilegtd.android;
 
+import android.content.Context;
 import android.content.Intent;
 import com.lendamage.agilegtd.model.Action;
 
@@ -38,7 +39,7 @@ class ShareUtils {
      *      <li>EXTRA_TEXT: body of the Action</li>
      *  </ul>
      */
-    public static Intent sendAction(Action action) {
+    public static Intent sendActionIntent(Action action) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(TEXT_MIME_TYPE);
         String head = action.getHead();
@@ -50,6 +51,17 @@ class ShareUtils {
             intent.putExtra(Intent.EXTRA_TEXT, body);
         }
         return intent;
+    }
+
+    /**
+     *  Opens chooser and starts the necessary activity to send the Action.
+     *  @param context  current context
+     *  @param title    ID of resource for chooser dialog title
+     *  @param action   action to send
+     */
+    public static void sendAction(Context context, int title, Action action) {
+        Intent chooser = Intent.createChooser(sendActionIntent(action), context.getString(title));
+        context.startActivity(chooser);
     }
 
     private ShareUtils() {

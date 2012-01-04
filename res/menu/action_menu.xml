@@ -33,6 +33,8 @@
           android:title="@string/move_last_action"/>
     <item android:id="@+id/copy_to_action"
         android:title="@string/copy_to_action"/>
+    <item android:id="@+id/share_action"
+        android:title="@string/share_action"/>
     <item android:id="@+id/delete_action"
         android:title="@string/delete_action"/>
 

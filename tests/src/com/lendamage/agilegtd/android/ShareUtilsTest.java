@@ -16,7 +16,7 @@ public class ShareUtilsTest extends AndroidTestCase {
 
     public void testSendAction() {
         Action action = model.getRootFolder().newAction("head", "body");
-        Intent intent = ShareUtils.sendAction(action);
+        Intent intent = ShareUtils.sendActionIntent(action);
         assertEquals(Intent.ACTION_SEND, intent.getAction());
         assertEquals("text/plain", intent.getType());
         assertEquals("head", intent.getStringExtra(Intent.EXTRA_SUBJECT));
@@ -25,7 +25,7 @@ public class ShareUtilsTest extends AndroidTestCase {
 
     public void testSendActionNullHead() {
         Action action = model.getRootFolder().newAction(null, "body");
-        Intent intent = ShareUtils.sendAction(action);
+        Intent intent = ShareUtils.sendActionIntent(action);
         assertEquals(Intent.ACTION_SEND, intent.getAction());
         assertEquals("text/plain", intent.getType());
         assertFalse(intent.hasExtra(Intent.EXTRA_SUBJECT));
@@ -34,7 +34,7 @@ public class ShareUtilsTest extends AndroidTestCase {
 
     public void testSendActionNullBody() {
         Action action = model.getRootFolder().newAction("head", null);
-        Intent intent = ShareUtils.sendAction(action);
+        Intent intent = ShareUtils.sendActionIntent(action);
         assertEquals(Intent.ACTION_SEND, intent.getAction());
         assertEquals("text/plain", intent.getType());
         assertEquals("head", intent.getStringExtra(Intent.EXTRA_SUBJECT));

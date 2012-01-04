@@ -208,6 +208,9 @@ public class FolderActivity extends AbstractFolderActivity {
         case R.id.copy_to_action:
             copyAction((Action)itemObject);
             return true;
+        case R.id.share_action:
+            ShareUtils.sendAction(this, R.string.share_action_title, (Action)itemObject);
+            return true;
         case R.id.delete_action:
             deleteAction((Action)itemObject);
             return true;
