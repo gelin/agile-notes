@@ -23,10 +23,14 @@
         android:title="@string/open_folder"/>
     <item android:id="@+id/edit_folder"
         android:title="@string/edit_folder"/>
+    <item android:id="@+id/move_first_folder"
+          android:title="@string/move_first_folder"/>
     <item android:id="@+id/move_up_folder"
         android:title="@string/move_up_folder"/>
     <item android:id="@+id/move_down_folder"
         android:title="@string/move_down_folder"/>
+    <item android:id="@+id/move_last_folder"
+          android:title="@string/move_last_folder"/>
     <item android:id="@+id/move_to_folder"
         android:title="@string/move_to_folder"/>
     <item android:id="@+id/delete_folder"

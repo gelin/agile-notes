@@ -132,9 +132,11 @@ public class FolderActivity extends AbstractFolderActivity {
         inflater.inflate(R.menu.folder_menu, menu);
         if (adapter.isFirstFolder(position)) {
             menu.findItem(R.id.move_up_folder).setEnabled(false);
+            menu.findItem(R.id.move_first_folder).setEnabled(false);
         }
         if (adapter.isLastFolder(position)) {
             menu.findItem(R.id.move_down_folder).setEnabled(false);
+            menu.findItem(R.id.move_last_folder).setEnabled(false);
         }
         Folder folder = (Folder)adapter.getItem(position);
         menu.setHeaderTitle(folder.getName());
@@ -145,9 +147,11 @@ public class FolderActivity extends AbstractFolderActivity {
         inflater.inflate(R.menu.action_menu, menu);
         if (adapter.isFirstAction(position)) {
             menu.findItem(R.id.move_up_action).setEnabled(false);
+            menu.findItem(R.id.move_first_action).setEnabled(false);
         }
         if (adapter.isLastAction(position)) {
             menu.findItem(R.id.move_down_action).setEnabled(false);
+            menu.findItem(R.id.move_last_action).setEnabled(false);
         }
         Action action = (Action)adapter.getItem(position);
         menu.setHeaderTitle(action.getHead());
@@ -171,6 +175,12 @@ public class FolderActivity extends AbstractFolderActivity {
         case R.id.move_down_folder:
             moveDownFolder((Folder)itemObject);
             return true;
+        case R.id.move_first_folder:
+            moveFirstFolder((Folder)itemObject);
+            return true;
+        case R.id.move_last_folder:
+            moveLastFolder((Folder)itemObject);
+            return true;
         case R.id.move_to_folder:
             moveFolder((Folder)itemObject);
             return true;
@@ -188,6 +198,12 @@ public class FolderActivity extends AbstractFolderActivity {
             return true;
         case R.id.move_down_action:
             moveDownAction((Action)itemObject);
+            return true;
+        case R.id.move_first_action:
+            moveFirstAction((Action)itemObject);
+            return true;
+        case R.id.move_last_action:
+            moveLastAction((Action)itemObject);
             return true;
         case R.id.copy_to_action:
             copyAction((Action)itemObject);
@@ -225,6 +241,18 @@ public class FolderActivity extends AbstractFolderActivity {
             return;
         }
         folders.add(position + 1, folder);
+        updateFoldersActions();
+    }
+
+    void moveFirstFolder(Folder folder) {
+        List<Folder> folders = this.folder.getFolders();
+        folders.add(0, folder);
+        updateFoldersActions();
+    }
+
+    void moveLastFolder(Folder folder) {
+        List<Folder> folders = this.folder.getFolders();
+        folders.add(folders.size(), folder);
         updateFoldersActions();
     }
     
@@ -277,6 +305,18 @@ public class FolderActivity extends AbstractFolderActivity {
             return;
         }
         actions.add(position + 1, action);
+        updateFoldersActions();
+    }
+
+    void moveFirstAction(Action action) {
+        List<Action> actions = this.folder.getActions();
+        actions.add(0, action);
+        updateFoldersActions();
+    }
+
+    void moveLastAction(Action action) {
+        List<Action> actions = this.folder.getActions();
+        actions.add(actions.size(), action);
         updateFoldersActions();
     }
     
@@ -347,7 +387,7 @@ public class FolderActivity extends AbstractFolderActivity {
             dialog.setTitle(this.actionToDelete.getHead());
             return;
         }
-    };
+    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

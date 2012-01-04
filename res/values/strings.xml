@@ -46,6 +46,8 @@
     <string name="edit_folder">Edit</string>
     <string name="move_up_folder">Move Up</string>
     <string name="move_down_folder">Move Down</string>
+    <string name="move_first_folder">Move to Top</string>
+    <string name="move_last_folder">Move to Bottom</string>
     <string name="move_to_folder">Move To...</string>
     <string name="delete_folder">Delete</string>
     <string name="edit_folder_title">Edit folder</string>
@@ -61,6 +63,8 @@
     <string name="edit_action">Edit</string>
     <string name="move_up_action">Move Up</string>
     <string name="move_down_action">Move Down</string>
+    <string name="move_first_action">Move to Top</string>
+    <string name="move_last_action">Move to Bottom</string>
     <string name="copy_to_action">Copy To...</string>
     <string name="delete_action">Delete</string>
     <string name="view_action_title">Action</string>
