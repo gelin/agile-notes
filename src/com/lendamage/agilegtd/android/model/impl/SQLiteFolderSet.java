@@ -72,6 +72,9 @@ class SQLiteFolderSet implements Set<Folder> {
     }
 
     void addFolder(SQLiteFolder folder) {
+        if (this.folders.contains(folder)) {
+            return;
+        }
         ActionDao.replaceActionInFolder(db, folder.id, this.id);
         this.folders.remove(folder);
         this.folders.add(folder);
