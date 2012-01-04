@@ -90,8 +90,7 @@ public class CopyActionActivity extends AbstractActionActivity {
                     setMessage(R.string.delete_action_confirm).
                     setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            CopyActionActivity.this.folder.getActions().remove(
-                                    CopyActionActivity.this.action);
+                            CopyActionActivity.this.action.getFolders().clear();
                             finish();
                         }
                     }).
