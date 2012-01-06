@@ -74,6 +74,17 @@
                   android:theme="@android:style/Theme.NoTitleBar">
         </activity>
 
+        <activity android:name=".ActionReceiveActivity"
+                  android:theme="@android:style/Theme.NoDisplay"
+                  android:excludeFromRecents="true"
+                  android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>

@@ -93,4 +93,7 @@
     <string name="low_priority_folder">Low</string>
     <string name="normal_priority_folder">Normal</string>
     <string name="high_priority_folder">High</string>
+    <string name="action_received_to_inbox">The new Action has been created in Inbox</string>
+    <string name="action_received_to_root">The new Action has been created in root folder</string>
+    <string name="action_receive_failure">Cannot create a new Action</string>
 </resources>
