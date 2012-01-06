@@ -21,6 +21,7 @@ package com.lendamage.agilegtd.android;
 import android.content.Context;
 import android.content.Intent;
 import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
 
 /**
  *  Methods to share (in Android-way) actions and folders.
@@ -38,6 +39,8 @@ class ShareUtils {
      *      <li>EXTRA_SUBJECT: head of the Action</li>
      *      <li>EXTRA_TEXT: body of the Action</li>
      *  </ul>
+     *  @param action   action to send
+     *  @return intent to start the activity
      */
     public static Intent sendActionIntent(Action action) {
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -64,8 +67,41 @@ class ShareUtils {
         context.startActivity(chooser);
     }
 
+    /**
+     *  Creates the action received from the {@link Intent#ACTION_SEND} intent in the specified folder.
+     *  @param intent   intent to analyze
+     *  @param folder   folder where to create the new Action
+     *  @return true if the Action was created, false if the Intent is not recognized and cannot be converted to Action
+     */
+    public static boolean receiveActionIntent(Intent intent, Folder folder) {
+        if (intent == null) {
+            return false;
+        }
+        if (!Intent.ACTION_SEND.equals(intent.getAction())) {
+            return false;
+        }
+        if (!TEXT_MIME_TYPE.equals(intent.getType())) {
+            return false;
+        }
+        String head = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+        String body = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (head == null && body == null) {
+            return false;
+        }
+        if (head == null) {
+            head = ActionHelper.getHeadFromBody(body);
+        } else if (body == null) {
+            body = head;
+        } else {
+            body = head + "\n" + body;
+        }
+        folder.newAction(head, body);
+        return true;
+    }
+    
     private ShareUtils() {
         //avoid instantiation
     }
 
+    
 }
