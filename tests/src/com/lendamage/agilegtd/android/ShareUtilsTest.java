@@ -49,7 +49,7 @@ public class ShareUtilsTest extends AndroidTestCase {
         assertTrue(ShareUtils.receiveActionIntent(intent, model.getRootFolder()));
         Action action = model.getRootFolder().getActions().get(0);
         assertEquals("head", action.getHead());
-        assertEquals("head\nbody", action.getBody());
+        assertEquals("head\n\nbody", action.getBody());
     }
 
     public void testReceiveActionIntentInvalidAction() {

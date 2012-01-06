@@ -93,7 +93,7 @@ class ShareUtils {
         } else if (body == null) {
             body = head;
         } else {
-            body = head + "\n" + body;
+            body = head + "\n\n" + body;
         }
         folder.newAction(head, body);
         return true;
