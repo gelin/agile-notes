@@ -145,9 +145,6 @@ class ShareUtils {
         }
         for (Action action : folder.getActions()) {
             appendHeadIndent(result, depth + 1);
-            result.append(action.getHead());
-            result.append("\n");
-            appendBodyIndent(result, depth + 1);
             result.append(action.getBody());
             result.append("\n");
         }
@@ -160,13 +157,6 @@ class ShareUtils {
         result.append(" ");
     }
 
-    static void appendBodyIndent(StringBuilder result, int depth) {
-        for (int i = 0; i < depth; i++) {
-            result.append(" ");
-        }
-        result.append(" ");
-    }
-    
     private ShareUtils() {
         //avoid instantiation
     }
