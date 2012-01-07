@@ -18,33 +18,32 @@
 
 package com.lendamage.agilegtd.android;
 
-import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-
+import android.widget.ListView;
+import android.widget.TextView;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
 
 /**
  *  Activity which displays the folder content: subfolders and activities.
@@ -183,6 +182,9 @@ public class FolderActivity extends AbstractFolderActivity {
             return true;
         case R.id.move_to_folder:
             moveFolder((Folder)itemObject);
+            return true;
+        case R.id.share_folder:
+            ShareUtils.sendFolder(this, R.string.share_folder_title, (Folder)itemObject);
             return true;
         case R.id.delete_folder:
             deleteFolder((Folder)itemObject);
@@ -402,6 +404,9 @@ public class FolderActivity extends AbstractFolderActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.share_folder:
+            ShareUtils.sendFolder(this, R.string.share_folder_title, this.folder);
+            return true;
         case R.id.backup_menu:
             startActivity(new Intent(this, BackupActivity.class));
             return true;

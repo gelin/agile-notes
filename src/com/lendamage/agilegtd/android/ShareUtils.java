@@ -29,6 +29,28 @@ import com.lendamage.agilegtd.model.Folder;
 class ShareUtils {
 
     static final String TEXT_MIME_TYPE = "text/plain";
+
+    /**
+     *  Opens chooser and starts the necessary activity to send the Action.
+     *  @param context  current context
+     *  @param title    ID of resource for chooser dialog title
+     *  @param action   action to send
+     */
+    public static void sendAction(Context context, int title, Action action) {
+        Intent chooser = Intent.createChooser(sendActionIntent(action), context.getString(title));
+        context.startActivity(chooser);
+    }
+
+    /**
+     *  Opens chooser and starts the necessary activity to send the Folder.
+     *  @param context  current context
+     *  @param title    ID of resource for chooser dialog title
+     *  @param folder   folder to send
+     */
+    public static void sendFolder(Context context, int title, Folder folder) {
+        Intent chooser = Intent.createChooser(sendFolderIntent(folder), context.getString(title));
+        context.startActivity(chooser);
+    }
     
     /**
      *  Returns the Intent from the Action.
@@ -54,17 +76,6 @@ class ShareUtils {
             intent.putExtra(Intent.EXTRA_TEXT, body);
         }
         return intent;
-    }
-
-    /**
-     *  Opens chooser and starts the necessary activity to send the Action.
-     *  @param context  current context
-     *  @param title    ID of resource for chooser dialog title
-     *  @param action   action to send
-     */
-    public static void sendAction(Context context, int title, Action action) {
-        Intent chooser = Intent.createChooser(sendActionIntent(action), context.getString(title));
-        context.startActivity(chooser);
     }
 
     /**
