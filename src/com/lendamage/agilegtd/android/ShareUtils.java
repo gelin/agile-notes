@@ -98,6 +98,63 @@ class ShareUtils {
         folder.newAction(head, body);
         return true;
     }
+
+    /**
+     *  Returns the Intent from the Folder.
+     *  The Intent has:
+     *  <ul>
+     *      <li>Intent action: {@link Intent#ACTION_SEND}</li>
+     *      <li>MIME type: text/plain</li>
+     *      <li>EXTRA_SUBJECT: name of the Folder</li>
+     *      <li>EXTRA_TEXT: recursive list of actions and subfolders</li>
+     *  </ul>
+     *  @param folder   folder to send
+     *  @return intent to start the activity
+     */
+    public static Intent sendFolderIntent(Folder folder) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType(TEXT_MIME_TYPE);
+        intent.putExtra(Intent.EXTRA_SUBJECT, folder.getName());
+        intent.putExtra(Intent.EXTRA_TEXT, formatFolderContent(folder));
+        return intent;
+    }
+    
+    static String formatFolderContent(Folder folder) {
+        StringBuilder result = new StringBuilder();
+        formatFolderContent(result, folder, 0);
+        return result.toString();
+    }
+    
+    static void formatFolderContent(StringBuilder result, Folder folder, int depth) {
+        for (Folder subfolder : folder.getFolders()) {
+            appendHeadIndent(result, depth + 1);
+            result.append(subfolder.getName());
+            result.append("\n");
+            formatFolderContent(result, subfolder, depth + 1);
+        }
+        for (Action action : folder.getActions()) {
+            appendHeadIndent(result, depth + 1);
+            result.append(action.getHead());
+            result.append("\n");
+            appendBodyIndent(result, depth + 1);
+            result.append(action.getBody());
+            result.append("\n");
+        }
+    }
+
+    static void appendHeadIndent(StringBuilder result, int depth) {
+        for (int i = 0; i < depth; i++) {
+            result.append("*");
+        }
+        result.append(" ");
+    }
+
+    static void appendBodyIndent(StringBuilder result, int depth) {
+        for (int i = 0; i < depth; i++) {
+            result.append(" ");
+        }
+        result.append(" ");
+    }
     
     private ShareUtils() {
         //avoid instantiation

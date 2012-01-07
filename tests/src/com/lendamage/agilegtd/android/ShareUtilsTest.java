@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.test.AndroidTestCase;
 import com.lendamage.agilegtd.android.model.impl.SQLiteModel;
 import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
 
 public class ShareUtilsTest extends AndroidTestCase {
 
@@ -95,6 +96,26 @@ public class ShareUtilsTest extends AndroidTestCase {
         intent.setType("text/plain");
         assertFalse(ShareUtils.receiveActionIntent(intent, model.getRootFolder()));
         assertEquals(0, model.getRootFolder().getActions().size());
+    }
+
+    public void testSendFolderIntent() {
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        model.getRootFolder().newAction("action1", "body1");
+        model.getRootFolder().newAction("action2", "body2");
+        folder.newAction("action3", "body3");
+        Intent intent = ShareUtils.sendFolderIntent(model.getRootFolder());
+        assertEquals(Intent.ACTION_SEND, intent.getAction());
+        assertEquals("text/plain", intent.getType());
+        assertEquals("", intent.getStringExtra(Intent.EXTRA_SUBJECT));
+        assertEquals(
+                "* folder\n" +
+                "** action3\n" +
+                "   body3\n" +
+                "* action1\n" +
+                "  body1\n" +
+                "* action2\n" +
+                "  body2\n",
+                intent.getStringExtra(Intent.EXTRA_TEXT));
     }
 
 }
