@@ -2,17 +2,21 @@
 
 class folder {
     id
-    guid
     name
     type
     full_name
     folder_id
     sort_order
 }
+note top of folder
+    Types: 
+    project, 
+    context, 
+    etc...
+end note
 
 class action {
     id
-    guid
     head
     body
 }
@@ -23,47 +27,75 @@ class action_in_folder {
     sort_order
 }
 
-class folder_type {
-}
-note right of folder_type
-Enum: 
-project, 
-context, 
-etc...
-end note
-
 folder "1" -r- "*" action_in_folder
 action "1" -l- "*" action_in_folder
 folder "1" -l- "*" folder
-folder "*" -u- "1" folder_type
+
+class share {
+    id
+}
+
+class address {
+    id
+    name
+    url
+}
+
+class share_subscription {
+    share_id
+    address_id
+    status
+}
+note top of share_subscription
+    Statuses:
+    new,
+    subscribed,
+    etc...
+end note
+
+share "1" -- "*" share_subscription
+share_subscription "*" -- "1" address
+
+class folder_in_share {
+    folder_id
+    share_id
+    uuid
+}
+
+class action_in_share {
+    action_id
+    share_id
+    uuid
+}
+
+folder "1" -- "*" folder_in_share
+action "1" -- "*" action_in_share
+folder_in_share "*" -- "1" share
+action_in_share "*" -- "1" share
 
 class event {
     id
     type
     timestamp
-    author
+    author ??
 }
-
-class event_type {
-}
-note right of event_type
-Enum: 
-add_action, 
-add_folder, 
-change_action, 
-change_folder,
-delete_action,
-delete_folder,
-copy_action,
-move_folder,
-resorting_actions,
-resorting_folders,
-???
+note right of event
+    Types: 
+    add_action, 
+    add_folder, 
+    change_action, 
+    change_folder,
+    delete_action,
+    delete_folder,
+    copy_action,
+    move_folder,
+    resorting_actions,
+    resorting_folders,
+    etc...
 end note
 
-class folder_history {
+class folder_log {
     event_id
-    guid
     name
     type
     full_name ??
@@ -71,28 +103,26 @@ class folder_history {
     sort_order ??
 }
 
-class action_history {
+class action_log {
     event_id
-    guid
     head
     body
 }
 
-class action_in_folder_history {
+class action_in_folder_log {
     event_id
-    folder_guid
-    action_guid
+    folder_id ??
+    action_id ??
     sort_order ??
 }
 
-event "*" -r- "1" event_type
-folder "1" -d- "*" folder_history
-action "1" -d- "*" action_history
-action_in_folder "1" -d- "*" action_in_folder_history
-event "1" -u- "0..1" action_history
-event "1" -u- "0..1" folder_history
-event "1" -u- "0..1" action_in_folder_history
-folder_history "1" -r- "*" action_in_folder_history
-action_history "1" -l- "*" action_in_folder_history
+folder "1" -d- "*" folder_log
+action "1" -d- "*" action_log
+action_in_folder "1" -d- "*" action_in_folder_log
+event "1" -u- "0..1" action_log
+event "1" -u- "0..1" folder_log
+event "1" -u- "0..1" action_in_folder_log
+folder_log "1" -r- "*" action_in_folder_log
+action_log "1" -l- "*" action_in_folder_log
 
 @enduml
