@@ -1,0 +1,72 @@
+@startuml
+
+package "local model" {
+
+    class Folder {
+        name
+        type
+    }
+
+    class Action {
+        head
+        body
+    }
+
+    Folder "*" -r- "*" Action
+    
+}
+
+package "shared model" {
+
+    class SharedFolder {
+        uuid
+    }
+
+    class SharedAction {
+        uuid
+    }
+
+    Folder <|-- SharedFolder
+    Action <|-- SharedAction
+    SharedFolder "*" --o "1" Share
+    SharedAction "*" --o "1" Share
+
+    class Share {
+    }
+
+    class Address {
+        name
+        url
+    }
+
+    class Subscription {
+        status
+    }
+
+    Share "1" -- "*" Subscription
+    Subscription "*" -r- "1" Address
+
+    class EventQueue {
+    }
+    
+    EventQueue "1" -u- "1" Subscription
+
+}
+
+package transport {
+
+    class Sender {
+    }
+    
+    Sender -l- EventQueue
+    Sender -l- Address
+    
+    class Receiver {
+    }
+    
+    Receiver -l- Share
+    Receiver -l- Address
+
+}
+
+@enduml
