@@ -23,14 +23,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.lendamage.agilegtd.android.ResizableFrameLayout.OnMeasureListener;
 
 /**
  *  Base activity for the activities which changes the folder.
  */
 public abstract class AbstractEditActionActivity extends AbstractActionActivity {
-    
+
+    boolean binded = false;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,22 @@ public abstract class AbstractEditActionActivity extends AbstractActionActivity 
         findViewById(R.id.ok_button).setOnClickListener(okListener);
         findViewById(R.id.ok_big_button).setOnClickListener(okListener);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wrapBindViews();
+    }
+
+    private void wrapBindViews() {
+        if (this.binded) {
+            return;
+        }
+        bindViews();
+        this.binded = true;
+    }
+
+    protected abstract void bindViews();
     
     protected boolean validate() {
         EditText body = (EditText)findViewById(R.id.action_body);
@@ -79,5 +96,5 @@ public abstract class AbstractEditActionActivity extends AbstractActionActivity 
     }
     
     protected abstract void onOkClick();
-    
+
 }

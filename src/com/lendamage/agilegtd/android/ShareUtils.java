@@ -23,6 +23,9 @@ import android.content.Intent;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 
+import static com.lendamage.agilegtd.android.IntentParams.EXTRA_ACTION_BODY;
+import static com.lendamage.agilegtd.android.IntentParams.EXTRA_FOLDER_PATH;
+
 /**
  *  Methods to share (in Android-way) actions and folders.
  */
@@ -79,12 +82,13 @@ class ShareUtils {
     }
 
     /**
-     *  Creates the action received from the {@link Intent#ACTION_SEND} intent in the specified folder.
+     *  Opens the Add Action activity to add the received text into as the action in the specified folder.
+     *  @param context  current context
      *  @param intent   intent to analyze
      *  @param folder   folder where to create the new Action
      *  @return true if the Action was created, false if the Intent is not recognized and cannot be converted to Action
      */
-    public static boolean receiveActionIntent(Intent intent, Folder folder) {
+    public static boolean receiveActionIntent(Context context, Intent intent, Folder folder) {
         if (intent == null) {
             return false;
         }
@@ -106,7 +110,11 @@ class ShareUtils {
         } else {
             body = head + "\n\n" + body;
         }
-        folder.newAction(head, body);
+        //folder.newAction(head, body);
+        Intent addIntent = new Intent(context, AddActionActivity.class);
+        addIntent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
+        addIntent.putExtra(EXTRA_ACTION_BODY, body);
+        context.startActivity(addIntent);
         return true;
     }
 

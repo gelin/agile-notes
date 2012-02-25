@@ -18,17 +18,16 @@
 
 package com.lendamage.agilegtd.android;
 
-import static com.lendamage.agilegtd.android.IntentParams.ACTION_POSITION_EXTRA;
-import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
-import static com.lendamage.agilegtd.android.Tag.TAG;
+import android.content.Intent;
+import android.util.Log;
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
 
 import java.util.Set;
 
-import android.content.Intent;
-import android.util.Log;
-
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
+import static com.lendamage.agilegtd.android.IntentParams.EXTRA_ACTION_POSITION;
+import static com.lendamage.agilegtd.android.IntentParams.EXTRA_FOLDER_PATH;
+import static com.lendamage.agilegtd.android.Tag.TAG;
 
 /**
  *  Base class for activites which works with the action.
@@ -55,8 +54,8 @@ abstract class AbstractActionActivity extends AbstractFolderActivity {
     
     void getActionFromIntent() {
         Intent intent = getIntent();
-        if (intent.hasExtra(ACTION_POSITION_EXTRA)) {
-            int position = intent.getIntExtra(ACTION_POSITION_EXTRA, 0);
+        if (intent.hasExtra(EXTRA_ACTION_POSITION)) {
+            int position = intent.getIntExtra(EXTRA_ACTION_POSITION, 0);
             try {
                 this.action = this.folder.getActions().get(position);
             } catch (IndexOutOfBoundsException e) {
@@ -81,8 +80,8 @@ abstract class AbstractActionActivity extends AbstractFolderActivity {
         }
         this.folder = folders.iterator().next();
         Intent intent = getIntent();
-        intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
-        intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(this.action));
+        intent.putExtra(EXTRA_FOLDER_PATH, this.folder.getPath().toString());
+        intent.putExtra(EXTRA_ACTION_POSITION, this.folder.getActions().indexOf(this.action));
     }
 
 }

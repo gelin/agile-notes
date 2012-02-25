@@ -43,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
+import static com.lendamage.agilegtd.android.IntentParams.EXTRA_FOLDER_PATH;
 
 /**
  *  Activity which displays the folder content: subfolders and activities.
@@ -74,7 +74,7 @@ public class FolderActivity extends AbstractFolderActivity {
         findViewById(R.id.add_folder_button).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(FolderActivity.this, AddFolderActivity.class);
-                intent.putExtra(FOLDER_PATH_EXTRA, FolderActivity.this.folder.getPath().toString());
+                intent.putExtra(EXTRA_FOLDER_PATH, FolderActivity.this.folder.getPath().toString());
                 startActivity(intent);
             }
         });
@@ -82,7 +82,7 @@ public class FolderActivity extends AbstractFolderActivity {
         findViewById(R.id.add_action_button).setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(FolderActivity.this, AddActionActivity.class);
-                intent.putExtra(FOLDER_PATH_EXTRA, FolderActivity.this.folder.getPath().toString());
+                intent.putExtra(EXTRA_FOLDER_PATH, FolderActivity.this.folder.getPath().toString());
                 startActivity(intent);
             }
         });

@@ -36,20 +36,13 @@ public class ActionReceiveActivity extends AbstractModelActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Intent intent = getIntent();
-        int message = R.string.action_receive_failure;
         List<Folder> inboxes = findInbox();
-        for (Folder inbox : inboxes) {
-            if (ShareUtils.receiveActionIntent(intent, inbox)) {
-                if (inbox.getPath().isRoot()) {
-                    message = R.string.action_received_to_root;
-                } else {
-                    message = R.string.action_received_to_inbox;
-                }
-            }
-        }
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         finish();
+        for (Folder inbox : inboxes) {
+            ShareUtils.receiveActionIntent(this, getIntent(), inbox);
+            return;
+        }
+        Toast.makeText(this, R.string.action_receive_failure, Toast.LENGTH_LONG).show();
     }
 
     List<Folder> findInbox() {

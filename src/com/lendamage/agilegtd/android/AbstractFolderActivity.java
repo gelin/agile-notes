@@ -25,8 +25,8 @@ import com.lendamage.agilegtd.android.model.impl.SimplePath;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 
-import static com.lendamage.agilegtd.android.IntentParams.ACTION_POSITION_EXTRA;
-import static com.lendamage.agilegtd.android.IntentParams.FOLDER_PATH_EXTRA;
+import static com.lendamage.agilegtd.android.IntentParams.EXTRA_ACTION_POSITION;
+import static com.lendamage.agilegtd.android.IntentParams.EXTRA_FOLDER_PATH;
 import static com.lendamage.agilegtd.android.Tag.TAG;
 
 /**
@@ -44,8 +44,8 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
         this.folder = null;
         Intent intent = getIntent();
         String path = null;
-        if (intent.hasExtra(FOLDER_PATH_EXTRA)) {
-            path = intent.getStringExtra(FOLDER_PATH_EXTRA);
+        if (intent.hasExtra(EXTRA_FOLDER_PATH)) {
+            path = intent.getStringExtra(EXTRA_FOLDER_PATH);
             this.folder = this.model.getFolder(new SimplePath(path));
             if (this.folder == null) {
                 Log.w(TAG, "folder " + path + " is not found");
@@ -59,14 +59,14 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
 
     protected void startFolderActivity(Class<? extends Activity> activity, Folder folder) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra(FOLDER_PATH_EXTRA, folder.getPath().toString());
+        intent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
         startActivity(intent);
     }
 
     protected void startActionActivity(Class<? extends Activity> activity, Action action) {
         Intent intent = new Intent(this, activity);
-        intent.putExtra(FOLDER_PATH_EXTRA, this.folder.getPath().toString());
-        intent.putExtra(ACTION_POSITION_EXTRA, this.folder.getActions().indexOf(action));
+        intent.putExtra(EXTRA_FOLDER_PATH, this.folder.getPath().toString());
+        intent.putExtra(EXTRA_ACTION_POSITION, this.folder.getActions().indexOf(action));
         startActivity(intent);
     };
 

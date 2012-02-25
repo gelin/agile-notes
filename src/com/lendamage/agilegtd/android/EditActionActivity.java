@@ -28,31 +28,23 @@ import android.widget.TextView;
  *  are passed in extra.
  */
 public class EditActionActivity extends AbstractEditActionActivity {
-    
-    boolean binded = false;
-    
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bindViews();
-    }
-    
+
     @Override
     protected void setContentView() {
         setContentView(R.layout.edit_action_activity);
     }
-    
-    void bindViews() {
-        if (this.binded) {
+
+    @Override
+    protected void bindViews() {
+        if (this.action == null) {
             return;
         }
         TextView title = (TextView)findViewById(R.id.title);
         EditText body = (EditText)findViewById(R.id.action_body);
         title.setText(this.action.getHead());
         body.setText(this.action.getBody());
-        this.binded = true;
     }
-    
+
     @Override
     protected void onOkClick() {
         EditText body = (EditText)findViewById(R.id.action_body);

@@ -24,12 +24,16 @@ package com.lendamage.agilegtd.android;
 public class IntentParams {
 
     /** Intent extra to pass folder path as a string to open specified folder */
-    public static final String FOLDER_PATH_EXTRA = 
-            IntentParams.class.getName() + ".FOLDER_PATH_EXTRA";
+    public static final String EXTRA_FOLDER_PATH =
+            IntentParams.class.getName() + ".EXTRA_FOLDER_PATH";
     
     /** Intent extra to pass action position withing the folder */
-    public static final String ACTION_POSITION_EXTRA = 
-            IntentParams.class.getName() + ".ACTION_POSITION_EXTRA";
+    public static final String EXTRA_ACTION_POSITION =
+            IntentParams.class.getName() + ".EXTRA_ACTION_POSITION";
+
+    /** Intent extra to pass action body for the new action */
+    public static final String EXTRA_ACTION_BODY =
+            IntentParams.class.getName() + ".EXTRA_ACTION_BODY";
     
     private IntentParams() {
         //avoid instantiation

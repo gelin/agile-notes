@@ -19,6 +19,7 @@
 package com.lendamage.agilegtd.android;
 
 import android.widget.EditText;
+import static com.lendamage.agilegtd.android.IntentParams.EXTRA_ACTION_BODY;
 
 /**
  *  Activity to add a new action.
@@ -29,6 +30,16 @@ public class AddActionActivity extends AbstractEditActionActivity {
     @Override
     protected void setContentView() {
         setContentView(R.layout.add_action_activity);
+    }
+
+    @Override
+    protected void bindViews() {
+        String bodyText = getIntent().getStringExtra(EXTRA_ACTION_BODY);
+        if (bodyText == null) {
+            return;
+        }
+        EditText body = (EditText)findViewById(R.id.action_body);
+        body.setText(bodyText);
     }
     
     @Override
