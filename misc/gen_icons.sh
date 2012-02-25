@@ -28,6 +28,7 @@ gen_icon() {
 gen_app_icon() {
     file_name=$1
     
+    gen_icon $file_name 96x96 drawable-xhdpi
     gen_icon $file_name 72x72 drawable-hdpi
     gen_icon $file_name 48x48 drawable
     gen_icon $file_name 36x36 drawable-ldpi
@@ -36,27 +37,26 @@ gen_app_icon() {
 gen_action_bar_icon() {
     file_name=$1
     
-    gen_icon $file_name 48x48 drawable-hdpi
-    gen_icon $file_name 32x32 drawable
-    gen_icon $file_name 24x24 drawable-ldpi
+    gen_icon $file_name 48x48 drawable-xhdpi
+    gen_icon $file_name 36x36 drawable-hdpi
+    gen_icon $file_name 24x24 drawable
+    gen_icon $file_name 18x18 drawable-ldpi
 }
 
 gen_list_icon() {
     file_name=$1
-    
+
     gen_icon $file_name 48x48 drawable-hdpi
     gen_icon $file_name 32x32 drawable
     gen_icon $file_name 24x24 drawable-ldpi
 }
 
 gen_app_icon icon
+gen_app_icon logo
 gen_action_bar_icon plus
 gen_action_bar_icon plus_folder
 gen_action_bar_icon ok
 gen_action_bar_icon edit
-gen_list_icon collapsed
-gen_list_icon expanded
-gen_list_icon empty
 gen_action_bar_icon progress0
 gen_action_bar_icon progress1
 gen_action_bar_icon progress2
@@ -65,5 +65,8 @@ gen_action_bar_icon progress4
 gen_action_bar_icon progress5
 gen_action_bar_icon progress6
 gen_action_bar_icon progress7
+gen_list_icon collapsed
+gen_list_icon expanded
+gen_list_icon empty
 gen_list_icon folder
 gen_list_icon drag_handle
