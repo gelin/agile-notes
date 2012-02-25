@@ -3,7 +3,8 @@
     android:id="@+id/action_body"
     style="@style/ListItemText"
     android:layout_width="fill_parent"
-    android:gravity="top">
+    android:gravity="top"
+    android:autoLink="all">
 
 <!--
     Agile GTD. Flexible Android implementation of GTD.
