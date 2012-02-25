@@ -8,7 +8,7 @@ class folder {
     folder_id
     sort_order
 }
-note top of folder
+note left of folder
     Types: 
     project, 
     context, 
@@ -46,15 +46,15 @@ class share_subscription {
     address_id
     status
 }
-note top of share_subscription
+note left of share_subscription
     Statuses:
     new,
     subscribed,
     etc...
 end note
 
-share "1" -- "*" share_subscription
-share_subscription "*" -- "1" address
+share "1" -d- "*" share_subscription
+share_subscription "*" -d- "1" address
 
 class folder_in_share {
     folder_id
@@ -75,6 +75,7 @@ action_in_share "*" -- "1" share
 
 class event {
     id
+    share_id
     type
     timestamp
     author ??
@@ -96,33 +97,45 @@ end note
 
 class folder_log {
     event_id
+    uuid ??
     name
     type
     full_name ??
-    folder_guid ??
+    folder_uuid ??
     sort_order ??
 }
 
 class action_log {
     event_id
+    uuid ??
     head
     body
 }
 
 class action_in_folder_log {
     event_id
-    folder_id ??
-    action_id ??
+    folder_uuid ??
+    action_uuid ??
     sort_order ??
 }
 
-folder "1" -d- "*" folder_log
-action "1" -d- "*" action_log
+folder_in_share "1" -d- "*" folder_log
+action_in_share "1" -d- "*" action_log
 action_in_folder "1" -d- "*" action_in_folder_log
+folder_log "1" -r- "*" action_in_folder_log
+action_log "1" -l- "*" action_in_folder_log
+
 event "1" -u- "0..1" action_log
 event "1" -u- "0..1" folder_log
 event "1" -u- "0..1" action_in_folder_log
-folder_log "1" -r- "*" action_in_folder_log
-action_log "1" -l- "*" action_in_folder_log
+event "*" -l- "1" share
+
+class event_for_subscription {
+    event_id
+    subscription_id
+}
+
+event_for_subscription "*" -- "1" share_subscription
+event_for_subscription "*" -u- "1" event
 
 @enduml
