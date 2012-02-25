@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+import com.lendamage.agilegtd.model.FolderType;
 
 /**
  *  Base activity for the activities which changes the folder.
@@ -63,13 +64,35 @@ abstract class AbstractEditFolderActivity extends AbstractFolderActivity {
         };
         findViewById(R.id.ok_button).setOnClickListener(okListener);
         findViewById(R.id.ok_big_button).setOnClickListener(okListener);
-        
-        Spinner type = (Spinner)findViewById(R.id.folder_type);
-        type.setAdapter(new FolderTypeAdapter(this));
     }
     
     protected void bindViews() {
-        //empty implementation
+        Spinner type = (Spinner)findViewById(R.id.folder_type);
+        type.setAdapter(getAdapter());
+    }
+
+    FolderTypeAdapter getAdapter() {
+        FolderTypeAdapter adapter = new FolderTypeAdapter(this);
+        removeFolderType(adapter, FolderType.INBOX);
+        removeFolderType(adapter, FolderType.COMPLETED);
+        removeFolderType(adapter, FolderType.TRASH);
+        return adapter;
+    }
+
+    void removeFolderType(FolderTypeAdapter adapter, FolderType type) {
+        if (canRemove(type)) {
+            adapter.removeFolderType(type);
+        }
+    }
+
+    boolean canRemove(FolderType type) {
+        if (this.model.findFolders(type).isEmpty()) {
+            return false;   //no folders with this type
+        } 
+        if (type.equals(this.folder.getType())) {
+            return false;   //leave the type of current folder
+        }
+        return true;    //other folders can be removed
     }
     
     protected boolean validate() {

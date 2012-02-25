@@ -24,8 +24,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.lendamage.agilegtd.model.FolderType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *  Adapter which represents the list of folder types.
@@ -39,27 +42,27 @@ public class FolderTypeAdapter extends BaseAdapter {
 
     /** Current context */
     Context context;
-    /** Array of values */
-    FolderType[] values;
-    /** Array of names */
-    String[] names;
+    /** List of values */
+    List<FolderType> values;
+    /** List of names */
+    List<String> names;
     
     public FolderTypeAdapter(Context context) {
         this.context = context;
         this.values = stringsToFolderTypes(context.getResources().getStringArray(R.array.folder_types_values));
-        this.names = context.getResources().getStringArray(R.array.folder_types_names);
+        this.names = new ArrayList<String>(Arrays.asList(context.getResources().getStringArray(R.array.folder_types_names)));
     }
     
     public int getCount() {;
-        return this.values.length;
+        return this.values.size();
     }
 
     public Object getItem(int position) {
-        return this.values[position];
+        return this.values.get(position);
     }
 
     public long getItemId(int position) {
-        FolderType value = this.values[position];
+        FolderType value = this.values.get(position);
         if (value == null) {
             return -1l;
         }
@@ -74,6 +77,18 @@ public class FolderTypeAdapter extends BaseAdapter {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         return getCommonView(position, convertView, parent, android.R.layout.simple_spinner_dropdown_item);
     }
+
+    /**
+     *  Removes the specified folder type from the list.
+     */
+    public void removeFolderType(FolderType type) {
+        int index = this.values.indexOf(type);
+        if (index < 0) {
+            return;
+        }
+        this.values.remove(index);
+        this.names.remove(index);
+    }
     
     View getCommonView(int position, View convertView, ViewGroup parent, int viewLayoutId) {
         View view = convertView;
@@ -82,7 +97,7 @@ public class FolderTypeAdapter extends BaseAdapter {
                     viewLayoutId, parent, false);
         }
         TextView text = (TextView)view.findViewById(android.R.id.text1);
-        text.setText(this.names[position]);
+        text.setText(this.names.get(position));
         
         return view;
     }
@@ -92,32 +107,21 @@ public class FolderTypeAdapter extends BaseAdapter {
      *  of the specified folder type. 
      */
     int getPosition(FolderType type) {
-        int nullPosition = -1;
-        int result = -1;
-        for (int i = 0; i < this.values.length; i++) {
-            FolderType value = this.values[i];
-            if (value == null && nullPosition < 0) {
-                nullPosition = i;
-            }
-            if (value != null && result < 0 && value.equals(type)) {
-                result = i;
-                return result;
-            }
+        int result = this.values.indexOf(type);
+        if (result >= 0) {
+            return result;
         }
-        if (result < 0) {
-            return nullPosition;
-        }
-        return result;
+        return this.values.indexOf(null);
     }
     
-    static FolderType[] stringsToFolderTypes(String[] strings) {
-        FolderType[] result = new FolderType[strings.length];
+    static List<FolderType> stringsToFolderTypes(String[] strings) {
+        List<FolderType> result = new ArrayList<FolderType>(strings.length);
         for (int i = 0; i < strings.length; i++) {
             String string = strings[i];
             try {
-                result[i] = FolderType.valueOf(string);
+                result.add(FolderType.valueOf(string));
             } catch (IllegalArgumentException e) {
-                result[i] = null;
+                result.add(null);
             }
         }
         return result;

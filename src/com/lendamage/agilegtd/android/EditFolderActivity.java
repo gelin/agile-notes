@@ -38,6 +38,7 @@ public class EditFolderActivity extends AbstractEditFolderActivity {
     
     @Override
     protected void bindViews() {
+        super.bindViews();
         EditText name = (EditText)findViewById(R.id.folder_name);
         Spinner type = (Spinner)findViewById(R.id.folder_type);
         name.setText(this.folder.getName());
