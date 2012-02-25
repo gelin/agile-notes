@@ -43,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static com.lendamage.agilegtd.android.IntentParams.EXTRA_FOLDER_PATH;
+import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_FOLDER_PATH;
 
 /**
  *  Activity which displays the folder content: subfolders and activities.

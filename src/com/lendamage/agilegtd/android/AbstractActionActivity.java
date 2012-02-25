@@ -25,8 +25,8 @@ import com.lendamage.agilegtd.model.Folder;
 
 import java.util.Set;
 
-import static com.lendamage.agilegtd.android.IntentParams.EXTRA_ACTION_POSITION;
-import static com.lendamage.agilegtd.android.IntentParams.EXTRA_FOLDER_PATH;
+import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_ACTION_POSITION;
+import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_FOLDER_PATH;
 import static com.lendamage.agilegtd.android.Tag.TAG;
 
 /**

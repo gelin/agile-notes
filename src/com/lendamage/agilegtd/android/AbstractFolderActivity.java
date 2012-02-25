@@ -25,8 +25,7 @@ import com.lendamage.agilegtd.android.model.impl.SimplePath;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 
-import static com.lendamage.agilegtd.android.IntentParams.EXTRA_ACTION_POSITION;
-import static com.lendamage.agilegtd.android.IntentParams.EXTRA_FOLDER_PATH;
+import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_FOLDER_PATH;
 import static com.lendamage.agilegtd.android.Tag.TAG;
 
 /**
@@ -58,16 +57,11 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
     }
 
     protected void startFolderActivity(Class<? extends Activity> activity, Folder folder) {
-        Intent intent = new Intent(this, activity);
-        intent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
-        startActivity(intent);
+        IntentUtils.startFolderActivity(this, activity, folder);
     }
 
     protected void startActionActivity(Class<? extends Activity> activity, Action action) {
-        Intent intent = new Intent(this, activity);
-        intent.putExtra(EXTRA_FOLDER_PATH, this.folder.getPath().toString());
-        intent.putExtra(EXTRA_ACTION_POSITION, this.folder.getActions().indexOf(action));
-        startActivity(intent);
+        IntentUtils.startActionActivity(this, activity, this.folder, action);
     };
 
 }

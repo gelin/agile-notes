@@ -19,7 +19,7 @@
 package com.lendamage.agilegtd.android;
 
 import android.widget.EditText;
-import static com.lendamage.agilegtd.android.IntentParams.EXTRA_ACTION_BODY;
+import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_ACTION_BODY;
 
 /**
  *  Activity to add a new action.

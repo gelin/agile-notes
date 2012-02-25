@@ -23,8 +23,8 @@ import android.content.Intent;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 
-import static com.lendamage.agilegtd.android.IntentParams.EXTRA_ACTION_BODY;
-import static com.lendamage.agilegtd.android.IntentParams.EXTRA_FOLDER_PATH;
+import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_ACTION_BODY;
+import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_FOLDER_PATH;
 
 /**
  *  Methods to share (in Android-way) actions and folders.
@@ -111,6 +111,7 @@ class ShareUtils {
             body = head + "\n\n" + body;
         }
         //folder.newAction(head, body);
+        IntentUtils.startFolderActivity(context, FolderActivity.class, folder);
         Intent addIntent = new Intent(context, AddActionActivity.class);
         addIntent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
         addIntent.putExtra(EXTRA_ACTION_BODY, body);

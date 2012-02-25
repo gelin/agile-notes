@@ -18,24 +18,43 @@
 
 package com.lendamage.agilegtd.android;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
+
 /**
  *  Common constants to use with intents.
  */
-public class IntentParams {
+public class IntentUtils {
 
     /** Intent extra to pass folder path as a string to open specified folder */
     public static final String EXTRA_FOLDER_PATH =
-            IntentParams.class.getName() + ".EXTRA_FOLDER_PATH";
+            IntentUtils.class.getName() + ".EXTRA_FOLDER_PATH";
     
     /** Intent extra to pass action position withing the folder */
     public static final String EXTRA_ACTION_POSITION =
-            IntentParams.class.getName() + ".EXTRA_ACTION_POSITION";
+            IntentUtils.class.getName() + ".EXTRA_ACTION_POSITION";
 
     /** Intent extra to pass action body for the new action */
     public static final String EXTRA_ACTION_BODY =
-            IntentParams.class.getName() + ".EXTRA_ACTION_BODY";
+            IntentUtils.class.getName() + ".EXTRA_ACTION_BODY";
+
+    public static void startFolderActivity(Context context, Class<? extends Activity> activity, Folder folder) {
+        Intent intent = new Intent(context, activity);
+        intent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
+        context.startActivity(intent);
+    }
+
+    public static void startActionActivity(Context context, Class<? extends Activity> activity, Folder folder, Action action) {
+        Intent intent = new Intent(context, activity);
+        intent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
+        intent.putExtra(EXTRA_ACTION_POSITION, folder.getActions().indexOf(action));
+        context.startActivity(intent);
+    }
     
-    private IntentParams() {
+    private IntentUtils() {
         //avoid instantiation
     }
     
