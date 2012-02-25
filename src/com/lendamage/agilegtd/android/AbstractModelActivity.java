@@ -18,13 +18,13 @@
 
 package com.lendamage.agilegtd.android;
 
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import com.lendamage.agilegtd.model.Model;
 
 /**
  *  Abstract activity which works with {@link Model}.
  */
-public class AbstractModelActivity extends Activity {
+public class AbstractModelActivity extends FragmentActivity {
 
     /** Current model */
     protected Model model;

@@ -23,18 +23,15 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.Menu;
+import android.support.v4.view.MenuItem;
 import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
@@ -42,8 +39,6 @@ import com.lendamage.agilegtd.model.FolderType;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_FOLDER_PATH;
 
 /**
  *  Activity which displays the folder content: subfolders and activities.
@@ -70,22 +65,6 @@ public class FolderActivity extends AbstractFolderActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.folder_activity);
-        
-        findViewById(R.id.add_folder_button).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(FolderActivity.this, AddFolderActivity.class);
-                intent.putExtra(EXTRA_FOLDER_PATH, FolderActivity.this.folder.getPath().toString());
-                startActivity(intent);
-            }
-        });
-        
-        findViewById(R.id.add_action_button).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(FolderActivity.this, AddActionActivity.class);
-                intent.putExtra(EXTRA_FOLDER_PATH, FolderActivity.this.folder.getPath().toString());
-                startActivity(intent);
-            }
-        });
         
         ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
         registerForContextMenu(foldersActions);
@@ -114,7 +93,7 @@ public class FolderActivity extends AbstractFolderActivity {
     
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenuInfo menuInfo) {
+                                    ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
         FolderListAdapter adapter = (FolderListAdapter)foldersActions.getAdapter();
@@ -155,9 +134,9 @@ public class FolderActivity extends AbstractFolderActivity {
         Action action = (Action)adapter.getItem(position);
         menu.setHeaderTitle(action.getHead());
     }
-    
+
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(android.view.MenuItem item) {
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
         Object itemObject = foldersActions.getItemAtPosition(info.position);
@@ -397,13 +376,24 @@ public class FolderActivity extends AbstractFolderActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.folder_options, menu);
         return true;
     }
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case android.R.id.home:
+            finish();
+            return true;
+        case R.id.add_folder: {
+            IntentUtils.startFolderActivity(this, AddFolderActivity.class, this.folder);
+            return true;
+        }
+        case R.id.add_action: {
+            IntentUtils.startFolderActivity(this, AddActionActivity.class, this.folder);
+            return true;
+        }
         case R.id.share_folder:
             ShareUtils.sendFolder(this, R.string.share_folder_title, this.folder);
             return true;
@@ -415,16 +405,6 @@ public class FolderActivity extends AbstractFolderActivity {
         }
     }
 
-    void setTitle(String title) {
-        TextView titleView = (TextView)findViewById(R.id.title);
-        titleView.setText(title);
-        titleView.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-    
     void updateFoldersActions() {
         updateFoldersActions(false);
     }

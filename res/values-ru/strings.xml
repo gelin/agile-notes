@@ -97,4 +97,6 @@
     <string name="action_received_to_inbox">Новое действие было создано в папке Входящие</string>
     <string name="action_received_to_root">Новое действие было создано в корневой папке</string>
     <string name="action_receive_failure">Не удалось создать новое действие</string>
+    <string name="add_folder">Папка</string>
+    <string name="add_action">Действие</string>
 </resources>

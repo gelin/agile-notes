@@ -98,4 +98,6 @@
     <string name="action_received_to_inbox">The new Action has been created in Inbox</string>
     <string name="action_received_to_root">The new Action has been created in root folder</string>
     <string name="action_receive_failure">Cannot create a new Action</string>
+    <string name="add_folder">Folder</string>
+    <string name="add_action">Action</string>
 </resources>
