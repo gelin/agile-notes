@@ -34,6 +34,15 @@ gen_app_icon() {
     gen_icon $file_name 36x36 drawable-ldpi
 }
 
+gen_logo_icon() {
+    file_name=$1
+
+    gen_icon $file_name 96x48 drawable-xhdpi
+    gen_icon $file_name 72x36 drawable-hdpi
+    gen_icon $file_name 48x24 drawable
+    gen_icon $file_name 36x18 drawable-ldpi
+}
+
 gen_action_bar_icon() {
     file_name=$1
     
@@ -52,7 +61,7 @@ gen_list_icon() {
 }
 
 gen_app_icon icon
-gen_app_icon logo
+gen_logo_icon logo
 gen_action_bar_icon plus
 gen_action_bar_icon plus_folder
 gen_action_bar_icon ok

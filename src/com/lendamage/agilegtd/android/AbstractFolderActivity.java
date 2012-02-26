@@ -20,6 +20,8 @@ package com.lendamage.agilegtd.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.ActionBar;
 import android.support.v4.view.MenuItem;
 import android.util.Log;
 import com.lendamage.agilegtd.android.model.impl.SimplePath;
@@ -37,7 +39,15 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
 
     /** Current folder */
     protected Folder folder;
-    
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setDisplayShowHomeEnabled(false);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
