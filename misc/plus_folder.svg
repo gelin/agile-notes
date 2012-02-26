@@ -14,7 +14,7 @@
    height="48"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.48.2 r9819"
    sodipodi:docname="plus_folder.svg">
   <defs
      id="defs4">
@@ -213,13 +213,13 @@
   </defs>
   <sodipodi:namedview
      id="base"
-     pagecolor="#ffffff"
+     pagecolor="#7f7f7f"
      bordercolor="#666666"
      borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="14.25"
-     inkscape:cx="24"
+     inkscape:zoom="14.1875"
+     inkscape:cx="23.929515"
      inkscape:cy="24"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -259,9 +259,8 @@
      transform="translate(0,-1004.3622)"
      style="opacity:1">
     <path
-       style="fill:#ffffff;stroke:none;fill-opacity:1;filter:url(#filter3908)"
-       d="M 7,8 C 5,8 4,9 4,11 l 0,3 0,26 40,0 0,-26 -20,0 0,-3 C 24,9 23,8 21,8 z m 15,10 5,0 0,7 7,0 0,5 -7,0 0,7 -5,0 0,-7 -7,0 0,-5 7,0 z"
-       transform="translate(0,1004.3622)"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter3908)"
+       d="m 4,1009.3622 c -2.4,0 -4,1.6 -4,4 l 0,3 0,31 48,0 0,-31 -24,0 0,-3 c 0,-2.4 -1.6,-4 -4,-4 z m 17,12 6,0 0,8 8,0 0,6 -8,0 0,8 -6,0 0,-8 -8,0 0,-6 8,0 z"
        id="rect4329"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="sscccccsssccccccccccccc" />
