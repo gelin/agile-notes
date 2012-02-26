@@ -37,10 +37,10 @@ gen_app_icon() {
 gen_logo_icon() {
     file_name=$1
 
-    gen_icon $file_name 96x48 drawable-xhdpi
-    gen_icon $file_name 72x36 drawable-hdpi
-    gen_icon $file_name 48x24 drawable
-    gen_icon $file_name 36x18 drawable-ldpi
+    gen_icon $file_name 48x96 drawable-xhdpi
+    gen_icon $file_name 36x72 drawable-hdpi
+    gen_icon $file_name 24x48 drawable
+    gen_icon $file_name 18x36 drawable-ldpi
 }
 
 gen_action_bar_icon() {
