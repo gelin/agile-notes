@@ -100,4 +100,5 @@
     <string name="action_receive_failure">Cannot create a new Action</string>
     <string name="add_folder">Folder</string>
     <string name="add_action">Action</string>
+    <string name="create">Create</string>
 </resources>

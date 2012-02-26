@@ -22,16 +22,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
     
-    <LinearLayout android:id="@+id/action_bar"
-            style="@style/ActionBar">
-        <TextView android:id="@+id/title"
-                style="@style/ActionBar.Title"
-                android:text="@string/add_action_title"/>
-        <ImageButton android:id="@+id/ok_button"
-                style="@style/ActionBar.Button"
-                android:src="@drawable/ok"/>
-    </LinearLayout>
-    
     <com.lendamage.agilegtd.android.ResizableFrameLayout
         android:id="@+id/action_body_frame"
         android:layout_width="fill_parent"

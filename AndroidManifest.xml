@@ -50,7 +50,9 @@
         </activity>
         
         <activity android:name=".AddActionActivity"
+                  android:label="@string/add_action_title"
                   android:theme="@style/Theme.Sherlock"
+                  android:logo="@drawable/logo"
                   android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         

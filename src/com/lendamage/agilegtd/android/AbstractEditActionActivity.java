@@ -19,6 +19,7 @@
 package com.lendamage.agilegtd.android;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -65,7 +66,6 @@ public abstract class AbstractEditActionActivity extends AbstractActionActivity 
                 onOkClick();
             }
         };
-        findViewById(R.id.ok_button).setOnClickListener(okListener);
         findViewById(R.id.ok_big_button).setOnClickListener(okListener);
     }
 
@@ -94,7 +94,22 @@ public abstract class AbstractEditActionActivity extends AbstractActionActivity 
         }
         return true;
     }
-    
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.ok: {
+                if (!validate()) {
+                    return true;
+                }
+                onOkClick();
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     protected abstract void onOkClick();
 
 }

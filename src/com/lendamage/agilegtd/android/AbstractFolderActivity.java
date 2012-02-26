@@ -20,6 +20,7 @@ package com.lendamage.agilegtd.android;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.view.MenuItem;
 import android.util.Log;
 import com.lendamage.agilegtd.android.model.impl.SimplePath;
 import com.lendamage.agilegtd.model.Action;
@@ -54,6 +55,17 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
             this.folder = this.model.getRootFolder();
         }
         //Log.d(TAG, "AbstractFolderActivity.onResume() model=" + this.model + " folder=" + this.folder);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case android.R.id.home:
+            finish();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     protected void startFolderActivity(Class<? extends Activity> activity, Folder folder) {

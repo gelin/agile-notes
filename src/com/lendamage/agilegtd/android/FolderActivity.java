@@ -383,9 +383,6 @@ public class FolderActivity extends AbstractFolderActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            finish();
-            return true;
         case R.id.add_folder: {
             IntentUtils.startFolderActivity(this, AddFolderActivity.class, this.folder);
             return true;

@@ -18,6 +18,8 @@
 
 package com.lendamage.agilegtd.android;
 
+import android.support.v4.view.Menu;
+import android.view.MenuInflater;
 import android.widget.EditText;
 import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_ACTION_BODY;
 
@@ -40,6 +42,13 @@ public class AddActionActivity extends AbstractEditActionActivity {
         }
         EditText body = (EditText)findViewById(R.id.action_body);
         body.setText(bodyText);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_action_options, menu);
+        return true;
     }
     
     @Override
