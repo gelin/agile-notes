@@ -44,8 +44,10 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        //actionBar.setDisplayShowHomeEnabled(false);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(false);
+        }
     }
 
     @Override

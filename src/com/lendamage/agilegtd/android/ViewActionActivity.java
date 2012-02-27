@@ -25,7 +25,6 @@ import android.support.v4.view.MenuItem;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -52,18 +51,6 @@ public class ViewActionActivity extends AbstractActionActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_action_activity);
         
-        findViewById(R.id.copy_button).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                copyAction();
-            }
-        });
-        
-        findViewById(R.id.edit_button).setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                editAction();
-            }
-        });
-        
         ListView actionView = (ListView)findViewById(R.id.action_view);
         actionView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -85,8 +72,7 @@ public class ViewActionActivity extends AbstractActionActivity {
         if (this.action == null) {
             return;
         }
-        TextView titleView = (TextView)findViewById(R.id.title);
-        titleView.setText(this.action.getHead());
+        setTitle(this.action.getHead());
         
         ListView actionView = (ListView)findViewById(R.id.action_view);
         actionView.setAdapter(new ActionViewAdapter(this, this.action));
@@ -182,18 +168,24 @@ public class ViewActionActivity extends AbstractActionActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_options_menu, menu);
+        inflater.inflate(R.menu.view_action_options, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.share_action:
-                ShareUtils.sendAction(this, R.string.share_action_title, this.action);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case R.id.copy_action:
+            copyAction();
+            return true;
+        case R.id.edit_action:
+            editAction();
+            return true;
+        case R.id.share_action:
+            ShareUtils.sendAction(this, R.string.share_action_title, this.action);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
     }
 

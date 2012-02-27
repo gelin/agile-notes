@@ -101,4 +101,6 @@
     <string name="add_action">Действие</string>
     <string name="create">Создать</string>
     <string name="save">Сохранить</string>
+    <string name="copy">Скопировать</string>
+    <string name="edit">Изменить</string>
 </resources>
