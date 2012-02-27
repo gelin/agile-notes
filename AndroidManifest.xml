@@ -46,6 +46,7 @@
         </activity>
         
         <activity android:name=".EditFolderActivity"
+                  android:label="@string/edit_folder_title"
                   android:theme="@style/Theme.Sherlock"
                   android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>

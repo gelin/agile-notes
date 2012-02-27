@@ -22,16 +22,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
     
-    <LinearLayout android:id="@+id/action_bar"
-            style="@style/ActionBar">
-        <TextView android:id="@+id/title"
-                style="@style/ActionBar.Title"
-                android:text="@string/edit_folder_title"/>
-        <ImageButton android:id="@+id/ok_button"
-                style="@style/ActionBar.Button"
-                android:src="@drawable/ok"/>
-    </LinearLayout>
-    
     <EditText android:id="@+id/folder_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
