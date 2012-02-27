@@ -18,6 +18,8 @@
 
 package com.lendamage.agilegtd.android;
 
+import android.support.v4.view.Menu;
+import android.view.MenuInflater;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -46,6 +48,13 @@ public class AddFolderActivity extends AbstractEditFolderActivity {
             type = this.folder.getType().getChildType();
         }
         typeView.setSelection(adapter.getPosition(type));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_folder_options, menu);
+        return true;
     }
     
     @Override
