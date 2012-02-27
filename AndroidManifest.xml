@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.lendamage.agilegtd.android"
-      android:versionCode="5"
-      android:versionName="0.1.1-alpha3">
+      android:versionCode="6"
+      android:versionName="0.1.1-alpha4">
     
 <!--
     Agile GTD. Flexible Android implementation of GTD.
@@ -78,6 +78,7 @@
 
         <activity android:name=".ActionReceiveActivity"
                   android:theme="@android:style/Theme.NoDisplay"
+                  android:icon="@drawable/icon"
                   android:excludeFromRecents="true"
                   android:noHistory="true">
             <intent-filter>
