@@ -50,7 +50,7 @@ public abstract class AbstractEditActionActivity extends AbstractActionActivity 
         bodyFrame.setOnMeasureListener(new OnMeasureListener() {
             public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
                 int height = View.MeasureSpec.getSize(heightMeasureSpec);
-                if (((float)height / screenHeight) < 0.7) {  //height is less than 70%
+                if (((float)height / screenHeight) < 0.5) {  //height is less than 50%
                     button.setVisibility(View.GONE);
                 } else {
                     button.setVisibility(View.VISIBLE);
