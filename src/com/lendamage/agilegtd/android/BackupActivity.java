@@ -18,7 +18,24 @@
 
 package com.lendamage.agilegtd.android;
 
-import static com.lendamage.agilegtd.android.Tag.TAG;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.ActionBar;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.MenuItem;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.lendamage.agilegtd.android.FileListAdapter.OnCheckListener;
+import com.lendamage.agilegtd.model.Model;
+import com.lendamage.agilegtd.model.xml.XmlExportException;
+import com.lendamage.agilegtd.model.xml.XmlExporter;
+import com.lendamage.agilegtd.model.xml.XmlImporter;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,29 +44,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.lendamage.agilegtd.android.FileListAdapter.OnCheckListener;
-import com.lendamage.agilegtd.model.Model;
-import com.lendamage.agilegtd.model.xml.XmlExportException;
-import com.lendamage.agilegtd.model.xml.XmlExporter;
-import com.lendamage.agilegtd.model.xml.XmlImporter;
+import static com.lendamage.agilegtd.android.Tag.TAG;
 
 /**
  *  Activity to backup and restore the model.
  */
-public class BackupActivity extends Activity {
+public class BackupActivity extends FragmentActivity {
 
     /** Backup folder name */
     static final String BACKUP_FOLDER = "agilegtd";
@@ -62,7 +62,15 @@ public class BackupActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.backup_activity);
+        setProgressBarIndeterminateVisibility(Boolean.FALSE);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(false);
+        }
         
         this.backupFolder = getBackupFolder();
         TextView backupFolderView = (TextView)findViewById(R.id.backup_folder);
@@ -138,18 +146,6 @@ public class BackupActivity extends Activity {
         new Restore(this).execute(backupFile);
     }
     
-    void startProgress() {
-        ImageView icon = (ImageView)findViewById(R.id.progress_icon);
-        icon.setVisibility(View.VISIBLE);
-        ((AnimationDrawable)icon.getDrawable()).start();
-    }
-    
-    void stopProgress() {
-        ImageView icon = (ImageView)findViewById(R.id.progress_icon);
-        icon.setVisibility(View.INVISIBLE);
-        ((AnimationDrawable)icon.getDrawable()).stop();
-    }
-    
     class UpdateRestoreList extends AsyncTask<File, Void, FileListAdapter> {
         FileListView view;
         public UpdateRestoreList(FileListView view) {
@@ -158,7 +154,7 @@ public class BackupActivity extends Activity {
         @Override
         protected void onPreExecute() {
             findViewById(R.id.restore_button).setEnabled(false);
-            startProgress();
+            BackupActivity.this.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         }
         @Override
         protected FileListAdapter doInBackground(File... params) {
@@ -168,7 +164,7 @@ public class BackupActivity extends Activity {
         protected void onPostExecute(FileListAdapter adapter) {
             this.view.setAdapter(adapter);
             //Log.d(TAG, adapter.folder + " contains files " + Arrays.toString(adapter.files));
-            stopProgress();
+            BackupActivity.this.setProgressBarIndeterminateVisibility(Boolean.FALSE);
             if (this.view.getCount() == 0) {
                 findViewById(R.id.restore_button).setEnabled(false);
             }
@@ -183,7 +179,7 @@ public class BackupActivity extends Activity {
         @Override
         protected void onPreExecute() {
             findViewById(R.id.backup_button).setEnabled(false);
-            startProgress();
+            BackupActivity.this.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         }
         @Override
         protected String doInBackground(Void... params) {
@@ -216,7 +212,7 @@ public class BackupActivity extends Activity {
         @Override
         protected void onPreExecute() {
             findViewById(R.id.restore_button).setEnabled(false);
-            startProgress();
+            BackupActivity.this.setProgressBarIndeterminateVisibility(Boolean.TRUE);
         }
         @Override
         protected String doInBackground(File... params) {
@@ -254,6 +250,17 @@ public class BackupActivity extends Activity {
                 builder.append("\n");
             }
             builder.append(string);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

@@ -22,17 +22,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  -->
     
-    <LinearLayout android:id="@+id/action_bar"
-            style="@style/ActionBar">
-        <TextView android:id="@+id/title"
-                style="@style/ActionBar.Title"
-                android:text="@string/backup_title"/>
-        <ImageView android:id="@+id/progress_icon"
-                android:src="@drawable/progress"
-                android:visibility="invisible"
-                style="@style/ActionBar.Icon"/>
-    </LinearLayout>
-    
     <TextView android:text="@string/backup"
         style="@style/GroupTitle"/>
     
