@@ -394,6 +394,9 @@ public class FolderActivity extends AbstractFolderActivity {
         case R.id.share_folder:
             ShareUtils.sendFolder(this, R.string.share_folder_title, this.folder);
             return true;
+        case R.id.settings_menu:
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
         case R.id.backup_menu:
             startActivity(new Intent(this, BackupActivity.class));
             return true;

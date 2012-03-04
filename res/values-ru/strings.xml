@@ -103,4 +103,9 @@
     <string name="save">Сохранить</string>
     <string name="copy">Скопировать</string>
     <string name="edit">Изменить</string>
+    <string name="new_item_position">Расположение нового действия/папки</string>
+    <string name="new_item_position_first">В начале списка</string>
+    <string name="new_item_position_last">В конце списка</string>
+    <string name="settings">Настройки</string>
+    <string name="settings_title">Настройки</string>
 </resources>

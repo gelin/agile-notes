@@ -18,24 +18,18 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <item android:id="@+id/add_folder"
-          android:title="@string/add_folder"
+
+    <item android:id="@+id/copy_action"
+          android:title="@string/copy"
           android:icon="@drawable/plus_folder"
           android:showAsAction="ifRoom|withText"/>
-    <item android:id="@+id/add_action"
-          android:title="@string/add_action"
-          android:icon="@drawable/plus"
+    <item android:id="@+id/edit_action"
+          android:title="@string/edit"
+          android:icon="@drawable/edit"
           android:showAsAction="ifRoom|withText"/>
 
-    <item android:id="@+id/share_folder"
-          android:title="@string/share_folder"
+    <item android:id="@+id/share_action"
+          android:title="@string/share_action"
           android:icon="@android:drawable/ic_menu_share"/>
-    <item android:id="@+id/settings_menu"
-          android:title="@string/settings"
-          android:icon="@android:drawable/ic_menu_preferences"/>
-    <item android:id="@+id/backup_menu"
-        android:title="@string/backup_restore"
-        android:icon="@android:drawable/ic_menu_save"/>
-    
+
 </menu>

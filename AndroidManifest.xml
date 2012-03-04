@@ -90,6 +90,10 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
+        <activity android:name=".SettingsActivity"
+                  android:label="@string/settings_title"
+                  android:theme="@style/Theme.Sherlock">
+        </activity>
 
     </application>
 

@@ -27,9 +27,13 @@
           android:title="@string/add_action"
           android:icon="@drawable/plus"
           android:showAsAction="ifRoom"/>
+
     <item android:id="@+id/share_folder"
           android:title="@string/share_folder"
           android:icon="@android:drawable/ic_menu_share"/>
+    <item android:id="@+id/settings_menu"
+          android:title="@string/settings"
+          android:icon="@android:drawable/ic_menu_preferences"/>
     <item android:id="@+id/backup_menu"
         android:title="@string/backup_restore"
         android:icon="@android:drawable/ic_menu_save"/>

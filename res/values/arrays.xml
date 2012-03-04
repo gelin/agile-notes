@@ -51,4 +51,15 @@
         <item>COMPLETED</item>
         <item>TRASH</item>
     </string-array>
+
+    <string-array name="new_item_position_entries">
+        <item>@string/new_item_position_first</item>
+        <item>@string/new_item_position_last</item>
+    </string-array>
+    <string-array name="new_item_position_values">
+        <item>FIRST</item>
+        <item>LAST</item>
+    </string-array>
+
+
 </resources>
