@@ -18,16 +18,15 @@
 
 package com.lendamage.agilegtd.android;
 
-import java.util.Set;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-
 import com.lendamage.agilegtd.model.Folder;
+
+import java.util.Set;
 
 /**
  *  Activity which displays the tree of folders
@@ -77,6 +76,15 @@ public class CopyActionActivity extends AbstractActionActivity {
         Set<Folder> oldFolders = this.action.getFolders();
         oldFolders.addAll(newFolders);
         oldFolders.retainAll(newFolders);
+        if (isNewItemFirst()) {
+            //TODO: optimize: propagate the option to model
+            for (Folder newFolder : oldFolders) {
+                if (newFolder.equals(this.folder)) {    //TODO: fix
+                    continue;
+                }
+                newFolder.getActions().add(0, this.action);
+            }
+        }
         finish();
     }
     

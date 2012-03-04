@@ -55,7 +55,7 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
         super.onResume();
         this.folder = null;
         Intent intent = getIntent();
-        String path = null;
+        String path;
         if (intent.hasExtra(EXTRA_FOLDER_PATH)) {
             path = intent.getStringExtra(EXTRA_FOLDER_PATH);
             this.folder = this.model.getFolder(new SimplePath(path));
@@ -86,6 +86,16 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
 
     protected void startActionActivity(Class<? extends Activity> activity, Action action) {
         IntentUtils.startActionActivity(this, activity, this.folder, action);
-    };
+    }
+
+    /**
+     *  Returns true if the new items (actions or folders)
+     *  should be inserted to the first positions in the lists.
+     *  Reads the application preferences to get the result.
+     *  @return true if the new items should be inserted as the first list items
+     */
+    protected boolean isNewItemFirst() {
+        return NewItemPosition.FIRST.equals(NewItemPosition.valueOf(this));
+    }
 
 }

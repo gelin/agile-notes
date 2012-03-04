@@ -18,23 +18,22 @@
 
 package com.lendamage.agilegtd.android;
 
-import java.util.List;
-import java.util.Set;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  *  Adapter which represents the list of subfolders and actions within the
@@ -88,7 +87,7 @@ public class FolderListAdapter extends BaseAdapter implements DropListener {
         }
     }
     
-    public int getCount() {;
+    public int getCount() {
         //update();     //avoid unnesessary access to DB
         return this.folders.size() + this.actions.size();
     }
@@ -132,6 +131,8 @@ public class FolderListAdapter extends BaseAdapter implements DropListener {
     
     /**
      *  Checks that the folder (not action) is located at the specified position.
+     *  @param  position    position in the list
+     *  @return true if on this position there is a folder
      */
     boolean isFolder(int position) {
         return position < this.folders.size();
@@ -244,6 +245,15 @@ public class FolderListAdapter extends BaseAdapter implements DropListener {
     void completeAction(Action action, boolean completed) {
         if (completed) {
             action.getFolders().addAll(this.completedFolders);
+            if (NewItemPosition.FIRST.equals(NewItemPosition.valueOf(this.context))) {
+                //TODO: optimize: propagate the option to model
+                for (Folder newFolder : this.completedFolders) {
+                    if (newFolder.equals(this.folder)) {
+                        continue;
+                    }
+                    newFolder.getActions().add(0, action);
+                }
+            }
         } else {
             action.getFolders().removeAll(this.completedFolders);
         }

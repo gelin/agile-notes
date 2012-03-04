@@ -69,7 +69,11 @@ public class MoveFolderActivity extends AbstractFolderActivity {
     void moveFolder() {
         SelectFolderTreeView tree = (SelectFolderTreeView)findViewById(R.id.folder_tree);
         Folder moveTo = tree.getSelected();
-        moveTo.getFolders().add(this.folder);
+        if (isNewItemFirst()) {
+            moveTo.getFolders().add(0, this.folder);
+        } else {
+            moveTo.getFolders().add(this.folder);
+        }
     }
 
 }
