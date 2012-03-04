@@ -51,6 +51,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="ActionBarSherlock" />
+    <orderEntry type="module" module-name="ActionBarSherlock (Preference plugin)" />
   </component>
 </module>
 

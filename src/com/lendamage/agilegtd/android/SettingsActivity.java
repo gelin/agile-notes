@@ -19,16 +19,34 @@
 package com.lendamage.agilegtd.android;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.support.v4.app.ActionBar;
+import android.support.v4.app.SherlockPreferenceActivity;
+import android.support.v4.view.MenuItem;
 
 /**
  *  Application settings
  */
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends SherlockPreferenceActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.app_preferences);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            //actionBar.setDisplayShowHomeEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }
