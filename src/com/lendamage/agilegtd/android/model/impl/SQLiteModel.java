@@ -18,22 +18,22 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.Model;
 import com.lendamage.agilegtd.model.ModelException;
+import com.lendamage.agilegtd.model.ModelSettings;
 import com.lendamage.agilegtd.model.Path;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 
 /**
  *  Model which uses Android's SQLite database.
@@ -44,6 +44,8 @@ public class SQLiteModel implements Model {
     transient SQLiteDatabase db;
     /** Root folder */
     SQLiteFolder root;
+    /** Settings */
+    ModelSettings settings = new SimpleModelSettings();
     
     /**
      *  Creates the model
@@ -120,6 +122,11 @@ public class SQLiteModel implements Model {
     
     public void close() {
         db.close();
+    }
+
+    @Override
+    public ModelSettings getSettings() {
+        return this.settings;
     }
 
 }

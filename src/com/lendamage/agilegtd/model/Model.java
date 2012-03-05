@@ -56,4 +56,10 @@ public interface Model {
      */
     void close();
 
+    /**
+     *  Returns the settings of the model.
+     *  Settings can be changed during the model life.
+     */
+    ModelSettings getSettings();
+
 }
