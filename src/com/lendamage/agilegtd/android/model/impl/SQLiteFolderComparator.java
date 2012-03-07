@@ -18,14 +18,13 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
+import android.database.sqlite.SQLiteDatabase;
+import com.lendamage.agilegtd.model.Path;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.lendamage.agilegtd.model.Path;
-
-import android.database.sqlite.SQLiteDatabase;
 
 /**
  *  Compares two SQLiteFolders in "natural" order.
@@ -33,13 +32,16 @@ import android.database.sqlite.SQLiteDatabase;
  */
 class SQLiteFolderComparator implements Comparator<SQLiteFolder> {
 
-    /** Cache of the folders */
-    Map<Path, SQLiteFolder> folders = new HashMap<Path, SQLiteFolder>();
+    /** Link to model */
+    transient SQLiteModel model;
     /** Database connection */
     transient SQLiteDatabase db;
-    
-    SQLiteFolderComparator(SQLiteDatabase db) {
-        this.db = db;
+    /** Cache of the folders */
+    Map<Path, SQLiteFolder> folders = new HashMap<Path, SQLiteFolder>();
+
+    SQLiteFolderComparator(SQLiteModel model) {
+        this.model = model;
+        this.db = model.db;
     }
     
     public int compare(SQLiteFolder folder1, SQLiteFolder folder2) {
@@ -134,7 +136,7 @@ class SQLiteFolderComparator implements Comparator<SQLiteFolder> {
     SQLiteFolder getFolder(Path path) {
         SQLiteFolder result = this.folders.get(path);
         if (result == null) {
-            result = FolderDao.selectFolder(db, path);
+            result = FolderDao.selectFolder(this.model, path);
         }
         return result;
     }

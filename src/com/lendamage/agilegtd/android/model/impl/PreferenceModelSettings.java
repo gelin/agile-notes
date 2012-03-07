@@ -39,6 +39,7 @@ public class PreferenceModelSettings implements ModelSettings {
     
     @Override
     public NewItemPosition getNewItemPosition() {
+        //TODO add caching if necessary
         String value = NewItemPosition.FIRST.toString();
         value = this.preferences.getString(NEW_ITEM_POSITION_KEY, value);
         try {

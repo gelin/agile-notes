@@ -1,14 +1,13 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import android.test.AndroidTestCase;
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
-
-import android.test.AndroidTestCase;
 
 public class SQLiteFolderSetTest extends AndroidTestCase {
     
@@ -103,7 +102,7 @@ public class SQLiteFolderSetTest extends AndroidTestCase {
         action.getFolders().clear();
         assertEquals(0, action.getFolders().size());
         
-        assertNull(ActionDao.selectAction(action.db, action.id));
+        assertNull(ActionDao.selectAction(action.model, action.id));
     }
     
     public void testIterator() {

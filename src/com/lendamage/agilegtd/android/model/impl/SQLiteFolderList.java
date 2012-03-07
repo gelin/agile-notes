@@ -18,22 +18,23 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+import android.database.sqlite.SQLiteDatabase;
+import com.lendamage.agilegtd.model.Folder;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import android.database.sqlite.SQLiteDatabase;
-
-import com.lendamage.agilegtd.model.Folder;
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 
 /**
  *  Special implementation of list of folders to map changes to database.
  */
 class SQLiteFolderList implements List<Folder> {
 
+    /** Link to model */
+    transient SQLiteModel model;
     /** DB handler */
     transient SQLiteDatabase db;
     /** ID of the folder to which the list belongs */
@@ -41,8 +42,9 @@ class SQLiteFolderList implements List<Folder> {
     /** Wrapped list */
     List<SQLiteFolder> folders;
     
-    SQLiteFolderList(SQLiteDatabase db, long id) {
-        this.db = db;
+    SQLiteFolderList(SQLiteModel model, long id) {
+        this.model = model;
+        this.db = model.db;
         this.id = id;
     }
     
@@ -96,7 +98,7 @@ class SQLiteFolderList implements List<Folder> {
     }
     
     void addFolder(int location, SQLiteFolder folder) {
-        FolderDao.updateFolderParent(this.db, folder, this.id);
+        FolderDao.updateFolderParent(this.model, folder, this.id);
         this.folders.remove(folder);
         if (location > this.folders.size()) {
             location = this.folders.size();
@@ -174,15 +176,15 @@ class SQLiteFolderList implements List<Folder> {
      *  Deletes all subfolders.
      */
     public void clear() {
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
             for (SQLiteFolder child : this.folders) {
-                FolderDao.deleteFolder(db, child.id);
+                FolderDao.deleteFolder(this.model, child.id);
             }
-            db.setTransactionSuccessful();
+            this.db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
         
         this.folders.clear();
@@ -227,14 +229,14 @@ class SQLiteFolderList implements List<Folder> {
      */
     public Folder remove(int location) {
         SQLiteFolder folder = this.folders.get(location);
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            FolderDao.deleteFolder(this.db, folder.id);
+            FolderDao.deleteFolder(this.model, folder.id);
             this.folders.remove(location);
-            db.setTransactionSuccessful();
+            this.db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
         return null;
     }
@@ -274,17 +276,17 @@ class SQLiteFolderList implements List<Folder> {
         }
         SQLiteFolder newFolder = (SQLiteFolder)folder;
         SQLiteFolder oldFolder = this.folders.set(location, newFolder);
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            FolderDao.updateFolderParent(db, newFolder, this.id);
-            FolderDao.deleteFolder(db, oldFolder.id);
+            FolderDao.updateFolderParent(this.model, newFolder, this.id);
+            FolderDao.deleteFolder(this.model, oldFolder.id);
             updateOrder();
-            db.setTransactionSuccessful();
+            this.db.setTransactionSuccessful();
         } catch (Exception e) {
             this.folders.set(location, oldFolder);
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
         return null;
     }

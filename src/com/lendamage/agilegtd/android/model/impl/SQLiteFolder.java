@@ -18,28 +18,32 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderTree;
 import com.lendamage.agilegtd.model.FolderType;
+import com.lendamage.agilegtd.model.ModelSettings;
 import com.lendamage.agilegtd.model.Path;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 
 class SQLiteFolder implements Folder {
 
+    /** Link to model */
+    transient SQLiteModel model;
     /** DB handler */
     transient SQLiteDatabase db;
     /** ID in the database */
-    final long id; 
+    final long id;
+    /** True if New item should be added to the first */
+    boolean newItemPositionFirst = false;
     
     /** Full path */
     Path path;
@@ -54,13 +58,22 @@ class SQLiteFolder implements Folder {
     /** List of actions */
     SQLiteActionList actions;
     
-    SQLiteFolder(SQLiteDatabase db, long id) {
-        this.db = db;
+    SQLiteFolder(SQLiteModel model, long id) {
+        this.model = model;
+        updateSettings(model.getSettings());
+        this.db = model.db;
         this.id = id;
-        this.folders = new SQLiteFolderList(db, id);
-        this.actions = new SQLiteActionList(db, id);
+        this.folders = new SQLiteFolderList(this.model, id);
+        this.actions = new SQLiteActionList(this.db, id);
     }
-    
+
+    /**
+     *  Updated the folder internals based on the model settings.
+     */
+    void updateSettings(ModelSettings settings) {
+        this.newItemPositionFirst = ModelSettings.NewItemPosition.FIRST.equals(settings.getNewItemPosition());
+    }
+
     //@Override
     public Path getPath() {
         return this.path;
@@ -79,16 +92,19 @@ class SQLiteFolder implements Folder {
     //@Override
     public Action newAction(String head, String body) {
         assert(head != null);
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            SQLiteAction result = ActionDao.insertAction(db, this.id, head, body);
+            SQLiteAction result = ActionDao.insertAction(this.model, this.id, head, body);
             result.head = head;
             result.body = body;
-            db.setTransactionSuccessful();
+            if (this.newItemPositionFirst) {
+                getActions().add(0, result);    //TODO optimize?
+            }
+            this.db.setTransactionSuccessful();
             return result;
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
     }
 
@@ -98,35 +114,35 @@ class SQLiteFolder implements Folder {
         if (FolderType.ROOT.equals(type)) {
             throw new FolderAlreadyExistsException("root already exists");
         }
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            SQLiteFolder result = FolderDao.insertFolder(db, this.id, name, type);
-            db.setTransactionSuccessful();
+            SQLiteFolder result = FolderDao.insertFolder(this.model, this.id, name, type);
+            this.db.setTransactionSuccessful();
             return result;
         } catch (SQLiteConstraintException ce) {
             throw new FolderAlreadyExistsException(ce);
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
     }
     
     //@Override
     public List<Folder> getFolders() {
         assert(this.id != 0);
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            Cursor cursor = FolderDao.selectFolders(db, this.id);
+            Cursor cursor = FolderDao.selectFolders(this.db, this.id);
             List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
             while (cursor.moveToNext()) {
-                result.add(FolderDao.getFolder(db, cursor));
+                result.add(FolderDao.getFolder(this.model, cursor));
             }
             this.folders.setFolders(result);
             cursor.close();
-            db.setTransactionSuccessful();
+            this.db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
         return this.folders;
     }
@@ -134,19 +150,19 @@ class SQLiteFolder implements Folder {
     //@Override
     public List<Action> getActions() {
         assert(this.id != 0);
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            Cursor cursor = FolderDao.selectActions(db, this.id);
+            Cursor cursor = FolderDao.selectActions(this.db, this.id);
             List<SQLiteAction> result = new ArrayList<SQLiteAction>();
             while (cursor.moveToNext()) {
-                result.add(ActionDao.getAction(db, cursor));
+                result.add(ActionDao.getAction(this.model, cursor));
             }
             this.actions.setActions(result);
             cursor.close();
-            db.setTransactionSuccessful();
+            this.db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
         return this.actions;
     }

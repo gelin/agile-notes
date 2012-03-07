@@ -18,21 +18,22 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 
 class SQLiteAction implements Action {
 
+    /** Link to model */
+    transient SQLiteModel model;
     /** DB handler */
     transient SQLiteDatabase db;
     /** ID in the database */
@@ -40,15 +41,16 @@ class SQLiteAction implements Action {
     
     /** Action head */
     String head;
-    /** Action body */
+    /** Action body */                             
     String body;
     /** Set of folders */
     SQLiteFolderSet folders;
     
-    SQLiteAction(SQLiteDatabase db, long id) {
-        this.db = db;
+    SQLiteAction(SQLiteModel model, long id) {
+        this.model = model;
+        this.db = model.db;
         this.id = id;
-        this.folders = new SQLiteFolderSet(db, id);
+        this.folders = new SQLiteFolderSet(this.model, id);
     }
     
     //@Override
@@ -64,20 +66,20 @@ class SQLiteAction implements Action {
     //@Override
     public Set<Folder> getFolders() {
         assert(this.id != 0);
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            Cursor cursor = ActionDao.selectFolders(db, this.id);
+            Cursor cursor = ActionDao.selectFolders(this.db, this.id);
             List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
             while (cursor.moveToNext()) {
-                result.add(FolderDao.getFolder(db, cursor));
+                result.add(FolderDao.getFolder(this.model, cursor));
             }
-            Collections.sort(result, new SQLiteFolderComparator(db));
+            Collections.sort(result, new SQLiteFolderComparator(this.model));
             this.folders.setFolders(result);
             cursor.close();
-            db.setTransactionSuccessful();
+            this.db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
         return this.folders;
     }

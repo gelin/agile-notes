@@ -18,29 +18,20 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_IN_FOLDER_TABLE;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.BODY_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.HEAD_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.NAME_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.TYPE_COLUMN;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.*;
 
 /**
  *  Static utility methods to CRUD actions.
  */
 class ActionDao {
 
-    static SQLiteAction insertAction(SQLiteDatabase db, long folderId, String head, String body) {
+    static SQLiteAction insertAction(SQLiteModel model, long folderId, String head, String body) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(folderId != 0);
         assert(head != null);
@@ -51,7 +42,7 @@ class ActionDao {
             values.put(BODY_COLUMN, body);
         }
         long id = db.insertOrThrow(ACTION_TABLE, null, values);
-        SQLiteAction result = new SQLiteAction(db, id);
+        SQLiteAction result = new SQLiteAction(model, id);
         result.head = head;
         result.body = body;
         replaceActionInFolder(db, folderId, result.id);
@@ -61,7 +52,8 @@ class ActionDao {
     /**
      *  Returns the action by ID.
      */
-    static SQLiteAction selectAction(SQLiteDatabase db, long id) {
+    static SQLiteAction selectAction(SQLiteModel model, long id) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(id != 0);
         
@@ -75,7 +67,7 @@ class ActionDao {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        SQLiteAction action = getAction(db, cursor);
+        SQLiteAction action = getAction(model, cursor);
         cursor.close();
         return action;
     }
@@ -108,12 +100,13 @@ class ActionDao {
     /**
      *  Returns the action from the current cursor position.
      */
-    static SQLiteAction getAction(SQLiteDatabase db, Cursor cursor) {
+    static SQLiteAction getAction(SQLiteModel model, Cursor cursor) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(cursor != null);
         assert(!cursor.isClosed() && !cursor.isBeforeFirst() && !cursor.isAfterLast());
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(ID_COLUMN));
-        SQLiteAction result = new SQLiteAction(db, id);
+        SQLiteAction result = new SQLiteAction(model, id);
         result.head = cursor.getString(cursor.getColumnIndexOrThrow(HEAD_COLUMN));
         result.body = cursor.getString(cursor.getColumnIndexOrThrow(BODY_COLUMN));
         return result;

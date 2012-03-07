@@ -1,12 +1,14 @@
 package com.lendamage.agilegtd.android.model.impl;
 
+import android.test.AndroidTestCase;
+import com.lendamage.agilegtd.model.Action;
+import com.lendamage.agilegtd.model.Folder;
+
 import java.util.Iterator;
 import java.util.List;
 
-import android.test.AndroidTestCase;
-
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.FIRST;
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.LAST;
 
 public class SQLiteActionListTest extends AndroidTestCase {
     
@@ -15,6 +17,7 @@ public class SQLiteActionListTest extends AndroidTestCase {
     protected void setUp() {
         getContext().getDatabasePath("agile-gtd-test.db").delete();
         model = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        model.getSettings().setNewItemPosition(LAST);
     }
     
     public void testAddRemove() {
@@ -34,6 +37,27 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action2, actions3.get(0));
         assertEquals(action3, actions3.get(1));
     }
+
+    public void testNewActionToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+
+        List<Action> actions = model.getRootFolder().getActions();
+        assertEquals(action2, actions.get(0));
+        assertEquals(action1, actions.get(1));
+    }
+
+    public void testNewActionToFirstSubfolder() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Action action1 = folder.newAction("action1", null);
+        Action action2 = folder.newAction("action2", null);
+
+        List<Action> actions = folder.getActions();
+        assertEquals(action2, actions.get(0));
+        assertEquals(action1, actions.get(1));
+    }
     
     public void testRemoveAll() {
         SQLiteAction action = (SQLiteAction)model.getRootFolder().newAction("action", null);
@@ -50,7 +74,7 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertFalse(model.getRootFolder().getActions().contains(action));
         assertFalse(folder.getActions().contains(action));
         
-        assertNull(ActionDao.selectAction(model.db, action.id));
+        assertNull(ActionDao.selectAction(model, action.id));
     }
     
     public void testAddToLocation() {

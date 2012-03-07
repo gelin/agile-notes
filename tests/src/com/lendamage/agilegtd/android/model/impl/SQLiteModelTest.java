@@ -1,13 +1,12 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import java.util.List;
-
 import android.test.AndroidTestCase;
-
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
+
+import java.util.List;
 
 public class SQLiteModelTest extends AndroidTestCase {
     
@@ -199,7 +198,7 @@ public class SQLiteModelTest extends AndroidTestCase {
         Folder folder = model.getRootFolder().newFolder("folder", null);
         SQLiteAction action = (SQLiteAction)folder.newAction("action", null);
         model.getRootFolder().getFolders().clear();
-        assertNull(ActionDao.selectAction(model.db, action.id));
+        assertNull(ActionDao.selectAction(model, action.id));
     }
     
     public void testFindAction() {

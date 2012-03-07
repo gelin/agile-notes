@@ -18,7 +18,8 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+import android.database.sqlite.SQLiteDatabase;
+import com.lendamage.agilegtd.model.Folder;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -26,15 +27,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import android.database.sqlite.SQLiteDatabase;
-
-import com.lendamage.agilegtd.model.Folder;
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 
 /**
  *  Special implementation of set of folders of the action to map changes to database.
  */
 class SQLiteFolderSet implements Set<Folder> {
 
+    /** Link to model */
+    SQLiteModel model;
     /** DB handler */
     transient SQLiteDatabase db;
     /** ID of the action to which the set belongs */
@@ -42,8 +43,9 @@ class SQLiteFolderSet implements Set<Folder> {
     /** Wrapped list, list, because the order is valuable */
     List<SQLiteFolder> folders;
     
-    SQLiteFolderSet(SQLiteDatabase db, long id) {
-        this.db = db;
+    SQLiteFolderSet(SQLiteModel model, long id) {
+        this.model = model;
+        this.db = model.db;
         this.id = id;
     }
     
@@ -206,7 +208,7 @@ class SQLiteFolderSet implements Set<Folder> {
     }
     
     void updateOrder() {
-        Collections.sort(this.folders, new SQLiteFolderComparator(db));
+        Collections.sort(this.folders, new SQLiteFolderComparator(this.model));
     }
 
 }

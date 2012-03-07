@@ -18,35 +18,27 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_IN_FOLDER_TABLE;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ACTION_TABLE;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FOLDER_TABLE;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.FULL_NAME_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.ID_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.NAME_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.SORT_ORDER_COLUMN;
-import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.TYPE_COLUMN;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.OuroborosException;
 import com.lendamage.agilegtd.model.Path;
+
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+import static com.lendamage.agilegtd.android.model.impl.SQLiteModelOpenHelper.*;
 
 /**
  *  Static utility methods to CRUD folders.
  */
 class FolderDao {
 
-    static SQLiteFolder insertFolder(SQLiteDatabase db, long parentId, String name, FolderType type) {
+    static SQLiteFolder insertFolder(SQLiteModel model, long parentId, String name, FolderType type) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(parentId != 0);
         assert(name != null);
-        SQLiteFolder parent = selectFolder(db, parentId);
+        SQLiteFolder parent = selectFolder(model, parentId);
         assert(parent != null);
         Path path = parent.getPath().addSegment(name);
         ContentValues values = new ContentValues();
@@ -57,7 +49,7 @@ class FolderDao {
         }
         values.put(FOLDER_ID_COLUMN, parent.id);
         long id = db.insertOrThrow(FOLDER_TABLE, null, values);
-        SQLiteFolder result = new SQLiteFolder(db, id);
+        SQLiteFolder result = new SQLiteFolder(model, id);
         result.path = path;
         result.name = path.getLastSegment();
         result.type = type;
@@ -67,7 +59,8 @@ class FolderDao {
     /**
      *  Returns the folder by ID.
      */
-    static SQLiteFolder selectFolder(SQLiteDatabase db, long id) {
+    static SQLiteFolder selectFolder(SQLiteModel model, long id) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(id != 0);
         Cursor cursor = db.query(FOLDER_TABLE, 
@@ -80,7 +73,7 @@ class FolderDao {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        SQLiteFolder folder = getFolder(db, cursor);
+        SQLiteFolder folder = getFolder(model, cursor);
         cursor.close();
         return folder;
     }
@@ -88,7 +81,8 @@ class FolderDao {
     /**
      *  Returns the folder by path.
      */
-    static SQLiteFolder selectFolder(SQLiteDatabase db, Path path) {
+    static SQLiteFolder selectFolder(SQLiteModel model, Path path) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(path != null);
         Cursor cursor = db.query(FOLDER_TABLE, 
@@ -101,7 +95,7 @@ class FolderDao {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        SQLiteFolder folder = getFolder(db, cursor);
+        SQLiteFolder folder = getFolder(model, cursor);
         cursor.close();
         return folder;
     }
@@ -109,7 +103,8 @@ class FolderDao {
     /**
      *  Returns root folder by type.
      */
-    static SQLiteFolder selectRootFolder(SQLiteDatabase db) {
+    static SQLiteFolder selectRootFolder(SQLiteModel model) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         Cursor cursor = db.query(FOLDER_TABLE, 
                 null, 
@@ -121,7 +116,7 @@ class FolderDao {
         if (!cursor.moveToFirst()) {
             return null;
         }
-        SQLiteFolder folder = getFolder(db, cursor);
+        SQLiteFolder folder = getFolder(model, cursor);
         cursor.close();
         return folder;
     }
@@ -184,12 +179,13 @@ class FolderDao {
     /**
      *  Returns the folder from the current cursor position.
      */
-    static SQLiteFolder getFolder(SQLiteDatabase db, Cursor cursor) {
+    static SQLiteFolder getFolder(SQLiteModel model, Cursor cursor) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(cursor != null);
         assert(!cursor.isClosed() && !cursor.isBeforeFirst() && !cursor.isAfterLast());
         long id = cursor.getLong(cursor.getColumnIndexOrThrow(ID_COLUMN));
-        SQLiteFolder result = new SQLiteFolder(db, id);
+        SQLiteFolder result = new SQLiteFolder(model, id);
         Path path = new SimplePath(cursor.getString(cursor.getColumnIndexOrThrow(FULL_NAME_COLUMN)));
         result.path = path;
         result.name = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
@@ -206,14 +202,15 @@ class FolderDao {
      *  Updates the folder's full name.
      *  @throws IllegalStateException if the folder to update doesn't exist
      */
-    static void updateFolderParent(SQLiteDatabase db, SQLiteFolder folder, long parentId) throws IllegalStateException {
+    static void updateFolderParent(SQLiteModel model, SQLiteFolder folder, long parentId) throws IllegalStateException {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(folder != null);
         assert(folder.id != 0);
         assert(parentId != 0);
-        SQLiteFolder parent = selectFolder(db, parentId);
+        SQLiteFolder parent = selectFolder(model, parentId);
         if (parent == null) {
-            parent = selectRootFolder(db);
+            parent = selectRootFolder(model);
         }
         assert(parent != null);
         if (parent.getPath().startsWith(folder.getPath())) {
@@ -231,8 +228,8 @@ class FolderDao {
         folder.path = path;
         Cursor cursor = selectFolders(db, folder.id);
         while (cursor.moveToNext()) {   //update subfolders recursively
-            SQLiteFolder subfolder = getFolder(db, cursor);
-            updateFolderParent(db, subfolder, folder.id);
+            SQLiteFolder subfolder = getFolder(model, cursor);
+            updateFolderParent(model, subfolder, folder.id);
         }
         cursor.close();
     }
@@ -283,14 +280,15 @@ class FolderDao {
     /**
      *  Deletes the folder.
      */
-    static void deleteFolder(SQLiteDatabase db, long id) {
+    static void deleteFolder(SQLiteModel model, long id) {
+        SQLiteDatabase db = model.db;
         checkDb(db);
         assert(id != 0);
         db.delete(FOLDER_TABLE, ID_COLUMN + " = ?", new String[] { String.valueOf(id) });
         Cursor cursor = selectFolders(db, id);
         while (cursor.moveToNext()) {
-            SQLiteFolder folder = getFolder(db, cursor);
-            deleteFolder(db, folder.id);
+            SQLiteFolder folder = getFolder(model, cursor);
+            deleteFolder(model, folder.id);
         }
         cursor.close();
     }

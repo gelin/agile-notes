@@ -56,7 +56,7 @@ public class SQLiteModel implements Model {
         checkDb(this.db);
         this.db.beginTransaction();
         try {
-            this.root = FolderDao.selectRootFolder(this.db);
+            this.root = FolderDao.selectRootFolder(this);
             this.db.setTransactionSuccessful();
         } finally {
             this.db.endTransaction();
@@ -72,7 +72,7 @@ public class SQLiteModel implements Model {
         checkDb(this.db);
         this.db.beginTransaction();
         try {
-            result = FolderDao.selectFolder(this.db, fullPath);
+            result = FolderDao.selectFolder(this, fullPath);
             this.db.setTransactionSuccessful();
         } finally {
             this.db.endTransaction();
@@ -82,6 +82,7 @@ public class SQLiteModel implements Model {
     
     //@Override
     public Folder getRootFolder() {
+        this.root.updateSettings(this.settings);
         return this.root;
     }
     
@@ -93,9 +94,9 @@ public class SQLiteModel implements Model {
         try {
             Cursor cursor = FolderDao.selectFolders(this.db, type);
             while (cursor.moveToNext()) {
-                result.add(FolderDao.getFolder(this.db, cursor));
+                result.add(FolderDao.getFolder(this, cursor));
             }
-            Collections.sort(result, new SQLiteFolderComparator(this.db));
+            Collections.sort(result, new SQLiteFolderComparator(this));
             cursor.close();
             this.db.setTransactionSuccessful();
         } finally {
@@ -113,7 +114,7 @@ public class SQLiteModel implements Model {
         }
         this.db.beginTransaction();
         try {
-            Action result = ActionDao.selectAction(this.db, ((SQLiteAction)action).id);
+            Action result = ActionDao.selectAction(this, ((SQLiteAction)action).id);
             this.db.setTransactionSuccessful();
             return result;
         } finally {
