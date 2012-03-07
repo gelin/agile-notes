@@ -45,22 +45,23 @@ public class SQLiteModel implements Model {
     /** Root folder */
     SQLiteFolder root;
     /** Settings */
-    ModelSettings settings = new SimpleModelSettings();
+    ModelSettings settings;
     
     /**
      *  Creates the model
      */
     public SQLiteModel(Context context, String dbName) {
-        db = new SQLiteModelOpenHelper(context, dbName).getWritableDatabase();
-        checkDb(db);
-        db.beginTransaction();
+        this.settings = new PreferenceModelSettings(context);
+        this.db = new SQLiteModelOpenHelper(context, dbName).getWritableDatabase();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            root = FolderDao.selectRootFolder(db);
-            db.setTransactionSuccessful();
+            this.root = FolderDao.selectRootFolder(this.db);
+            this.db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
-        if (root == null) {
+        if (this.root == null) {
             throw new ModelException("no root folder");
         }
     }
@@ -68,37 +69,37 @@ public class SQLiteModel implements Model {
     //@Override
     public Folder getFolder(Path fullPath) {
         Folder result = null;
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            result = FolderDao.selectFolder(db, fullPath);
-            db.setTransactionSuccessful();
+            result = FolderDao.selectFolder(this.db, fullPath);
+            this.db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
         return result;
     }
     
     //@Override
     public Folder getRootFolder() {
-        return root;
+        return this.root;
     }
     
     //@Override
     public List<Folder> findFolders(FolderType type) {
         List<SQLiteFolder> result = new ArrayList<SQLiteFolder>();
-        checkDb(db);
-        db.beginTransaction();
+        checkDb(this.db);
+        this.db.beginTransaction();
         try {
-            Cursor cursor = FolderDao.selectFolders(db, type);
+            Cursor cursor = FolderDao.selectFolders(this.db, type);
             while (cursor.moveToNext()) {
-                result.add(FolderDao.getFolder(db, cursor));
+                result.add(FolderDao.getFolder(this.db, cursor));
             }
-            Collections.sort(result, new SQLiteFolderComparator(db));
+            Collections.sort(result, new SQLiteFolderComparator(this.db));
             cursor.close();
-            db.setTransactionSuccessful();
+            this.db.setTransactionSuccessful();
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
         List<Folder> typedResult = new ArrayList<Folder>();
         typedResult.addAll(result);
@@ -110,18 +111,18 @@ public class SQLiteModel implements Model {
         if (!(action instanceof SQLiteAction)) {
             return null;
         }
-        db.beginTransaction();
+        this.db.beginTransaction();
         try {
-            Action result = ActionDao.selectAction(db, ((SQLiteAction)action).id);
-            db.setTransactionSuccessful();
+            Action result = ActionDao.selectAction(this.db, ((SQLiteAction)action).id);
+            this.db.setTransactionSuccessful();
             return result;
         } finally {
-            db.endTransaction();
+            this.db.endTransaction();
         }
     }
     
     public void close() {
-        db.close();
+        this.db.close();
     }
 
     @Override

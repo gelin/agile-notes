@@ -18,23 +18,40 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import com.lendamage.agilegtd.model.ModelSettings;
 
 /**
- *  Simple model settings.
- *  Just holds the values in memory.
+ *  Model settings which holds the settings in the application
+ *  SharedPreferences.
  */
-public class SimpleModelSettings implements ModelSettings {
+public class PreferenceModelSettings implements ModelSettings {
 
-    private NewItemPosition newItemPosition = NewItemPosition.LAST;
-
+    public static final String NEW_ITEM_POSITION_KEY = "new_item_position";
+    
+    SharedPreferences preferences;
+    
+    PreferenceModelSettings(Context context) {
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+    
     @Override
     public NewItemPosition getNewItemPosition() {
-        return this.newItemPosition;
+        String value = NewItemPosition.FIRST.toString();
+        value = this.preferences.getString(NEW_ITEM_POSITION_KEY, value);
+        try {
+            return NewItemPosition.valueOf(value);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public void setNewItemPosition(NewItemPosition position) {
-        this.newItemPosition = position;
+        this.preferences.edit().putString(
+                NEW_ITEM_POSITION_KEY, String.valueOf(position)).commit();
     }
+
 }

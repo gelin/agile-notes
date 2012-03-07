@@ -24,6 +24,7 @@ import android.preference.PreferenceManager;
 /**
  *  Position where to insert the new item: as the first of the last item in the list
  */
+@Deprecated
 public enum NewItemPosition {
     FIRST, LAST;
     
