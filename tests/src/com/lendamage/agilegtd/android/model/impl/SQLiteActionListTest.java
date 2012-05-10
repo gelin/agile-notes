@@ -105,7 +105,7 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action2, actions2.get(0));
         assertEquals(action1, actions2.get(1));
     }
-    
+
     public void testRearrangeToLocation1() {
         Action action1 = model.getRootFolder().newAction("action1", null);
         Action action2 = model.getRootFolder().newAction("action2", null);
@@ -179,6 +179,28 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action1, actions2.get(0));
         assertEquals(action2, actions2.get(1));
         
+        assertEquals("no actions should be deleted", 2, model.getRootFolder().getActions().size());
+    }
+
+    public void testAddAllToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        Action action3 = folder.newAction("action3", null);
+
+        List<Action> actions = model.getRootFolder().getActions();
+        assertEquals(2, actions.size());
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
+
+        folder.getActions().addAll(actions);
+        List<Action> actions2 = folder.getActions();
+        assertEquals(3, actions2.size());
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action2, actions2.get(1));
+        assertEquals(action3, actions2.get(2));
+
         assertEquals("no actions should be deleted", 2, model.getRootFolder().getActions().size());
     }
     

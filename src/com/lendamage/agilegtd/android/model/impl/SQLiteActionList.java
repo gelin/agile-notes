@@ -18,32 +18,25 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
+import com.lendamage.agilegtd.model.Action;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import android.database.sqlite.SQLiteDatabase;
-
-import com.lendamage.agilegtd.model.Action;
+import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 
 /**
  *  Special implementation of list of actions in the folder to map changes to database.
  */
-class SQLiteActionList implements List<Action> {
+class SQLiteActionList extends SQLiteModelEntity implements List<Action> {
 
-    /** DB handler */
-    transient SQLiteDatabase db;
-    /** ID of the folder to which the list belongs */
-    final long id;
     /** Wrapped list */
     List<SQLiteAction> actions;
     
-    SQLiteActionList(SQLiteDatabase db, long id) {
-        this.db = db;
-        this.id = id;
+    SQLiteActionList(SQLiteModel model, long id) {
+        super(model, id);
     }
     
     void setActions(List<SQLiteAction> actions) {
@@ -92,7 +85,11 @@ class SQLiteActionList implements List<Action> {
         if (this.actions.contains(action)) {
             return;
         }
-        addAction(this.actions.size(), action);
+        if (this.newItemPositionFirst) {
+            addAction(0, action);
+        } else {
+            addAction(this.actions.size(), action);
+        }
     }
     
     void addAction(int location, SQLiteAction action) {
@@ -118,13 +115,21 @@ class SQLiteActionList implements List<Action> {
         if (sqlActions.id == this.id) {
             return false;   //no need to insert into self
         }
-        Iterator<SQLiteAction> i = sqlActions.actions.iterator();
+        ListIterator<SQLiteAction> i = sqlActions.actions.listIterator(
+                this.newItemPositionFirst ? sqlActions.actions.size() : 0);
         checkDb(db);
         db.beginTransaction();
         try {
-            while (i.hasNext()) {
-                SQLiteAction action = i.next();
-                addAction(action);
+            if (this.newItemPositionFirst) {
+                while (i.hasPrevious()) {   //inserting in reverse order to the same (first) position
+                    SQLiteAction action = i.previous();
+                    addAction(action);
+                }
+            } else {
+                while (i.hasNext()) {
+                    SQLiteAction action = i.next(); //inserting in normal order to the end
+                    addAction(action);
+                }
             }
             updateOrder();
             db.setTransactionSuccessful();
@@ -162,6 +167,7 @@ class SQLiteActionList implements List<Action> {
         }
         return true;
     }
+
     /**
      *  Deletes all assignments of actions from this folder.
      */

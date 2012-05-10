@@ -6,6 +6,8 @@ import com.lendamage.agilegtd.android.model.impl.SQLiteModel;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.LAST;
+
 public class ShareUtilsTest extends AndroidTestCase {
 
     SQLiteModel model;
@@ -13,6 +15,7 @@ public class ShareUtilsTest extends AndroidTestCase {
     protected void setUp() {
         getContext().getDatabasePath("agile-gtd-test.db").delete();
         model = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        model.getSettings().setNewItemPosition(LAST);
     }
 
     public void testSendActionIntent() {

@@ -20,31 +20,15 @@ package com.lendamage.agilegtd.android.model.impl;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
-import android.database.sqlite.SQLiteDatabase;
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
-import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
-import com.lendamage.agilegtd.model.FolderTree;
-import com.lendamage.agilegtd.model.FolderType;
-import com.lendamage.agilegtd.model.ModelSettings;
-import com.lendamage.agilegtd.model.Path;
+import com.lendamage.agilegtd.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 
-class SQLiteFolder implements Folder {
+class SQLiteFolder extends SQLiteModelEntity implements Folder {
 
-    /** Link to model */
-    transient SQLiteModel model;
-    /** DB handler */
-    transient SQLiteDatabase db;
-    /** ID in the database */
-    final long id;
-    /** True if New item should be added to the first */
-    boolean newItemPositionFirst = false;
-    
     /** Full path */
     Path path;
     /** Short name */
@@ -59,19 +43,9 @@ class SQLiteFolder implements Folder {
     SQLiteActionList actions;
     
     SQLiteFolder(SQLiteModel model, long id) {
-        this.model = model;
-        updateSettings(model.getSettings());
-        this.db = model.db;
-        this.id = id;
+        super(model, id);
         this.folders = new SQLiteFolderList(this.model, id);
-        this.actions = new SQLiteActionList(this.db, id);
-    }
-
-    /**
-     *  Updated the folder internals based on the model settings.
-     */
-    void updateSettings(ModelSettings settings) {
-        this.newItemPositionFirst = ModelSettings.NewItemPosition.FIRST.equals(settings.getNewItemPosition());
+        this.actions = new SQLiteActionList(this.model, id);
     }
 
     //@Override
