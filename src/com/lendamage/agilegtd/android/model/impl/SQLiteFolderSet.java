@@ -18,35 +18,22 @@
 
 package com.lendamage.agilegtd.android.model.impl;
 
-import android.database.sqlite.SQLiteDatabase;
 import com.lendamage.agilegtd.model.Folder;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 
 /**
  *  Special implementation of set of folders of the action to map changes to database.
  */
-class SQLiteFolderSet implements Set<Folder> {
+class SQLiteFolderSet extends SQLiteModelEntity implements Set<Folder> {
 
-    /** Link to model */
-    SQLiteModel model;
-    /** DB handler */
-    transient SQLiteDatabase db;
-    /** ID of the action to which the set belongs */
-    final long id;
     /** Wrapped list, list, because the order is valuable */
     List<SQLiteFolder> folders;
     
     SQLiteFolderSet(SQLiteModel model, long id) {
-        this.model = model;
-        this.db = model.db;
-        this.id = id;
+        super(model, id);
     }
     
     void setFolders(List<SQLiteFolder> folders) {
@@ -77,7 +64,10 @@ class SQLiteFolderSet implements Set<Folder> {
         if (this.folders.contains(folder)) {
             return;
         }
-        ActionDao.replaceActionInFolder(db, folder.id, this.id);
+        ActionDao.replaceActionInFolder(this.db, folder.id, this.id);
+        if (this.newItemPositionFirst) {
+            folder.getActions().add(0, ActionDao.selectAction(this.model, this.id));    //TODO: optimize
+        }
         this.folders.remove(folder);
         this.folders.add(folder);
     }
