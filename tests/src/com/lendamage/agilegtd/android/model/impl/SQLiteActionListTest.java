@@ -424,4 +424,55 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action2, actions.get(1));
     }
 
+    public void testOrderInMultipleFolders() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Action action1 = folder1.newAction("action1", null);
+        Action action2 = folder1.newAction("action2", null);
+        folder2.getActions().add(action1);
+        folder2.getActions().add(action2);
+
+        List<Action> actions1 = folder1.getActions();
+        assertEquals(action1, actions1.get(0));
+        assertEquals(action2, actions1.get(1));
+        List<Action> actions2 = folder2.getActions();
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action2, actions2.get(1));
+
+        folder1.getActions().add(0, action2);
+
+        List<Action> actions3 = folder1.getActions();
+        assertEquals(action2, actions3.get(0));
+        assertEquals(action1, actions3.get(1));
+        List<Action> actions4 = folder2.getActions();
+        assertEquals(action1, actions4.get(0));
+        assertEquals(action2, actions4.get(1));
+    }
+
+    public void testOrderInMultipleFoldersToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Action action2 = folder1.newAction("action2", null);
+        Action action1 = folder1.newAction("action1", null);
+        folder2.getActions().add(action2);
+        folder2.getActions().add(action1);
+
+        List<Action> actions1 = folder1.getActions();
+        assertEquals(action1, actions1.get(0));
+        assertEquals(action2, actions1.get(1));
+        List<Action> actions2 = folder2.getActions();
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action2, actions2.get(1));
+
+        folder1.getActions().add(0, action2);
+
+        List<Action> actions3 = folder1.getActions();
+        assertEquals(action2, actions3.get(0));
+        assertEquals(action1, actions3.get(1));
+        List<Action> actions4 = folder2.getActions();
+        assertEquals(action1, actions4.get(0));
+        assertEquals(action2, actions4.get(1));
+    }
+
 }

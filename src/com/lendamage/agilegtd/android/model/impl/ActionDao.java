@@ -150,14 +150,16 @@ class ActionDao {
      *  Updates the action sort order.
      *  @throws IllegalStateException if the action to update doesn't exist
      */
-    static void updateActionOrder(SQLiteDatabase db, SQLiteAction action, int order) throws IllegalStateException {
+    static void updateActionOrder(SQLiteDatabase db, long folderId, SQLiteAction action, int order) throws IllegalStateException {
         checkDb(db);
+        assert(folderId != 0);
         assert(action != null);
         assert(action.id != 0);
         ContentValues values = new ContentValues();
         values.put(SORT_ORDER_COLUMN, order);
-        int updated = db.update(ACTION_IN_FOLDER_TABLE, values, ACTION_ID_COLUMN + " = ?", 
-                new String[] { String.valueOf(action.id) });
+        int updated = db.update(ACTION_IN_FOLDER_TABLE, values,
+                ACTION_ID_COLUMN + " = ? AND " + FOLDER_ID_COLUMN + " = ?",
+                new String[] { String.valueOf(action.id), String.valueOf(folderId) });
         if (updated == 0) {
             throw new IllegalStateException("no action with id = " + action.id + ", order update failed");
         }

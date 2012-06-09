@@ -299,7 +299,7 @@ class SQLiteActionList extends SQLiteModelEntity implements List<Action> {
     void updateOrder() {
         for (int i = 0; i < this.actions.size(); i++) {
             SQLiteAction action = this.actions.get(i);
-            ActionDao.updateActionOrder(this.db, action, i);
+            ActionDao.updateActionOrder(this.db, this.id, action, i);
         }
     }
 
