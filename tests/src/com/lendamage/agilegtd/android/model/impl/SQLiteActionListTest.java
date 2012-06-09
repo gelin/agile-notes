@@ -245,6 +245,19 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action1, actions2.get(0));
         assertEquals(action2, actions2.get(1));
     }
+
+    public void testAddAllToThisToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        Action action1 = model.getRootFolder().newAction("action1", null);
+
+        List<Action> actions = model.getRootFolder().getActions();
+        model.getRootFolder().getActions().addAll(actions);
+        List<Action> actions2 = model.getRootFolder().getActions();
+        assertEquals(2, actions2.size());
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action2, actions2.get(1));
+    }
     
     public void testAddAllToThisToLocation() {
         Action action1 = model.getRootFolder().newAction("action1", null);
@@ -319,6 +332,24 @@ public class SQLiteActionListTest extends AndroidTestCase {
         assertEquals(action1, actions2.get(0));
         assertEquals(action3, actions2.get(1));
     }
+
+    public void testSetToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        List<Action> actions = folder.getActions();
+        actions.add(action2);
+        actions.add(action1);
+
+        Action action3 = model.getRootFolder().newAction("action3", null);
+        actions.set(1, action3);
+
+        List<Action> actions2 = folder.getActions();
+        assertEquals(2, actions2.size());
+        assertEquals(action1, actions2.get(0));
+        assertEquals(action3, actions2.get(1));
+    }
     
     public void testOrderingOnFolderSetChange() {
         Action action1 = model.getRootFolder().newAction("action1", null);
@@ -337,6 +368,28 @@ public class SQLiteActionListTest extends AndroidTestCase {
         
         actions = folder.getActions();
         assertEquals(action1, actions.get(0));
+    }
+
+    public void testOrderingOnFolderSetChangeToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+
+        List<Action> actions = model.getRootFolder().getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
+
+        action2.getFolders().add(folder);
+        action1.getFolders().add(folder);
+
+        actions = model.getRootFolder().getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
+
+        actions = folder.getActions();
+        assertEquals(action1, actions.get(0));
+        assertEquals(action2, actions.get(1));
     }
     
     public void testAddOfExisted() {
