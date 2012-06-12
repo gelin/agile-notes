@@ -10,6 +10,7 @@ import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderTree;
 import com.lendamage.agilegtd.model.FolderType;
 
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.FIRST;
 import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.LAST;
 
 public class SQLiteFolderTest extends AndroidTestCase {
@@ -156,6 +157,22 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(folder3, folders2.get(2));
         assertEquals(folder4, folders2.get(3));
     }
+
+    public void testNewFolderOrderToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        List<Folder> folders = model.getRootFolder().getFolders();
+        folders.add(0, folder1);
+        Folder folder3 = model.getRootFolder().newFolder("folder3", null);
+        Folder folder4 = model.getRootFolder().newFolder("folder4", null);
+
+        List<Folder> folders2 = model.getRootFolder().getFolders();
+        assertEquals(folder4, folders2.get(0));
+        assertEquals(folder3, folders2.get(1));
+        assertEquals(folder1, folders2.get(2));
+        assertEquals(folder2, folders2.get(3));
+    }
     
     public void testNewActionOrder() {
         Action action1 = model.getRootFolder().newAction("action1", null);
@@ -171,6 +188,22 @@ public class SQLiteFolderTest extends AndroidTestCase {
         assertEquals(action3, actions2.get(2));
         assertEquals(action4, actions2.get(3));
     }
+
+    public void testNewActionOrderToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Action action1 = model.getRootFolder().newAction("action1", null);
+        Action action2 = model.getRootFolder().newAction("action2", null);
+        List<Action> actions = model.getRootFolder().getActions();
+        actions.add(0, action1);
+        Action action3 = model.getRootFolder().newAction("action3", null);
+        Action action4 = model.getRootFolder().newAction("action4", null);
+
+        List<Action> actions2 = model.getRootFolder().getActions();
+        assertEquals(action4, actions2.get(0));
+        assertEquals(action3, actions2.get(1));
+        assertEquals(action1, actions2.get(2));
+        assertEquals(action2, actions2.get(3));
+    }
     
     public void testGetFolderTree() {
         FolderTree tree = model.getRootFolder().getFolderTree();
@@ -181,6 +214,17 @@ public class SQLiteFolderTest extends AndroidTestCase {
     }
     
     public void testMoveFolder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Folder folder3 = folder2.newFolder("folder3", null);
+        folder1.getFolders().add(folder2);
+        assertEquals(folder1, model.getFolder(new SimplePath("folder1")));
+        assertEquals(folder2, model.getFolder(new SimplePath("folder1/folder2")));
+        assertEquals(folder3, model.getFolder(new SimplePath("folder1/folder2/folder3")));
+    }
+
+    public void testMoveFolderToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
         Folder folder3 = folder2.newFolder("folder3", null);
