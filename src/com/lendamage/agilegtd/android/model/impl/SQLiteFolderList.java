@@ -116,17 +116,29 @@ class SQLiteFolderList extends SQLiteModelEntity implements List<Folder> {
         if (sqlFolders.id == this.id) {
             return false;   //no need to insert into self
         }
-        Iterator<SQLiteFolder> i = sqlFolders.folders.iterator();
+        ListIterator<SQLiteFolder> i = sqlFolders.folders.listIterator(
+                this.newItemPositionFirst ? sqlFolders.folders.size() : 0);
         checkDb(db);
         db.beginTransaction();
         try {
-            while (i.hasNext()) {
-                SQLiteFolder folder = i.next();
-                if (folder.id == this.id) {
-                    continue;
+            if (this.newItemPositionFirst) {
+                while (i.hasPrevious()) {   //inserting in reverse order to the same (first) position
+                    SQLiteFolder folder = i.previous();
+                    if (folder.id == this.id) {
+                        continue;
+                    }
+                    i.remove();
+                    addFolder(folder);
                 }
-                i.remove();
-                addFolder(folder);
+            } else {
+                while (i.hasNext()) {
+                    SQLiteFolder folder = i.next();
+                    if (folder.id == this.id) {
+                        continue;
+                    }
+                    i.remove();
+                    addFolder(folder);
+                }
             }
             updateOrder();
             db.setTransactionSuccessful();

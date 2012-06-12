@@ -9,6 +9,7 @@ import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.OuroborosException;
 
 import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.LAST;
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.FIRST;
 
 public class SQLiteFolderListTest extends AndroidTestCase {
     
@@ -41,6 +42,27 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         assertEquals(child2, children3.get(0));
         assertEquals(child3, children3.get(1));
     }
+
+    public void testAddRemoveToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Folder child2 = parent.newFolder("child2", null);
+        Folder child1 = parent.newFolder("child1", null);
+
+        List<Folder> children = parent.getFolders();
+        assertEquals(child1, children.get(0));
+        assertEquals(child2, children.get(1));
+        children.remove(0);
+        List<Folder> children2 = parent.getFolders();
+        assertEquals(1, children2.size());
+        assertEquals(child2, children.get(0));
+        Folder child3 = parent.newFolder("child3", null);
+        //children2.add(child3);
+        List<Folder> children3 = parent.getFolders();
+        assertEquals(2, children3.size());
+        assertEquals(child3, children3.get(0));
+        assertEquals(child2, children3.get(1));
+    }
     
     public void testAddToLocation() {
         Folder parent = model.getRootFolder().newFolder("parent", null);
@@ -66,6 +88,24 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         assertEquals(child1, children.get(0));
         assertEquals(child2, children.get(1));
         
+        children.add(children.size(), child1);    //add to the end
+        assertEquals("the size should not increase", 2, children.size());
+        List<Folder> children2 = parent.getFolders();
+        assertEquals(2, children2.size());
+        assertEquals(child2, children2.get(0));
+        assertEquals(child1, children2.get(1));
+    }
+
+    public void testRearrangeToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Folder child2 = parent.newFolder("child2", null);
+        Folder child1 = parent.newFolder("child1", null);
+        List<Folder> children = parent.getFolders();
+        assertEquals(2, children.size());
+        assertEquals(child1, children.get(0));
+        assertEquals(child2, children.get(1));
+
         children.add(children.size(), child1);    //add to the end
         assertEquals("the size should not increase", 2, children.size());
         List<Folder> children2 = parent.getFolders();
@@ -149,6 +189,26 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         
         assertEquals(1, model.getRootFolder().getFolders().size());
     }
+
+    public void testAddAllToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Folder child2 = model.getRootFolder().newFolder("child2", null);
+        Folder child1 = model.getRootFolder().newFolder("child1", null);
+
+        List<Folder> children = model.getRootFolder().getFolders();
+        assertEquals(3, children.size());
+        assertEquals(child1, children.get(0));
+        assertEquals(child2, children.get(1));
+
+        parent.getFolders().addAll(children);
+        List<Folder> children2 = parent.getFolders();
+        assertEquals(2, children2.size());
+        assertEquals(child1, children2.get(0));
+        assertEquals(child2, children2.get(1));
+
+        assertEquals(1, model.getRootFolder().getFolders().size());
+    }
     
     public void testAddAllToLocation() {
         Folder child1 = model.getRootFolder().newFolder("child1", null);
@@ -181,6 +241,19 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         Folder child1 = model.getRootFolder().newFolder("child1", null);
         Folder child2 = model.getRootFolder().newFolder("child2", null);
         
+        List<Folder> children = model.getRootFolder().getFolders();
+        model.getRootFolder().getFolders().addAll(children);
+        List<Folder> children2 = model.getRootFolder().getFolders();
+        assertEquals(2, children2.size());
+        assertEquals(child1, children2.get(0));
+        assertEquals(child2, children2.get(1));
+    }
+
+    public void testAddAllToThisToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder child2 = model.getRootFolder().newFolder("child2", null);
+        Folder child1 = model.getRootFolder().newFolder("child1", null);
+
         List<Folder> children = model.getRootFolder().getFolders();
         model.getRootFolder().getFolders().addAll(children);
         List<Folder> children2 = model.getRootFolder().getFolders();
@@ -320,6 +393,22 @@ public class SQLiteFolderListTest extends AndroidTestCase {
         
         model.getRootFolder().getFolders().add(folder1);
         
+        folders = model.getRootFolder().getFolders();
+        assertEquals(folder1, folders.get(0));
+        assertEquals(folder2, folders.get(1));
+    }
+
+    public void testAddOfExistedToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+
+        List<Folder> folders = model.getRootFolder().getFolders();
+        assertEquals(folder1, folders.get(0));
+        assertEquals(folder2, folders.get(1));
+
+        model.getRootFolder().getFolders().add(folder2);
+
         folders = model.getRootFolder().getFolders();
         assertEquals(folder1, folders.get(0));
         assertEquals(folder2, folders.get(1));
