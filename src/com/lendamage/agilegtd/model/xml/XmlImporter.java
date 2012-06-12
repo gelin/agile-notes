@@ -36,16 +36,10 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.lendamage.agilegtd.model.*;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
-import com.lendamage.agilegtd.model.Action;
-import com.lendamage.agilegtd.model.Folder;
-import com.lendamage.agilegtd.model.FolderType;
-import com.lendamage.agilegtd.model.Model;
-import com.lendamage.agilegtd.model.ModelException;
-import com.lendamage.agilegtd.model.Path;
 
 public class XmlImporter {
     
@@ -120,6 +114,8 @@ public class XmlImporter {
     }
     
     void parse() throws XmlPullParserException, IOException {
+        ModelSettings.NewItemPosition newItemPosition = this.model.getSettings().getNewItemPosition();
+        this.model.getSettings().setNewItemPosition(ModelSettings.NewItemPosition.LAST);
         int eventType = this.parser.getEventType();
         do {
             switch (eventType) {
@@ -135,6 +131,7 @@ public class XmlImporter {
             }
             eventType = this.parser.next();
         } while (eventType != XmlPullParser.END_DOCUMENT);
+        this.model.getSettings().setNewItemPosition(newItemPosition);
     }
     
     void processStartTag() {
