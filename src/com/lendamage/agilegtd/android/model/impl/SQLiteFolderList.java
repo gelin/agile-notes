@@ -86,7 +86,11 @@ class SQLiteFolderList extends SQLiteModelEntity implements List<Folder> {
         if (this.folders.contains(folder)) {
             return;
         }
-        addFolder(this.folders.size(), folder);
+        if (this.newItemPositionFirst) {
+            addFolder(0, folder);
+        } else {
+            addFolder(this.folders.size(), folder);
+        }
     }
     
     void addFolder(int location, SQLiteFolder folder) {
