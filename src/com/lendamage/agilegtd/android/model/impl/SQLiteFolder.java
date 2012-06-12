@@ -73,7 +73,7 @@ class SQLiteFolder extends SQLiteModelEntity implements Folder {
             result.head = head;
             result.body = body;
             if (this.newItemPositionFirst) {
-                getActions().add(0, result);    //TODO optimize?
+                getActions().add(0, result);    //TODO optimize
             }
             this.db.setTransactionSuccessful();
             return result;
@@ -92,6 +92,9 @@ class SQLiteFolder extends SQLiteModelEntity implements Folder {
         this.db.beginTransaction();
         try {
             SQLiteFolder result = FolderDao.insertFolder(this.model, this.id, name, type);
+            if (this.newItemPositionFirst) {
+                getFolders().add(0, result);    //TODO optimize
+            }
             this.db.setTransactionSuccessful();
             return result;
         } catch (SQLiteConstraintException ce) {

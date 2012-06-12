@@ -10,6 +10,8 @@ import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderTree;
 import com.lendamage.agilegtd.model.FolderType;
 
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.LAST;
+
 public class SQLiteFolderTest extends AndroidTestCase {
     
     SQLiteModel model;
@@ -17,6 +19,7 @@ public class SQLiteFolderTest extends AndroidTestCase {
     protected void setUp() {
         getContext().getDatabasePath("agile-gtd-test.db").delete();
         model = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        model.getSettings().setNewItemPosition(LAST);
     }
     
     public void testGetFolders() {

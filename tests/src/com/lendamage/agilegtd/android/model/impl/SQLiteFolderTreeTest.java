@@ -2,6 +2,8 @@ package com.lendamage.agilegtd.android.model.impl;
 
 import android.test.AndroidTestCase;
 
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.LAST;
+
 public class SQLiteFolderTreeTest extends AndroidTestCase {
     
     SQLiteFolderTree tree;
@@ -16,6 +18,7 @@ public class SQLiteFolderTreeTest extends AndroidTestCase {
     protected void setUp() {
         getContext().getDatabasePath("agile-gtd-test.db").delete();
         SQLiteModel model = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        model.getSettings().setNewItemPosition(LAST);
         root = (SQLiteFolder)model.getRootFolder();
         folder1 = (SQLiteFolder)root.newFolder("folder1", null);
         folder2 = (SQLiteFolder)root.newFolder("folder2", null);

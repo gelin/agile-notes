@@ -1,13 +1,15 @@
 package com.lendamage.agilegtd.android.model.impl;
 
-import java.util.Iterator;
-import java.util.Set;
-
 import android.test.AndroidTestCase;
-
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
+
+import java.util.Iterator;
+import java.util.Set;
+
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.FIRST;
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.LAST;
 
 public class SQLiteActionTest extends AndroidTestCase {
     
@@ -16,6 +18,7 @@ public class SQLiteActionTest extends AndroidTestCase {
     protected void setUp() {
         getContext().getDatabasePath("agile-gtd-test.db").delete();
         model = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        model.getSettings().setNewItemPosition(LAST);
     }
     
     public void testGetFolders() {
@@ -41,6 +44,26 @@ public class SQLiteActionTest extends AndroidTestCase {
         assertEquals(folder1, folders1.next());
         assertEquals(folder2, folders1.next());
         
+        model.getRootFolder().getFolders().add(0, folder2);
+        Iterator<Folder> folders2 = action.getFolders().iterator();
+        assertEquals(model.getRootFolder(), folders2.next());
+        assertEquals(folder2, folders2.next());
+        assertEquals(folder1, folders2.next());
+    }
+
+    public void testGetFoldersOrderToFirst() {
+        model.getSettings().setNewItemPosition(FIRST);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Action action = model.getRootFolder().newAction("action", null);
+        folder1.getActions().add(action);
+        folder2.getActions().add(action);
+
+        Iterator<Folder> folders1 = action.getFolders().iterator();
+        assertEquals(model.getRootFolder(), folders1.next());
+        assertEquals(folder1, folders1.next());
+        assertEquals(folder2, folders1.next());
+
         model.getRootFolder().getFolders().add(0, folder2);
         Iterator<Folder> folders2 = action.getFolders().iterator();
         assertEquals(model.getRootFolder(), folders2.next());

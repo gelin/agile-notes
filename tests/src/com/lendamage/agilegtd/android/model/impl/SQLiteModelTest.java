@@ -8,6 +8,8 @@ import com.lendamage.agilegtd.model.FolderType;
 
 import java.util.List;
 
+import static com.lendamage.agilegtd.model.ModelSettings.NewItemPosition.LAST;
+
 public class SQLiteModelTest extends AndroidTestCase {
     
     SQLiteModel model;
@@ -15,6 +17,7 @@ public class SQLiteModelTest extends AndroidTestCase {
     protected void setUp() {
         getContext().getDatabasePath("agile-gtd-test.db").delete();
         model = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        model.getSettings().setNewItemPosition(LAST);
     }
     
     public void testNewAction() {

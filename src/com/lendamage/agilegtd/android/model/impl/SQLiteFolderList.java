@@ -31,21 +31,13 @@ import static com.lendamage.agilegtd.android.model.impl.CommonDao.checkDb;
 /**
  *  Special implementation of list of folders to map changes to database.
  */
-class SQLiteFolderList implements List<Folder> {
+class SQLiteFolderList extends SQLiteModelEntity implements List<Folder> {
 
-    /** Link to model */
-    transient SQLiteModel model;
-    /** DB handler */
-    transient SQLiteDatabase db;
-    /** ID of the folder to which the list belongs */
-    final long id;
     /** Wrapped list */
     List<SQLiteFolder> folders;
     
     SQLiteFolderList(SQLiteModel model, long id) {
-        this.model = model;
-        this.db = model.db;
-        this.id = id;
+        super(model, id);
     }
     
     void setFolders(List<SQLiteFolder> folders) {
