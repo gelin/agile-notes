@@ -23,7 +23,6 @@ import android.view.MenuInflater;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderAlreadyExistsException;
 import com.lendamage.agilegtd.model.FolderType;
 
@@ -62,10 +61,7 @@ public class AddFolderActivity extends AbstractEditFolderActivity {
         EditText name = (EditText)findViewById(R.id.folder_name);
         Spinner type = (Spinner)findViewById(R.id.folder_type);
         try {
-            Folder newFolder = this.folder.newFolder(name.getText().toString(), (FolderType)type.getSelectedItem());
-            if (isNewItemFirst()) {
-                this.folder.getFolders().add(0, newFolder);
-            }
+            this.folder.newFolder(name.getText().toString(), (FolderType)type.getSelectedItem());
             finish();
         } catch (FolderAlreadyExistsException e) {
             Toast.makeText(this, R.string.folder_already_exists_error, Toast.LENGTH_LONG).show();

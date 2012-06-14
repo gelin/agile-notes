@@ -379,23 +379,32 @@ public class FolderActivity extends AbstractFolderActivity {
         inflater.inflate(R.menu.folder_options, menu);
         return true;
     }
-    
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.new_item_position);
+        NewItemPosition position = NewItemPosition.valueOf(this.model);
+        item.setTitle(position.getTitleRes());
+        //TODO menu icon
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.add_folder: {
+        case R.id.add_folder:
             IntentUtils.startFolderActivity(this, AddFolderActivity.class, this.folder);
             return true;
-        }
-        case R.id.add_action: {
+        case R.id.add_action:
             IntentUtils.startFolderActivity(this, AddActionActivity.class, this.folder);
             return true;
-        }
         case R.id.share_folder:
             ShareUtils.sendFolder(this, R.string.share_folder_title, this.folder);
             return true;
-        case R.id.settings_menu:
-            startActivity(new Intent(this, SettingsActivity.class));
+        case R.id.new_item_position:
+            this.model.getSettings().setNewItemPosition(NewItemPosition.valueOf(this.model).getNextPosition());
+            invalidateOptionsMenu();
+            updateFoldersActions(true);
             return true;
         case R.id.backup_menu:
             startActivity(new Intent(this, BackupActivity.class));

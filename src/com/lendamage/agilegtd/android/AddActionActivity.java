@@ -21,7 +21,6 @@ package com.lendamage.agilegtd.android;
 import android.support.v4.view.Menu;
 import android.view.MenuInflater;
 import android.widget.EditText;
-import com.lendamage.agilegtd.model.Action;
 
 import static com.lendamage.agilegtd.android.IntentUtils.EXTRA_ACTION_BODY;
 
@@ -58,10 +57,7 @@ public class AddActionActivity extends AbstractEditActionActivity {
         EditText body = (EditText)findViewById(R.id.action_body);
         String actionBody = body.getText().toString();
         String actionHead = ActionHelper.getHeadFromBody(actionBody);
-        Action newAction = this.folder.newAction(actionHead, actionBody);
-        if (isNewItemFirst()) {
-            this.folder.getActions().add(0, newAction);
-        }
+        this.folder.newAction(actionHead, actionBody);
         finish();
     }
 

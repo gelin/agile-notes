@@ -76,15 +76,6 @@ public class CopyActionActivity extends AbstractActionActivity {
         Set<Folder> oldFolders = this.action.getFolders();
         oldFolders.addAll(newFolders);
         oldFolders.retainAll(newFolders);
-        if (isNewItemFirst()) {
-            //TODO: optimize: propagate the option to model
-            for (Folder newFolder : oldFolders) {
-                if (newFolder.equals(this.folder)) {    //TODO: fix
-                    continue;
-                }
-                newFolder.getActions().add(0, this.action);
-            }
-        }
         finish();
     }
     

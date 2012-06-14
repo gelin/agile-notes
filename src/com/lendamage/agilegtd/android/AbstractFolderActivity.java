@@ -88,14 +88,4 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
         IntentUtils.startActionActivity(this, activity, this.folder, action);
     }
 
-    /**
-     *  Returns true if the new items (actions or folders)
-     *  should be inserted to the first positions in the lists.
-     *  Reads the application preferences to get the result.
-     *  @return true if the new items should be inserted as the first list items
-     */
-    protected boolean isNewItemFirst() {
-        return NewItemPosition.FIRST.equals(NewItemPosition.valueOf(this));
-    }
-
 }

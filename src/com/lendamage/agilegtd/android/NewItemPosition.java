@@ -18,31 +18,48 @@
 
 package com.lendamage.agilegtd.android;
 
-import android.content.Context;
-import android.preference.PreferenceManager;
+import com.lendamage.agilegtd.model.Model;
+import com.lendamage.agilegtd.model.ModelSettings;
 
 /**
- *  Position where to insert the new item: as the first of the last item in the list
+ *  Position where to insert the new item: as the first of the last item in the list.
+ *  This class holds some UI related constants.
  */
-@Deprecated
 public enum NewItemPosition {
-    FIRST, LAST;
-    
-    public static final String PREFERENCE_KEY = "new_item_position";
+    FIRST(R.string.new_item_position_first, ModelSettings.NewItemPosition.LAST),
+    LAST(R.string.new_item_position_last, ModelSettings.NewItemPosition.FIRST);
+
+    /** Resource for title */
+    int titleRes;
+    /** Next position when switching in round-robin */
+    ModelSettings.NewItemPosition nextPosition;
+
+    NewItemPosition(int titleRes, ModelSettings.NewItemPosition nextPosition) {
+        this.titleRes = titleRes;
+        this.nextPosition = nextPosition;
+    }
+
+    int getTitleRes() {
+        return this.titleRes;
+    }
+
+    ModelSettings.NewItemPosition getNextPosition() {
+        return this.nextPosition;
+    }
 
     /**
-     *  Gets the option from the shared preferences of the context
-     *  @param  context application context
+     *  Gets the option from the model
+     *  @param  model the data model
      *  @return null or enumeration instance
      */
-    public static NewItemPosition valueOf(Context context) {
-        String value = NewItemPosition.FIRST.toString();
-        value = PreferenceManager.getDefaultSharedPreferences(context).getString(
-                NewItemPosition.PREFERENCE_KEY, value);
-        try {
-            return NewItemPosition.valueOf(value);
-        } catch (Exception e) {
-            return null;
+    public static NewItemPosition valueOf(Model model) {
+        switch (model.getSettings().getNewItemPosition()) {
+            case FIRST:
+                return FIRST;
+            case LAST:
+                return LAST;
+            default:
+                return null;
         }
     }
 }

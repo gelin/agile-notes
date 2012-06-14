@@ -245,15 +245,6 @@ public class FolderListAdapter extends BaseAdapter implements DropListener {
     void completeAction(Action action, boolean completed) {
         if (completed) {
             action.getFolders().addAll(this.completedFolders);
-            if (NewItemPosition.FIRST.equals(NewItemPosition.valueOf(this.context))) {
-                //TODO: optimize: propagate the option to model
-                for (Folder newFolder : this.completedFolders) {
-                    if (newFolder.equals(this.folder)) {
-                        continue;
-                    }
-                    newFolder.getActions().add(0, action);
-                }
-            }
         } else {
             action.getFolders().removeAll(this.completedFolders);
         }
