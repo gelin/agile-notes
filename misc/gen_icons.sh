@@ -60,6 +60,12 @@ gen_list_icon() {
     gen_icon $file_name 24x24 drawable-ldpi
 }
 
+gen_menu_icon() {
+    file_name=$1
+
+    gen_icon $file_name 48x48 drawable
+}
+
 gen_app_icon icon
 gen_logo_icon logo
 gen_action_bar_icon plus
@@ -79,3 +85,5 @@ gen_list_icon expanded
 gen_list_icon empty
 gen_list_icon folder
 gen_list_icon drag_handle
+gen_menu_icon plus_top
+gen_menu_icon plus_bottom

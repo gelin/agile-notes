@@ -26,21 +26,28 @@ import com.lendamage.agilegtd.model.ModelSettings;
  *  This class holds some UI related constants.
  */
 public enum NewItemPosition {
-    FIRST(R.string.new_item_position_first, ModelSettings.NewItemPosition.LAST),
-    LAST(R.string.new_item_position_last, ModelSettings.NewItemPosition.FIRST);
+    FIRST(R.string.new_item_position_first, R.drawable.plus_top, ModelSettings.NewItemPosition.LAST),
+    LAST(R.string.new_item_position_last, R.drawable.plus_bottom, ModelSettings.NewItemPosition.FIRST);
 
     /** Resource for title */
     int titleRes;
+    /** Resource for icon */
+    int iconRes;
     /** Next position when switching in round-robin */
     ModelSettings.NewItemPosition nextPosition;
 
-    NewItemPosition(int titleRes, ModelSettings.NewItemPosition nextPosition) {
+    NewItemPosition(int titleRes, int iconRes, ModelSettings.NewItemPosition nextPosition) {
         this.titleRes = titleRes;
+        this.iconRes = iconRes;
         this.nextPosition = nextPosition;
     }
 
     int getTitleRes() {
         return this.titleRes;
+    }
+
+    int getIconRes() {
+        return this.iconRes;
     }
 
     ModelSettings.NewItemPosition getNextPosition() {

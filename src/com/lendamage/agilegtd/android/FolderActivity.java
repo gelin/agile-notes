@@ -385,7 +385,7 @@ public class FolderActivity extends AbstractFolderActivity {
         MenuItem item = menu.findItem(R.id.new_item_position);
         NewItemPosition position = NewItemPosition.valueOf(this.model);
         item.setTitle(position.getTitleRes());
-        //TODO menu icon
+        item.setIcon(position.getIconRes());
         return super.onPrepareOptionsMenu(menu);
     }
 
