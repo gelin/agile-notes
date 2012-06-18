@@ -31,7 +31,7 @@ import com.lendamage.agilegtd.android.ResizableFrameLayout.OnMeasureListener;
  */
 public abstract class AbstractEditActionActivity extends AbstractActionActivity {
 
-    boolean binded = false;
+    private boolean binded = false;
 
     /** Called when the activity is first created. */
     @Override

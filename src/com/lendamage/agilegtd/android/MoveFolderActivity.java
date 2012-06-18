@@ -59,17 +59,17 @@ public class MoveFolderActivity extends AbstractFolderActivity {
     protected void onResume() {
         super.onResume();
         if (this.parent == null) {
-            this.parent = this.model.getFolder(this.folder.getPath().getParent());
+            this.parent = getModel().getFolder(getFolder().getPath().getParent());
         }
-        setTitle(this.folder.getName());
+        setTitle(getFolder().getName());
         SelectFolderTreeView treeView = (SelectFolderTreeView)findViewById(R.id.folder_tree);
-        treeView.setTree(this.model.getRootFolder().getFolderTree(), this.folder, this.parent);
+        treeView.setTree(getModel().getRootFolder().getFolderTree(), getFolder(), this.parent);
     }
     
     void moveFolder() {
         SelectFolderTreeView tree = (SelectFolderTreeView)findViewById(R.id.folder_tree);
         Folder moveTo = tree.getSelected();
-        moveTo.getFolders().add(this.folder);
+        moveTo.getFolders().add(getFolder());
     }
 
 }

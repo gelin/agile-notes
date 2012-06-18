@@ -61,9 +61,9 @@ public class CopyActionActivity extends AbstractActionActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setTitle(this.action.getHead());
+        setTitle(getAction().getHead());
         SelectMultiFolderTreeView treeView = (SelectMultiFolderTreeView)findViewById(R.id.folder_tree);
-        treeView.setTree(this.model.getRootFolder().getFolderTree(), this.action.getFolders());
+        treeView.setTree(getModel().getRootFolder().getFolderTree(), getAction().getFolders());
     }
     
     void copyAction() {
@@ -73,7 +73,7 @@ public class CopyActionActivity extends AbstractActionActivity {
             showDialog(DELETE_ACTION_CONFIRM_DIALOG);
             return;
         }
-        Set<Folder> oldFolders = this.action.getFolders();
+        Set<Folder> oldFolders = getAction().getFolders();
         oldFolders.addAll(newFolders);
         oldFolders.retainAll(newFolders);
         finish();
@@ -89,7 +89,7 @@ public class CopyActionActivity extends AbstractActionActivity {
                     setMessage(R.string.delete_action_confirm).
                     setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            CopyActionActivity.this.action.getFolders().clear();
+                            getAction().getFolders().clear();
                             finish();
                         }
                     }).

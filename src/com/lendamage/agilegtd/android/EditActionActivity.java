@@ -37,12 +37,12 @@ public class EditActionActivity extends AbstractEditActionActivity {
 
     @Override
     protected void bindViews() {
-        if (this.action == null) {
+        if (getAction() == null) {
             return;
         }
         EditText body = (EditText)findViewById(R.id.action_body);
-        setTitle(this.action.getHead());
-        body.setText(this.action.getBody());
+        setTitle(getAction().getHead());
+        body.setText(getAction().getBody());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class EditActionActivity extends AbstractEditActionActivity {
         EditText body = (EditText)findViewById(R.id.action_body);
         String actionBody = body.getText().toString();
         String actionHead = ActionHelper.getHeadFromBody(actionBody);
-        this.action.edit().setHead(actionHead).setBody(actionBody).commit();
+        getAction().edit().setHead(actionHead).setBody(actionBody).commit();
         finish();
     }
 

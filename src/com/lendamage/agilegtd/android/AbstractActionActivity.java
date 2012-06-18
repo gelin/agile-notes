@@ -36,16 +36,24 @@ import static com.lendamage.agilegtd.android.Tag.TAG;
 abstract class AbstractActionActivity extends AbstractFolderActivity {
     
     /** Current action */
-    protected Action action;
+    private Action action;
+
+    public Action getAction() {
+        return this.action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
+    }
     
     @Override
     protected void onResume() {
         super.onResume();
-        if (this.folder == null) {
+        if (getFolder() == null) {
             finish();
             return;
         }
-        if (this.action == null) {
+        if (getAction() == null) {
             getActionFromIntent();
         } else {
             restoreAction();
@@ -57,31 +65,32 @@ abstract class AbstractActionActivity extends AbstractFolderActivity {
         if (intent.hasExtra(EXTRA_ACTION_POSITION)) {
             int position = intent.getIntExtra(EXTRA_ACTION_POSITION, 0);
             try {
-                this.action = this.folder.getActions().get(position);
+                setAction(getFolder().getActions().get(position));
             } catch (IndexOutOfBoundsException e) {
-                Log.w(TAG, "action at " + position + " in " + this.folder.getPath() + " is not found");
+                Log.w(TAG, "action at " + position + " in " + getFolder().getPath() + " is not found");
                 finish();
             }
         }
     }
     
     void restoreAction() {
-        this.action = this.model.findAction(this.action);
-        if (this.action == null) {
-            Log.w(TAG, "action in " + this.folder.getPath() + " cannot be restored");
+        setAction(getModel().findAction(getAction()));
+        if (getAction() == null) {
+            Log.w(TAG, "action in " + getFolder().getPath() + " cannot be restored");
             finish();
             return;
         }
-        Set<Folder> folders = this.action.getFolders();
+        Set<Folder> folders = getAction().getFolders();
         if (folders.isEmpty()) {
             Log.w(TAG, "action has no folders, illegal model state");
             finish();
             return;
         }
-        this.folder = folders.iterator().next();
+        Folder folder = folders.iterator().next();
         Intent intent = getIntent();
-        intent.putExtra(EXTRA_FOLDER_PATH, this.folder.getPath().toString());
-        intent.putExtra(EXTRA_ACTION_POSITION, this.folder.getActions().indexOf(this.action));
+        intent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
+        intent.putExtra(EXTRA_ACTION_POSITION, folder.getActions().indexOf(getAction()));
+        setFolder(folder);
     }
 
 }

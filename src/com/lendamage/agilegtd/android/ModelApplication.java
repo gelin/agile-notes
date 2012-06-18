@@ -18,33 +18,31 @@
 
 package com.lendamage.agilegtd.android;
 
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.app.Application;
 import com.lendamage.agilegtd.model.Model;
 
 /**
- *  Abstract activity which works with {@link Model}.
+ *  Application which holds the data model
  */
-public class AbstractModelActivity extends FragmentActivity {
+public class ModelApplication extends Application {
 
-    /** Current model */
     private Model model;
 
-    /**
-     *  Returns the current model.
-     */
-    protected Model getModel() {
-        if (this.model == null) {
-            throw new IllegalStateException("model is not initialized");
-        }
+    public Model getModel() {
         return this.model;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ModelApplication app = (ModelApplication)getApplicationContext();
-        this.model = app.getModel();
+    public void onCreate() {
+        super.onCreate();
+        this.model = ModelAccessor.openModel(this);
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        if (this.model != null) {
+            this.model.close();
+        }
+    }
 }

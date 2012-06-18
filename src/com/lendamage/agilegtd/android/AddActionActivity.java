@@ -57,7 +57,7 @@ public class AddActionActivity extends AbstractEditActionActivity {
         EditText body = (EditText)findViewById(R.id.action_body);
         String actionBody = body.getText().toString();
         String actionHead = ActionHelper.getHeadFromBody(actionBody);
-        this.folder.newAction(actionHead, actionBody);
+        getFolder().newAction(actionHead, actionBody);
         finish();
     }
 

@@ -43,9 +43,9 @@ public class EditFolderActivity extends AbstractEditFolderActivity {
         super.bindViews();
         EditText name = (EditText)findViewById(R.id.folder_name);
         Spinner type = (Spinner)findViewById(R.id.folder_type);
-        name.setText(this.folder.getName());
+        name.setText(getFolder().getName());
         FolderTypeAdapter adapter = (FolderTypeAdapter)type.getAdapter();
-        type.setSelection(adapter.getPosition(this.folder.getType()));
+        type.setSelection(adapter.getPosition(getFolder().getType()));
     }
 
     @Override
@@ -59,7 +59,7 @@ public class EditFolderActivity extends AbstractEditFolderActivity {
         EditText name = (EditText)findViewById(R.id.folder_name);
         Spinner type = (Spinner)findViewById(R.id.folder_type);
         try {
-            this.folder.edit().
+            getFolder().edit().
                 setName(name.getText().toString()).
                 setType((FolderType)type.getSelectedItem()).
                 commit();

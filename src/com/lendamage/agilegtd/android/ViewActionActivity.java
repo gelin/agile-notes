@@ -69,21 +69,21 @@ public class ViewActionActivity extends AbstractActionActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (this.action == null) {
+        if (getAction() == null) {
             return;
         }
-        setTitle(this.action.getHead());
+        setTitle(getAction().getHead());
         
         ListView actionView = (ListView)findViewById(R.id.action_view);
-        actionView.setAdapter(new ActionViewAdapter(this, this.action));
+        actionView.setAdapter(new ActionViewAdapter(this, getAction()));
     }
     
     void copyAction() {
-        startActionActivity(CopyActionActivity.class, this.action);
+        startActionActivity(CopyActionActivity.class, getAction());
     }
     
     void editAction() {
-        startActionActivity(EditActionActivity.class, this.action);
+        startActionActivity(EditActionActivity.class, getAction());
     }
     
     static class ActionViewAdapter extends BaseAdapter {
@@ -182,7 +182,7 @@ public class ViewActionActivity extends AbstractActionActivity {
             editAction();
             return true;
         case R.id.share_action:
-            ShareUtils.sendAction(this, R.string.share_action_title, this.action);
+            ShareUtils.sendAction(this, R.string.share_action_title, getAction());
             return true;
         default:
             return super.onOptionsItemSelected(item);

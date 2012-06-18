@@ -43,8 +43,8 @@ public class AddFolderActivity extends AbstractEditFolderActivity {
         Spinner typeView = (Spinner)findViewById(R.id.folder_type);
         FolderTypeAdapter adapter = (FolderTypeAdapter)typeView.getAdapter();
         FolderType type = null;
-        if (this.folder.getType() != null) {
-            type = this.folder.getType().getChildType();
+        if (getFolder().getType() != null) {
+            type = getFolder().getType().getChildType();
         }
         typeView.setSelection(adapter.getPosition(type));
     }
@@ -61,7 +61,7 @@ public class AddFolderActivity extends AbstractEditFolderActivity {
         EditText name = (EditText)findViewById(R.id.folder_name);
         Spinner type = (Spinner)findViewById(R.id.folder_type);
         try {
-            this.folder.newFolder(name.getText().toString(), (FolderType)type.getSelectedItem());
+            getFolder().newFolder(name.getText().toString(), (FolderType) type.getSelectedItem());
             finish();
         } catch (FolderAlreadyExistsException e) {
             Toast.makeText(this, R.string.folder_already_exists_error, Toast.LENGTH_LONG).show();

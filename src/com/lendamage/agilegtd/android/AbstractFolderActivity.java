@@ -38,7 +38,15 @@ import static com.lendamage.agilegtd.android.Tag.TAG;
 abstract class AbstractFolderActivity extends AbstractModelActivity {
 
     /** Current folder */
-    protected Folder folder;
+    private Folder folder;
+
+    public Folder getFolder() {
+        return this.folder;
+    }
+
+    public void setFolder(Folder folder) {
+        this.folder = folder;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +61,20 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        this.folder = null;
+        Folder folder = null;
         Intent intent = getIntent();
         String path;
         if (intent.hasExtra(EXTRA_FOLDER_PATH)) {
             path = intent.getStringExtra(EXTRA_FOLDER_PATH);
-            this.folder = this.model.getFolder(new SimplePath(path));
-            if (this.folder == null) {
+            folder = getModel().getFolder(new SimplePath(path));
+            if (folder == null) {
                 Log.w(TAG, "folder " + path + " is not found");
             }
         }
-        if (this.folder == null) {
-            this.folder = this.model.getRootFolder();
+        if (folder == null) {
+            folder = getModel().getRootFolder();
         }
+        setFolder(folder);
         //Log.d(TAG, "AbstractFolderActivity.onResume() model=" + this.model + " folder=" + this.folder);
     }
 
@@ -85,7 +94,7 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
     }
 
     protected void startActionActivity(Class<? extends Activity> activity, Action action) {
-        IntentUtils.startActionActivity(this, activity, this.folder, action);
+        IntentUtils.startActionActivity(this, activity, getFolder(), action);
     }
 
 }

@@ -54,11 +54,11 @@ public class FolderActivity extends AbstractFolderActivity {
     static final int DELETE_ACTION_CONFIRM_DIALOG = 1;
     
     /** Folder to delete */
-    Folder folderToDelete = null;
+    private Folder folderToDelete = null;
     /** Action to delete */
-    Action actionToDelete = null;
+    private Action actionToDelete = null;
     /** Trash folders */
-    List<Folder> trashFolders = Collections.emptyList();
+    private List<Folder> trashFolders = Collections.emptyList();
     
     /** Called when the activity is first created. */
     @Override
@@ -83,12 +83,12 @@ public class FolderActivity extends AbstractFolderActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!this.folder.getPath().isRoot()) {
-            setTitle(this.folder.getPath().toString());
+        if (!getFolder().getPath().isRoot()) {
+            setTitle(getFolder().getPath().toString());
         }
-        this.trashFolders = this.model.findFolders(FolderType.TRASH);
+        this.trashFolders = getModel().findFolders(FolderType.TRASH);
         ListView foldersActionsList = (ListView)findViewById(R.id.folders_actions);
-        foldersActionsList.setAdapter(new FolderListAdapter(this, this.model, this.folder));
+        foldersActionsList.setAdapter(new FolderListAdapter(this, getModel(), getFolder()));
     }
     
     @Override
@@ -209,7 +209,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void moveUpFolder(Folder folder) {
-        List<Folder> folders = this.folder.getFolders();
+        List<Folder> folders = getFolder().getFolders();
         int position = folders.indexOf(folder);
         if (position <= 0) {
             return;
@@ -219,7 +219,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void moveDownFolder(Folder folder) {
-        List<Folder> folders = this.folder.getFolders();
+        List<Folder> folders = getFolder().getFolders();
         int position = folders.indexOf(folder);
         if (position >= folders.size()) {
             return;
@@ -229,13 +229,13 @@ public class FolderActivity extends AbstractFolderActivity {
     }
 
     void moveFirstFolder(Folder folder) {
-        List<Folder> folders = this.folder.getFolders();
+        List<Folder> folders = getFolder().getFolders();
         folders.add(0, folder);
         updateFoldersActions();
     }
 
     void moveLastFolder(Folder folder) {
-        List<Folder> folders = this.folder.getFolders();
+        List<Folder> folders = getFolder().getFolders();
         folders.add(folders.size(), folder);
         updateFoldersActions();
     }
@@ -245,7 +245,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteFolder(Folder folder) {
-        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(this.folder.getType()) ||
+        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(getFolder().getType()) ||
                 FolderType.TRASH.equals(folder.getType())) {
             this.folderToDelete = folder;
             showDialog(DELETE_FOLDER_CONFIRM_DIALOG);
@@ -255,7 +255,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteFolderFromModel(Folder folder) {
-        this.folder.getFolders().remove(folder);
+        getFolder().getFolders().remove(folder);
         updateFoldersActions();
     }
     
@@ -273,7 +273,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void moveUpAction(Action action) {
-        List<Action> actions = this.folder.getActions();
+        List<Action> actions = getFolder().getActions();
         int position = actions.indexOf(action);
         if (position <= 0) {
             return;
@@ -283,7 +283,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void moveDownAction(Action action) {
-        List<Action> actions = this.folder.getActions();
+        List<Action> actions = getFolder().getActions();
         int position = actions.indexOf(action);
         if (position >= actions.size()) {
             return;
@@ -293,13 +293,13 @@ public class FolderActivity extends AbstractFolderActivity {
     }
 
     void moveFirstAction(Action action) {
-        List<Action> actions = this.folder.getActions();
+        List<Action> actions = getFolder().getActions();
         actions.add(0, action);
         updateFoldersActions();
     }
 
     void moveLastAction(Action action) {
-        List<Action> actions = this.folder.getActions();
+        List<Action> actions = getFolder().getActions();
         actions.add(actions.size(), action);
         updateFoldersActions();
     }
@@ -309,7 +309,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteAction(Action action) {
-        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(this.folder.getType())) {
+        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(getFolder().getType())) {
             this.actionToDelete = action;
             showDialog(DELETE_ACTION_CONFIRM_DIALOG);
         } else {
@@ -318,14 +318,14 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteActionFromFolder(Action action) {
-        this.folder.getActions().remove(action);
+        getFolder().getActions().remove(action);
         updateFoldersActions();
     }
     
     void deleteActionToTrash(Action action) {
         Set<Folder> folders = action.getFolders();
         folders.addAll(this.trashFolders);
-        folders.remove(this.folder);
+        folders.remove(getFolder());
         updateFoldersActions(true);     //this folder is not updated directly, need to reread
     }
     
@@ -383,7 +383,7 @@ public class FolderActivity extends AbstractFolderActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.new_item_position);
-        NewItemPosition position = NewItemPosition.valueOf(this.model);
+        NewItemPosition position = NewItemPosition.valueOf(getModel());
         item.setTitle(position.getTitleRes());
         item.setIcon(position.getIconRes());
         return super.onPrepareOptionsMenu(menu);
@@ -393,16 +393,16 @@ public class FolderActivity extends AbstractFolderActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.add_folder:
-            IntentUtils.startFolderActivity(this, AddFolderActivity.class, this.folder);
+            IntentUtils.startFolderActivity(this, AddFolderActivity.class, getFolder());
             return true;
         case R.id.add_action:
-            IntentUtils.startFolderActivity(this, AddActionActivity.class, this.folder);
+            IntentUtils.startFolderActivity(this, AddActionActivity.class, getFolder());
             return true;
         case R.id.share_folder:
-            ShareUtils.sendFolder(this, R.string.share_folder_title, this.folder);
+            ShareUtils.sendFolder(this, R.string.share_folder_title, getFolder());
             return true;
         case R.id.new_item_position:
-            this.model.getSettings().setNewItemPosition(NewItemPosition.valueOf(this.model).getNextPosition());
+            getModel().getSettings().setNewItemPosition(NewItemPosition.valueOf(getModel()).getNextPosition());
             invalidateOptionsMenu();
             updateFoldersActions(true);
             return true;
@@ -425,7 +425,7 @@ public class FolderActivity extends AbstractFolderActivity {
             adapter.update();
         }
         adapter.notifyDataSetChanged();
-        this.trashFolders = this.model.findFolders(FolderType.TRASH);
+        this.trashFolders = this.getModel().findFolders(FolderType.TRASH);
     }
 
 }

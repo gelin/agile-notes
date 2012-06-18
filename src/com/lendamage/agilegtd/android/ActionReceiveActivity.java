@@ -47,9 +47,9 @@ public class ActionReceiveActivity extends AbstractModelActivity {
 
     List<Folder> findInbox() {
         List<Folder> result = new ArrayList<Folder>();
-        result.addAll(this.model.findFolders(FolderType.INBOX));
+        result.addAll(getModel().findFolders(FolderType.INBOX));
         if (result.isEmpty()) {
-            result.add(this.model.getRootFolder());
+            result.add(getModel().getRootFolder());
         }
         return result;
     }

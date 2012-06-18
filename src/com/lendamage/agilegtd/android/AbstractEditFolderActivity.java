@@ -33,7 +33,7 @@ import com.lendamage.agilegtd.model.FolderType;
 abstract class AbstractEditFolderActivity extends AbstractFolderActivity {
     
     /** bind view flag */
-    boolean binded = false;
+    private boolean binded = false;
     
     /** Called when the activity is first created. */
     @Override
@@ -86,10 +86,10 @@ abstract class AbstractEditFolderActivity extends AbstractFolderActivity {
     }
 
     boolean canRemove(FolderType type) {
-        if (this.model.findFolders(type).isEmpty()) {
+        if (getModel().findFolders(type).isEmpty()) {
             return false;   //no folders with this type
         } 
-        if (type.equals(this.folder.getType())) {
+        if (type.equals(getFolder().getType())) {
             return false;   //leave the type of current folder
         }
         return true;    //other folders can be removed
