@@ -25,10 +25,15 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.RadioButton;
 
+import android.widget.TextView;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderTree;
 import com.lendamage.agilegtd.model.FolderTree.Node;
 
+/**
+ *  The adapter which represents the tree of folders with radio buttons and
+ *  allows to choose one of the folder.
+ */
 public class SelectFolderTreeAdapter extends AbstractFolderTreeAdapter {
 
     /** Selected folder */
@@ -63,6 +68,8 @@ public class SelectFolderTreeAdapter extends AbstractFolderTreeAdapter {
         view.setEnabled(enable);
         //view.setClickable(enable);    //WTF?
         radio.setEnabled(enable);
+        TextView folderName = (TextView)view.findViewById(R.id.folder_name);
+        folderName.setEnabled(enable);
     }
     
     void check(long id) {
