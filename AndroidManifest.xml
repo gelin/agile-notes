@@ -68,11 +68,11 @@
         </activity>
         
         <activity android:name=".MoveFolderActivity"
-                  android:theme="@android:style/Theme.Holo.Dialog">
+                  android:theme="@style/Theme.Dialog">
         </activity>
         
         <activity android:name=".CopyActionActivity"
-                  android:theme="@android:style/Theme.Holo.Dialog">
+                  android:theme="@style/Theme.Dialog">
         </activity>
         
         <activity android:name=".BackupActivity"

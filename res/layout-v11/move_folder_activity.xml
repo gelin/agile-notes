@@ -52,12 +52,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <Button android:id="@+id/cancel_button"
+            style="@android:style/Widget.Holo.Button.Small"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:text="@string/cancel_button">
         </Button>
         <Button android:id="@+id/ok_button"
+            style="@android:style/Widget.Holo.Button.Small"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
