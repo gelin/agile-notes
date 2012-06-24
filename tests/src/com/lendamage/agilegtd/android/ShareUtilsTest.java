@@ -45,63 +45,48 @@ public class ShareUtilsTest extends AndroidTestCase {
         assertFalse(intent.hasExtra(Intent.EXTRA_TEXT));
     }
 
-    public void testReceiveActionIntent() {
+    public void testGetActionBody() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "head");
         intent.putExtra(Intent.EXTRA_TEXT, "body");
-        //TODO: now it opens the activity, how to test it?
-        //assertTrue(ShareUtils.receiveActionIntent(getContext(), intent, model.getRootFolder()));
-        //Action action = model.getRootFolder().getActions().get(0);
-        //assertEquals("head", action.getHead());
-        //assertEquals("head\n\nbody", action.getBody());
+        assertEquals("head\n\nbody", ShareUtils.getActionBody(intent));
     }
 
-    public void testReceiveActionIntentInvalidAction() {
+    public void testGetActionBodyInvalidAction() {
         Intent intent = new Intent();
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "head");
         intent.putExtra(Intent.EXTRA_TEXT, "body");
-        assertFalse(ShareUtils.receiveActionIntent(getContext(), intent, model.getRootFolder()));
-        assertEquals(0, model.getRootFolder().getActions().size());
+        assertEquals("head\n\nbody", ShareUtils.getActionBody(intent));
     }
 
-    public void testReceiveActionIntentInvalidType() {
+    public void testGetActionBodyInvalidType() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/html");
         intent.putExtra(Intent.EXTRA_SUBJECT, "head");
         intent.putExtra(Intent.EXTRA_TEXT, "body");
-        assertFalse(ShareUtils.receiveActionIntent(getContext(), intent, model.getRootFolder()));
-        assertEquals(0, model.getRootFolder().getActions().size());
+        assertEquals("head\n\nbody", ShareUtils.getActionBody(intent));
     }
 
-    public void testReceiveActionIntentNullHead() {
+    public void testGetActionBodyNullHead() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, "head\nbody");
-        //TODO: now it opens the activity, how to test it?
-        //assertTrue(ShareUtils.receiveActionIntent(getContext(), intent, model.getRootFolder()));
-        //Action action = model.getRootFolder().getActions().get(0);
-        //assertEquals("head", action.getHead());
-        //assertEquals("head\nbody", action.getBody());
+        assertEquals("head\nbody", ShareUtils.getActionBody(intent));
     }
 
-    public void testReceiveActionIntentNullBody() {
+    public void testGetActionBodyNullBody() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "head");
-        //TODO: now it opens the activity, how to test it?
-        //assertTrue(ShareUtils.receiveActionIntent(getContext(), intent, model.getRootFolder()));
-        //Action action = model.getRootFolder().getActions().get(0);
-        //assertEquals("head", action.getHead());
-        //assertEquals("head", action.getBody());
+        assertEquals("head", ShareUtils.getActionBody(intent));
     }
 
     public void testReceiveActionIntentNullAll() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        assertFalse(ShareUtils.receiveActionIntent(getContext(), intent, model.getRootFolder()));
-        assertEquals(0, model.getRootFolder().getActions().size());
+        assertEquals("", ShareUtils.getActionBody(intent));
     }
 
     public void testSendFolderIntent() {

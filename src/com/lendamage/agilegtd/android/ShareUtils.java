@@ -88,35 +88,33 @@ class ShareUtils {
      *  @param folder   folder where to create the new Action
      *  @return true if the Action was created, false if the Intent is not recognized and cannot be converted to Action
      */
-    public static boolean receiveActionIntent(Context context, Intent intent, Folder folder) {
+    public static void receiveActionIntent(Context context, Intent intent, Folder folder) {
+        IntentUtils.startFolderActivity(context, FolderActivity.class, folder);
+        Intent addIntent = new Intent(context, AddActionActivity.class);
+        addIntent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
+        addIntent.putExtra(EXTRA_ACTION_BODY, getActionBody(intent));
+        context.startActivity(addIntent);
+    }
+
+    /**
+     *  Checks SEND intent and returns new action body.
+     */
+    static String getActionBody(Intent intent) {
         if (intent == null) {
-            return false;
-        }
-        if (!Intent.ACTION_SEND.equals(intent.getAction())) {
-            return false;
-        }
-        if (!TEXT_MIME_TYPE.equals(intent.getType())) {
-            return false;
+            return "";
         }
         String head = intent.getStringExtra(Intent.EXTRA_SUBJECT);
         String body = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (head == null && body == null) {
-            return false;
+            return "";
         }
         if (head == null) {
-            head = ActionHelper.getHeadFromBody(body);
+            return body;
         } else if (body == null) {
-            body = head;
+            return head;
         } else {
-            body = head + "\n\n" + body;
+            return head + "\n\n" + body;
         }
-        //folder.newAction(head, body);
-        IntentUtils.startFolderActivity(context, FolderActivity.class, folder);
-        Intent addIntent = new Intent(context, AddActionActivity.class);
-        addIntent.putExtra(EXTRA_FOLDER_PATH, folder.getPath().toString());
-        addIntent.putExtra(EXTRA_ACTION_BODY, body);
-        context.startActivity(addIntent);
-        return true;
     }
 
     /**

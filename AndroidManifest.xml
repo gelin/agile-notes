@@ -92,6 +92,18 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ShortcutActivity"
+                  android:theme="@android:style/Theme.NoDisplay"
+                  android:label="@string/add_action_title"
+                  android:icon="@drawable/icon"
+                  android:excludeFromRecents="true"
+                  android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
