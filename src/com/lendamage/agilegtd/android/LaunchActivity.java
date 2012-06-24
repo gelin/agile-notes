@@ -25,6 +25,7 @@ import com.lendamage.agilegtd.model.Model;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import com.lendamage.agilegtd.model.ModelSettings;
 
 /**
  *  Start activity for this application.
@@ -47,6 +48,7 @@ public class LaunchActivity extends Activity {
     }
     
     void createInitialFolders(Model model) {
+        model.getSettings().setNewItemPosition(ModelSettings.NewItemPosition.LAST);
         Folder root = model.getRootFolder();
         root.newFolder(getString(R.string.inbox_folder), FolderType.INBOX);
         root.newFolder(getString(R.string.projects_folder), FolderType.PROJECTS);
