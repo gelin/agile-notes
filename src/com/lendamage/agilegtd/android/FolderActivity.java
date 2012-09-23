@@ -35,6 +35,7 @@ import android.widget.ListView;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
+import com.lendamage.agilegtd.model.operations.Operations;
 
 import java.util.Collections;
 import java.util.List;
@@ -209,12 +210,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void moveUpFolder(Folder folder) {
-        List<Folder> folders = getFolder().getFolders();
-        int position = folders.indexOf(folder);
-        if (position <= 0) {
-            return;
-        }
-        folders.add(position - 1, folder);
+        Operations.moveUpFolder(getFolder(), folder);
         updateFoldersActions();
     }
     
