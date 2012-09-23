@@ -20,7 +20,9 @@ package com.lendamage.agilegtd.model.operations;
 
 import android.test.AndroidTestCase;
 import com.lendamage.agilegtd.android.model.impl.SQLiteModel;
+import com.lendamage.agilegtd.android.model.impl.SimplePath;
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderType;
 
 public class OperationsTest extends AndroidTestCase {
     
@@ -145,6 +147,66 @@ public class OperationsTest extends AndroidTestCase {
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
         assertEquals(folder3, model.getRootFolder().getFolders().get(2));
+    }
+
+    public void testHasTrashFolder() {
+        assertFalse(Operations.hasTrashFolder(model));
+        model.getRootFolder().newFolder("trash", FolderType.TRASH);
+        assertTrue(Operations.hasTrashFolder(model));
+    }
+
+    public void testIsDeletableToTrashNoTrash() {
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        assertFalse(Operations.isDeletableToTrash(model, folder));
+    }
+
+    public void testIsDeletableToTrash() {
+        model.getRootFolder().newFolder("trash", FolderType.TRASH);
+        Folder folder = model.getRootFolder().newFolder("folder", null);
+        assertTrue(Operations.isDeletableToTrash(model, folder));
+    }
+
+    public void testIsDeletableToTrashTrash() {
+        Folder trash = model.getRootFolder().newFolder("trash", FolderType.TRASH);
+        assertFalse(Operations.isDeletableToTrash(model, trash));
+    }
+
+    public void testIsDeletableToTrashParentTrash() {
+        Folder trash = model.getRootFolder().newFolder("trash", FolderType.TRASH);
+        Folder folder = trash.newFolder("folder", null);
+        assertFalse(Operations.isDeletableToTrash(model, folder));
+    }
+
+    public void testDeleteFolderFromModel() {
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        parent.newFolder("child", null);
+        Operations.deleteFolder(model, parent);
+        assertNull(model.getFolder(new SimplePath("parent")));
+        assertNull(model.getFolder(new SimplePath("parent/child")));
+    }
+
+    public void testDeleteFolderToTrash() {
+        model.getRootFolder().newFolder("trash", FolderType.TRASH);
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Folder child = parent.newFolder("child", null);
+        Operations.deleteFolder(model, parent);
+        assertNull(model.getFolder(new SimplePath("parent")));
+        assertNull(model.getFolder(new SimplePath("parent/child")));
+        assertEquals(parent, model.getFolder(new SimplePath("trash/parent")));
+        assertEquals(child, model.getFolder(new SimplePath("trash/parent/child")));
+    }
+
+    public void testDeleteFolderTrash() {
+        Folder trash = model.getRootFolder().newFolder("trash", FolderType.TRASH);
+        Operations.deleteFolder(model, trash);
+        assertNull(model.getFolder(new SimplePath("trash")));
+    }
+
+    public void testDeleteFolderParentTrash() {
+        Folder trash = model.getRootFolder().newFolder("trash", FolderType.TRASH);
+        Folder folder = trash.newFolder("folder", null);
+        Operations.deleteFolder(model, folder);
+        assertNull(model.getFolder(new SimplePath("trash/folder")));
     }
     
 }

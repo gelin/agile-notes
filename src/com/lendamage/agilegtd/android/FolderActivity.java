@@ -37,7 +37,6 @@ import com.lendamage.agilegtd.model.Folder;
 import com.lendamage.agilegtd.model.FolderType;
 import com.lendamage.agilegtd.model.operations.Operations;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -58,9 +57,7 @@ public class FolderActivity extends AbstractFolderActivity {
     private Folder folderToDelete = null;
     /** Action to delete */
     private Action actionToDelete = null;
-    /** Trash folders */
-    private List<Folder> trashFolders = Collections.emptyList();
-    
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +84,6 @@ public class FolderActivity extends AbstractFolderActivity {
         if (!getFolder().getPath().isRoot()) {
             setTitle(getFolder().getPath().toString());
         }
-        this.trashFolders = getModel().findFolders(FolderType.TRASH);
         ListView foldersActionsList = (ListView)findViewById(R.id.folders_actions);
         foldersActionsList.setAdapter(new FolderListAdapter(this, getModel(), getFolder()));
     }
@@ -234,25 +230,15 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteFolder(Folder folder) {
-        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(getFolder().getType()) ||
-                FolderType.TRASH.equals(folder.getType())) {
+        if (Operations.isDeletableToTrash(getModel(), folder)) {
+            Operations.deleteFolder(getModel(), folder);
+            updateFoldersActions(true); //this folder is not updated directly, need to reread
+        } else {
             this.folderToDelete = folder;
             showDialog(DELETE_FOLDER_CONFIRM_DIALOG);
-        } else {
-            deleteFolderToTrash(folder);
         }
     }
-    
-    void deleteFolderFromModel(Folder folder) {
-        getFolder().getFolders().remove(folder);
-        updateFoldersActions();
-    }
-    
-    void deleteFolderToTrash(Folder folder) {
-        this.trashFolders.get(0).getFolders().add(folder);
-        updateFoldersActions(true); //this folder is not updated directly, need to reread
-    }
-    
+
     void openAction(Action action) {
         startActionActivity(ViewActionActivity.class, action);
     }
@@ -298,7 +284,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteAction(Action action) {
-        if (this.trashFolders.isEmpty() || FolderType.TRASH.equals(getFolder().getType())) {
+        if (Operations.hasTrashFolder(getModel()) || FolderType.TRASH.equals(getFolder().getType())) {
             this.actionToDelete = action;
             showDialog(DELETE_ACTION_CONFIRM_DIALOG);
         } else {
@@ -313,7 +299,7 @@ public class FolderActivity extends AbstractFolderActivity {
     
     void deleteActionToTrash(Action action) {
         Set<Folder> folders = action.getFolders();
-        folders.addAll(this.trashFolders);
+        //folders.addAll(this.trashFolders);    //TODO
         folders.remove(getFolder());
         updateFoldersActions(true);     //this folder is not updated directly, need to reread
     }
@@ -328,7 +314,8 @@ public class FolderActivity extends AbstractFolderActivity {
                     setMessage(R.string.delete_folder_confirm).
                     setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            deleteFolderFromModel(FolderActivity.this.folderToDelete);
+                            Operations.deleteFolder(getModel(), FolderActivity.this.folderToDelete);
+                            updateFoldersActions(true);
                         }
                     }).
                     setNegativeButton(R.string.cancel_button, null);
@@ -414,7 +401,6 @@ public class FolderActivity extends AbstractFolderActivity {
             adapter.update();
         }
         adapter.notifyDataSetChanged();
-        this.trashFolders = this.getModel().findFolders(FolderType.TRASH);
     }
 
 }

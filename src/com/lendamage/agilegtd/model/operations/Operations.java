@@ -19,6 +19,8 @@
 package com.lendamage.agilegtd.model.operations;
 
 import com.lendamage.agilegtd.model.Folder;
+import com.lendamage.agilegtd.model.FolderType;
+import com.lendamage.agilegtd.model.Model;
 
 import java.util.List;
 
@@ -78,7 +80,44 @@ public class Operations {
         folders.add(folders.size(), folder);
     }
 
-    private Operations() {
+    /**
+     *  Returns true if this model has one or more Trash folders.
+     */
+    public static boolean hasTrashFolder(Model model) {
+        return !model.findFolders(FolderType.TRASH).isEmpty();
+    }
+
+    /**
+     *  Returns true if this folder will be deleted to trash by the delete operation.
+     */
+    public static boolean isDeletableToTrash(Model model, Folder folder) {
+        if (!Operations.hasTrashFolder(model)) {
+            return false;
+        }
+        if (FolderType.TRASH.equals(folder.getType())) {
+            return false;
+        }
+        Folder parent = model.getFolder(folder.getPath().getParent());
+        if (FolderType.TRASH.equals(parent.getType())) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *  Deletes the folder to Trash or permanently removes it from the model.
+     */
+    public static void deleteFolder(Model model, Folder folder) {
+        if (isDeletableToTrash(model, folder)) {
+            List<Folder> trashFolders = model.findFolders(FolderType.TRASH);
+            trashFolders.get(0).getFolders().add(folder);
+        } else {
+            Folder parent = model.getFolder(folder.getPath().getParent());
+            parent.getFolders().remove(folder);
+        }
+    }
+
+    private Operations() {  //TODO: construct over model
         //avoid instantiation
     }
 
