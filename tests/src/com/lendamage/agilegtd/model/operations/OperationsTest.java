@@ -27,16 +27,18 @@ import com.lendamage.agilegtd.model.FolderType;
 public class OperationsTest extends AndroidTestCase {
     
     SQLiteModel model;
+    Operations operations;
     
     protected void setUp() {
         getContext().getDatabasePath("agile-gtd-test.db").delete();
         model = new SQLiteModel(getContext(), "agile-gtd-test.db");
+        operations = new Operations(model);
     }
     
     public void testMoveUpFolder() {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
-        Operations.moveUpFolder(model.getRootFolder(), folder2);
+        operations.moveUpFolder(model.getRootFolder(), folder2);
         assertEquals(folder2, model.getRootFolder().getFolders().get(0));
         assertEquals(folder1, model.getRootFolder().getFolders().get(1));
     }
@@ -45,7 +47,7 @@ public class OperationsTest extends AndroidTestCase {
         Folder parent = model.getRootFolder().newFolder("parent", null);
         Folder folder1 = parent.newFolder("folder1", null);
         Folder folder2 = parent.newFolder("folder2", null);
-        Operations.moveUpFolder(model.getRootFolder(), folder2);
+        operations.moveUpFolder(model.getRootFolder(), folder2);
         assertEquals(folder1, parent.getFolders().get(0));
         assertEquals(folder2, parent.getFolders().get(1));
         assertEquals(parent, model.getRootFolder().getFolders().get(0));
@@ -54,7 +56,7 @@ public class OperationsTest extends AndroidTestCase {
     public void testMoveUpFolderFirst() {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
-        Operations.moveUpFolder(model.getRootFolder(), folder1);
+        operations.moveUpFolder(model.getRootFolder(), folder1);
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
     }
@@ -62,7 +64,7 @@ public class OperationsTest extends AndroidTestCase {
     public void testMoveDownFolder() {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
-        Operations.moveDownFolder(model.getRootFolder(), folder1);
+        operations.moveDownFolder(model.getRootFolder(), folder1);
         assertEquals(folder2, model.getRootFolder().getFolders().get(0));
         assertEquals(folder1, model.getRootFolder().getFolders().get(1));
     }
@@ -71,7 +73,7 @@ public class OperationsTest extends AndroidTestCase {
         Folder parent = model.getRootFolder().newFolder("parent", null);
         Folder folder1 = parent.newFolder("folder1", null);
         Folder folder2 = parent.newFolder("folder2", null);
-        Operations.moveDownFolder(model.getRootFolder(), folder1);
+        operations.moveDownFolder(model.getRootFolder(), folder1);
         assertEquals(folder1, parent.getFolders().get(0));
         assertEquals(folder2, parent.getFolders().get(1));
         assertEquals(parent, model.getRootFolder().getFolders().get(0));
@@ -80,7 +82,7 @@ public class OperationsTest extends AndroidTestCase {
     public void testMoveDownFolderLast() {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
-        Operations.moveDownFolder(model.getRootFolder(), folder2);
+        operations.moveDownFolder(model.getRootFolder(), folder2);
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
     }
@@ -89,7 +91,7 @@ public class OperationsTest extends AndroidTestCase {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
         Folder folder3 = model.getRootFolder().newFolder("folder3", null);
-        Operations.moveFirstFolder(model.getRootFolder(), folder3);
+        operations.moveFirstFolder(model.getRootFolder(), folder3);
         assertEquals(folder3, model.getRootFolder().getFolders().get(0));
         assertEquals(folder1, model.getRootFolder().getFolders().get(1));
         assertEquals(folder2, model.getRootFolder().getFolders().get(2));
@@ -100,7 +102,7 @@ public class OperationsTest extends AndroidTestCase {
         Folder folder1 = parent.newFolder("folder1", null);
         Folder folder2 = parent.newFolder("folder2", null);
         Folder folder3 = parent.newFolder("folder3", null);
-        Operations.moveFirstFolder(model.getRootFolder(), folder3);
+        operations.moveFirstFolder(model.getRootFolder(), folder3);
         assertEquals(folder1, parent.getFolders().get(0));
         assertEquals(folder2, parent.getFolders().get(1));
         assertEquals(folder3, parent.getFolders().get(2));
@@ -111,7 +113,7 @@ public class OperationsTest extends AndroidTestCase {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
         Folder folder3 = model.getRootFolder().newFolder("folder3", null);
-        Operations.moveFirstFolder(model.getRootFolder(), folder1);
+        operations.moveFirstFolder(model.getRootFolder(), folder1);
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
         assertEquals(folder3, model.getRootFolder().getFolders().get(2));
@@ -121,7 +123,7 @@ public class OperationsTest extends AndroidTestCase {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
         Folder folder3 = model.getRootFolder().newFolder("folder3", null);
-        Operations.moveLastFolder(model.getRootFolder(), folder1);
+        operations.moveLastFolder(model.getRootFolder(), folder1);
         assertEquals(folder2, model.getRootFolder().getFolders().get(0));
         assertEquals(folder3, model.getRootFolder().getFolders().get(1));
         assertEquals(folder1, model.getRootFolder().getFolders().get(2));
@@ -132,7 +134,7 @@ public class OperationsTest extends AndroidTestCase {
         Folder folder1 = parent.newFolder("folder1", null);
         Folder folder2 = parent.newFolder("folder2", null);
         Folder folder3 = parent.newFolder("folder3", null);
-        Operations.moveLastFolder(model.getRootFolder(), folder1);
+        operations.moveLastFolder(model.getRootFolder(), folder1);
         assertEquals(folder1, parent.getFolders().get(0));
         assertEquals(folder2, parent.getFolders().get(1));
         assertEquals(folder3, parent.getFolders().get(2));
@@ -143,44 +145,44 @@ public class OperationsTest extends AndroidTestCase {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
         Folder folder3 = model.getRootFolder().newFolder("folder3", null);
-        Operations.moveLastFolder(model.getRootFolder(), folder3);
+        operations.moveLastFolder(model.getRootFolder(), folder3);
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
         assertEquals(folder3, model.getRootFolder().getFolders().get(2));
     }
 
     public void testHasTrashFolder() {
-        assertFalse(Operations.hasTrashFolder(model));
+        assertFalse(operations.hasTrashFolder());
         model.getRootFolder().newFolder("trash", FolderType.TRASH);
-        assertTrue(Operations.hasTrashFolder(model));
+        assertTrue(operations.hasTrashFolder());
     }
 
     public void testIsDeletableToTrashNoTrash() {
         Folder folder = model.getRootFolder().newFolder("folder", null);
-        assertFalse(Operations.isDeletableToTrash(model, folder));
+        assertFalse(operations.isDeletableToTrash(folder));
     }
 
     public void testIsDeletableToTrash() {
         model.getRootFolder().newFolder("trash", FolderType.TRASH);
         Folder folder = model.getRootFolder().newFolder("folder", null);
-        assertTrue(Operations.isDeletableToTrash(model, folder));
+        assertTrue(operations.isDeletableToTrash(folder));
     }
 
     public void testIsDeletableToTrashTrash() {
         Folder trash = model.getRootFolder().newFolder("trash", FolderType.TRASH);
-        assertFalse(Operations.isDeletableToTrash(model, trash));
+        assertFalse(operations.isDeletableToTrash(trash));
     }
 
     public void testIsDeletableToTrashParentTrash() {
         Folder trash = model.getRootFolder().newFolder("trash", FolderType.TRASH);
         Folder folder = trash.newFolder("folder", null);
-        assertFalse(Operations.isDeletableToTrash(model, folder));
+        assertFalse(operations.isDeletableToTrash(folder));
     }
 
     public void testDeleteFolderFromModel() {
         Folder parent = model.getRootFolder().newFolder("parent", null);
         parent.newFolder("child", null);
-        Operations.deleteFolder(model, parent);
+        operations.deleteFolder(parent);
         assertNull(model.getFolder(new SimplePath("parent")));
         assertNull(model.getFolder(new SimplePath("parent/child")));
     }
@@ -189,7 +191,7 @@ public class OperationsTest extends AndroidTestCase {
         model.getRootFolder().newFolder("trash", FolderType.TRASH);
         Folder parent = model.getRootFolder().newFolder("parent", null);
         Folder child = parent.newFolder("child", null);
-        Operations.deleteFolder(model, parent);
+        operations.deleteFolder(parent);
         assertNull(model.getFolder(new SimplePath("parent")));
         assertNull(model.getFolder(new SimplePath("parent/child")));
         assertEquals(parent, model.getFolder(new SimplePath("trash/parent")));
@@ -198,14 +200,14 @@ public class OperationsTest extends AndroidTestCase {
 
     public void testDeleteFolderTrash() {
         Folder trash = model.getRootFolder().newFolder("trash", FolderType.TRASH);
-        Operations.deleteFolder(model, trash);
+        operations.deleteFolder(trash);
         assertNull(model.getFolder(new SimplePath("trash")));
     }
 
     public void testDeleteFolderParentTrash() {
         Folder trash = model.getRootFolder().newFolder("trash", FolderType.TRASH);
         Folder folder = trash.newFolder("folder", null);
-        Operations.deleteFolder(model, folder);
+        operations.deleteFolder(folder);
         assertNull(model.getFolder(new SimplePath("trash/folder")));
     }
     

@@ -58,10 +58,14 @@ public class FolderActivity extends AbstractFolderActivity {
     /** Action to delete */
     private Action actionToDelete = null;
 
+    /** Model operations */
+    private Operations operations;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.operations = new Operations(getModel());
         setContentView(R.layout.folder_activity);
         
         ListView foldersActions = (ListView)findViewById(R.id.folders_actions);
@@ -76,6 +80,10 @@ public class FolderActivity extends AbstractFolderActivity {
                 }
             }
         });
+    }
+
+    private Operations getOperations() {
+        return this.operations;
     }
 
     @Override
@@ -206,22 +214,22 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void moveUpFolder(Folder folder) {
-        Operations.moveUpFolder(getFolder(), folder);
+        getOperations().moveUpFolder(getFolder(), folder);
         updateFoldersActions();
     }
     
     void moveDownFolder(Folder folder) {
-        Operations.moveDownFolder(getFolder(), folder);
+        getOperations().moveDownFolder(getFolder(), folder);
         updateFoldersActions();
     }
 
     void moveFirstFolder(Folder folder) {
-        Operations.moveFirstFolder(getFolder(), folder);
+        getOperations().moveFirstFolder(getFolder(), folder);
         updateFoldersActions();
     }
 
     void moveLastFolder(Folder folder) {
-        Operations.moveLastFolder(getFolder(), folder);
+        getOperations().moveLastFolder(getFolder(), folder);
         updateFoldersActions();
     }
     
@@ -230,8 +238,8 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteFolder(Folder folder) {
-        if (Operations.isDeletableToTrash(getModel(), folder)) {
-            Operations.deleteFolder(getModel(), folder);
+        if (getOperations().isDeletableToTrash(folder)) {
+            getOperations().deleteFolder(folder);
             updateFoldersActions(true); //this folder is not updated directly, need to reread
         } else {
             this.folderToDelete = folder;
@@ -284,7 +292,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void deleteAction(Action action) {
-        if (Operations.hasTrashFolder(getModel()) || FolderType.TRASH.equals(getFolder().getType())) {
+        if (getOperations().hasTrashFolder() || FolderType.TRASH.equals(getFolder().getType())) {
             this.actionToDelete = action;
             showDialog(DELETE_ACTION_CONFIRM_DIALOG);
         } else {
@@ -314,7 +322,7 @@ public class FolderActivity extends AbstractFolderActivity {
                     setMessage(R.string.delete_folder_confirm).
                     setPositiveButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Operations.deleteFolder(getModel(), FolderActivity.this.folderToDelete);
+                            getOperations().deleteFolder(FolderActivity.this.folderToDelete);
                             updateFoldersActions(true);
                         }
                     }).

@@ -31,10 +31,16 @@ import java.util.List;
  */
 public class Operations {
 
+    Model model;
+
+    public Operations(Model model) {
+        this.model = model;
+    }
+
     /**
      *  Moves the folder one step up in the folders list.
      */
-    public static void moveUpFolder(Folder parentFolder, Folder folder) {
+    public void moveUpFolder(Folder parentFolder, Folder folder) {
         List<Folder> folders = parentFolder.getFolders();
         int position = folders.indexOf(folder);
         if (position <= 0) {
@@ -46,7 +52,7 @@ public class Operations {
     /**
      *  Moves the folder one step down in the folders list.
      */
-    public static void moveDownFolder(Folder parentFolder, Folder folder) {
+    public void moveDownFolder(Folder parentFolder, Folder folder) {
         List<Folder> folders = parentFolder.getFolders();
         int position = folders.indexOf(folder);
         if (position < 0) {
@@ -61,7 +67,7 @@ public class Operations {
     /**
      *  Moves the folder to the first position in the folders list.
      */
-    public static void moveFirstFolder(Folder parentFolder, Folder folder) {
+    public void moveFirstFolder(Folder parentFolder, Folder folder) {
         List<Folder> folders = parentFolder.getFolders();
         if (!folders.contains(folder)) {
             return;
@@ -72,7 +78,7 @@ public class Operations {
     /**
      *  Moves the folder to the last position in the folders list.
      */
-    public static void moveLastFolder(Folder parentFolder, Folder folder) {
+    public void moveLastFolder(Folder parentFolder, Folder folder) {
         List<Folder> folders = parentFolder.getFolders();
         if (!folders.contains(folder)) {
             return;
@@ -83,21 +89,21 @@ public class Operations {
     /**
      *  Returns true if this model has one or more Trash folders.
      */
-    public static boolean hasTrashFolder(Model model) {
-        return !model.findFolders(FolderType.TRASH).isEmpty();
+    public boolean hasTrashFolder() {
+        return !this.model.findFolders(FolderType.TRASH).isEmpty();
     }
 
     /**
      *  Returns true if this folder will be deleted to trash by the delete operation.
      */
-    public static boolean isDeletableToTrash(Model model, Folder folder) {
-        if (!Operations.hasTrashFolder(model)) {
+    public boolean isDeletableToTrash(Folder folder) {
+        if (!hasTrashFolder()) {
             return false;
         }
         if (FolderType.TRASH.equals(folder.getType())) {
             return false;
         }
-        Folder parent = model.getFolder(folder.getPath().getParent());
+        Folder parent = this.model.getFolder(folder.getPath().getParent());
         if (FolderType.TRASH.equals(parent.getType())) {
             return false;
         }
@@ -107,18 +113,14 @@ public class Operations {
     /**
      *  Deletes the folder to Trash or permanently removes it from the model.
      */
-    public static void deleteFolder(Model model, Folder folder) {
-        if (isDeletableToTrash(model, folder)) {
-            List<Folder> trashFolders = model.findFolders(FolderType.TRASH);
+    public void deleteFolder(Folder folder) {
+        if (isDeletableToTrash(folder)) {
+            List<Folder> trashFolders = this.model.findFolders(FolderType.TRASH);
             trashFolders.get(0).getFolders().add(folder);
         } else {
-            Folder parent = model.getFolder(folder.getPath().getParent());
+            Folder parent = this.model.getFolder(folder.getPath().getParent());
             parent.getFolders().remove(folder);
         }
-    }
-
-    private Operations() {  //TODO: construct over model
-        //avoid instantiation
     }
 
 }
