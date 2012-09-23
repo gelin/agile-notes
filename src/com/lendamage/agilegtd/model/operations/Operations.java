@@ -67,6 +67,17 @@ public class Operations {
         folders.add(0, folder);
     }
 
+    /**
+     *  Moves the folder to the last position in the folders list.
+     */
+    public static void moveLastFolder(Folder parentFolder, Folder folder) {
+        List<Folder> folders = parentFolder.getFolders();
+        if (!folders.contains(folder)) {
+            return;
+        }
+        folders.add(folders.size(), folder);
+    }
+
     private Operations() {
         //avoid instantiation
     }

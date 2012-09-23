@@ -225,8 +225,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
 
     void moveLastFolder(Folder folder) {
-        List<Folder> folders = getFolder().getFolders();
-        folders.add(folders.size(), folder);
+        Operations.moveLastFolder(getFolder(), folder);
         updateFoldersActions();
     }
     

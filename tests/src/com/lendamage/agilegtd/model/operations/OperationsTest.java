@@ -109,7 +109,39 @@ public class OperationsTest extends AndroidTestCase {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
         Folder folder3 = model.getRootFolder().newFolder("folder3", null);
-        Operations.moveUpFolder(model.getRootFolder(), folder1);
+        Operations.moveFirstFolder(model.getRootFolder(), folder1);
+        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
+        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
+        assertEquals(folder3, model.getRootFolder().getFolders().get(2));
+    }
+
+    public void testMoveLastFolder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Folder folder3 = model.getRootFolder().newFolder("folder3", null);
+        Operations.moveLastFolder(model.getRootFolder(), folder1);
+        assertEquals(folder2, model.getRootFolder().getFolders().get(0));
+        assertEquals(folder3, model.getRootFolder().getFolders().get(1));
+        assertEquals(folder1, model.getRootFolder().getFolders().get(2));
+    }
+
+    public void testMoveLastFolderNonParent() {
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Folder folder1 = parent.newFolder("folder1", null);
+        Folder folder2 = parent.newFolder("folder2", null);
+        Folder folder3 = parent.newFolder("folder3", null);
+        Operations.moveLastFolder(model.getRootFolder(), folder1);
+        assertEquals(folder1, parent.getFolders().get(0));
+        assertEquals(folder2, parent.getFolders().get(1));
+        assertEquals(folder3, parent.getFolders().get(2));
+        assertEquals(parent, model.getRootFolder().getFolders().get(0));
+    }
+
+    public void testMoveLastFolderLast() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Folder folder3 = model.getRootFolder().newFolder("folder3", null);
+        Operations.moveLastFolder(model.getRootFolder(), folder3);
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
         assertEquals(folder3, model.getRootFolder().getFolders().get(2));
