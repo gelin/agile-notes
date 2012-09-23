@@ -220,8 +220,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
 
     void moveFirstFolder(Folder folder) {
-        List<Folder> folders = getFolder().getFolders();
-        folders.add(0, folder);
+        Operations.moveFirstFolder(getFolder(), folder);
         updateFoldersActions();
     }
 

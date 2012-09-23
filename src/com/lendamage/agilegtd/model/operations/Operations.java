@@ -56,6 +56,17 @@ public class Operations {
         folders.add(position + 1, folder);
     }
 
+    /**
+     *  Moves the folder to the first position in the folders list.
+     */
+    public static void moveFirstFolder(Folder parentFolder, Folder folder) {
+        List<Folder> folders = parentFolder.getFolders();
+        if (!folders.contains(folder)) {
+            return;
+        }
+        folders.add(0, folder);
+    }
+
     private Operations() {
         //avoid instantiation
     }

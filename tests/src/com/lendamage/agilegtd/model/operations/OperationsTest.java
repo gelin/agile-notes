@@ -34,8 +34,6 @@ public class OperationsTest extends AndroidTestCase {
     public void testMoveUpFolder() {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
-        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
-        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
         Operations.moveUpFolder(model.getRootFolder(), folder2);
         assertEquals(folder2, model.getRootFolder().getFolders().get(0));
         assertEquals(folder1, model.getRootFolder().getFolders().get(1));
@@ -45,8 +43,6 @@ public class OperationsTest extends AndroidTestCase {
         Folder parent = model.getRootFolder().newFolder("parent", null);
         Folder folder1 = parent.newFolder("folder1", null);
         Folder folder2 = parent.newFolder("folder2", null);
-        assertEquals(folder1, parent.getFolders().get(0));
-        assertEquals(folder2, parent.getFolders().get(1));
         Operations.moveUpFolder(model.getRootFolder(), folder2);
         assertEquals(folder1, parent.getFolders().get(0));
         assertEquals(folder2, parent.getFolders().get(1));
@@ -56,8 +52,6 @@ public class OperationsTest extends AndroidTestCase {
     public void testMoveUpFolderFirst() {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
-        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
-        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
         Operations.moveUpFolder(model.getRootFolder(), folder1);
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
@@ -66,8 +60,6 @@ public class OperationsTest extends AndroidTestCase {
     public void testMoveDownFolder() {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
-        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
-        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
         Operations.moveDownFolder(model.getRootFolder(), folder1);
         assertEquals(folder2, model.getRootFolder().getFolders().get(0));
         assertEquals(folder1, model.getRootFolder().getFolders().get(1));
@@ -77,8 +69,6 @@ public class OperationsTest extends AndroidTestCase {
         Folder parent = model.getRootFolder().newFolder("parent", null);
         Folder folder1 = parent.newFolder("folder1", null);
         Folder folder2 = parent.newFolder("folder2", null);
-        assertEquals(folder1, parent.getFolders().get(0));
-        assertEquals(folder2, parent.getFolders().get(1));
         Operations.moveDownFolder(model.getRootFolder(), folder1);
         assertEquals(folder1, parent.getFolders().get(0));
         assertEquals(folder2, parent.getFolders().get(1));
@@ -88,11 +78,41 @@ public class OperationsTest extends AndroidTestCase {
     public void testMoveDownFolderLast() {
         Folder folder1 = model.getRootFolder().newFolder("folder1", null);
         Folder folder2 = model.getRootFolder().newFolder("folder2", null);
-        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
-        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
         Operations.moveDownFolder(model.getRootFolder(), folder2);
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
+    }
+
+    public void testMoveFirstFolder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Folder folder3 = model.getRootFolder().newFolder("folder3", null);
+        Operations.moveFirstFolder(model.getRootFolder(), folder3);
+        assertEquals(folder3, model.getRootFolder().getFolders().get(0));
+        assertEquals(folder1, model.getRootFolder().getFolders().get(1));
+        assertEquals(folder2, model.getRootFolder().getFolders().get(2));
+    }
+
+    public void testMoveFirstFolderNonParent() {
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Folder folder1 = parent.newFolder("folder1", null);
+        Folder folder2 = parent.newFolder("folder2", null);
+        Folder folder3 = parent.newFolder("folder3", null);
+        Operations.moveFirstFolder(model.getRootFolder(), folder3);
+        assertEquals(folder1, parent.getFolders().get(0));
+        assertEquals(folder2, parent.getFolders().get(1));
+        assertEquals(folder3, parent.getFolders().get(2));
+        assertEquals(parent, model.getRootFolder().getFolders().get(0));
+    }
+
+    public void testMoveFirstFolderFirst() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        Folder folder3 = model.getRootFolder().newFolder("folder3", null);
+        Operations.moveUpFolder(model.getRootFolder(), folder1);
+        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
+        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
+        assertEquals(folder3, model.getRootFolder().getFolders().get(2));
     }
     
 }
