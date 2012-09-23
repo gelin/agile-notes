@@ -215,12 +215,7 @@ public class FolderActivity extends AbstractFolderActivity {
     }
     
     void moveDownFolder(Folder folder) {
-        List<Folder> folders = getFolder().getFolders();
-        int position = folders.indexOf(folder);
-        if (position >= folders.size()) {
-            return;
-        }
-        folders.add(position + 1, folder);
+        Operations.moveDownFolder(getFolder(), folder);
         updateFoldersActions();
     }
 

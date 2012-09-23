@@ -30,7 +30,7 @@ import java.util.List;
 public class Operations {
 
     /**
-     *  Moves the one folder up to one step in the folders list.
+     *  Moves the folder one step up in the folders list.
      */
     public static void moveUpFolder(Folder parentFolder, Folder folder) {
         List<Folder> folders = parentFolder.getFolders();
@@ -39,6 +39,21 @@ public class Operations {
             return;
         }
         folders.add(position - 1, folder);
+    }
+
+    /**
+     *  Moves the folder one step down in the folders list.
+     */
+    public static void moveDownFolder(Folder parentFolder, Folder folder) {
+        List<Folder> folders = parentFolder.getFolders();
+        int position = folders.indexOf(folder);
+        if (position < 0) {
+            return;
+        }
+        if (position >= folders.size()) {
+            return;
+        }
+        folders.add(position + 1, folder);
     }
 
     private Operations() {

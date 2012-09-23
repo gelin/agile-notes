@@ -62,5 +62,37 @@ public class OperationsTest extends AndroidTestCase {
         assertEquals(folder1, model.getRootFolder().getFolders().get(0));
         assertEquals(folder2, model.getRootFolder().getFolders().get(1));
     }
+
+    public void testMoveDownFolder() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
+        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
+        Operations.moveDownFolder(model.getRootFolder(), folder1);
+        assertEquals(folder2, model.getRootFolder().getFolders().get(0));
+        assertEquals(folder1, model.getRootFolder().getFolders().get(1));
+    }
+
+    public void testMoveDownFolderNonParent() {
+        Folder parent = model.getRootFolder().newFolder("parent", null);
+        Folder folder1 = parent.newFolder("folder1", null);
+        Folder folder2 = parent.newFolder("folder2", null);
+        assertEquals(folder1, parent.getFolders().get(0));
+        assertEquals(folder2, parent.getFolders().get(1));
+        Operations.moveDownFolder(model.getRootFolder(), folder1);
+        assertEquals(folder1, parent.getFolders().get(0));
+        assertEquals(folder2, parent.getFolders().get(1));
+        assertEquals(parent, model.getRootFolder().getFolders().get(0));
+    }
+
+    public void testMoveDownFolderLast() {
+        Folder folder1 = model.getRootFolder().newFolder("folder1", null);
+        Folder folder2 = model.getRootFolder().newFolder("folder2", null);
+        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
+        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
+        Operations.moveDownFolder(model.getRootFolder(), folder2);
+        assertEquals(folder1, model.getRootFolder().getFolders().get(0));
+        assertEquals(folder2, model.getRootFolder().getFolders().get(1));
+    }
     
 }
