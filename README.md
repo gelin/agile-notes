@@ -2,6 +2,11 @@ Notes/activity/task/todo manager for Android.
 
 It's agile notes. You aren't limited to projects/scopes/priorities only. You can create you own dimensions to organize your notes.
 
+Install
+-------
+
+[Google Play](https://play.google.com/store/apps/details?id=com.lendamage.agilegtd.android)
+
 Screenshots
 -----------
 
