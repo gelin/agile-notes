@@ -18,14 +18,14 @@
 
 package com.lendamage.agilegtd.android;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.MenuItem;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -66,7 +66,7 @@ public class BackupActivity extends FragmentActivity {
         setContentView(R.layout.backup_activity);
         setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             //actionBar.setDisplayShowHomeEnabled(false);

@@ -18,12 +18,12 @@
 
 package com.lendamage.agilegtd.android;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActionBar;
-import android.support.v4.view.MenuItem;
 import android.util.Log;
+import android.view.MenuItem;
 import com.lendamage.agilegtd.android.model.impl.SimplePath;
 import com.lendamage.agilegtd.model.Action;
 import com.lendamage.agilegtd.model.Folder;
@@ -51,7 +51,7 @@ abstract class AbstractFolderActivity extends AbstractModelActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             //actionBar.setDisplayShowHomeEnabled(false);

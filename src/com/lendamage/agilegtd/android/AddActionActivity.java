@@ -18,7 +18,7 @@
 
 package com.lendamage.agilegtd.android;
 
-import android.support.v4.view.Menu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.EditText;
 
